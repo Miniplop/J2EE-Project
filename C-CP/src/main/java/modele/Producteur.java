@@ -1,8 +1,11 @@
-package java.modele;
+package modele;
 
 import java.util.ArrayList;
-import java.modele.Produit;
 
 public class Producteur extends Utilisateur {
 	private ArrayList<Produit> produits = new ArrayList<Produit>();
+
+    public Producteur(short id) {
+        super(id);
+    }
 }

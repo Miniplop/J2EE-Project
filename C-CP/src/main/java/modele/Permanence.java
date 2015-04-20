@@ -1,7 +1,7 @@
-package java.modele;
+package modele;
 
 import java.util.ArrayList;
-import java.modele.Consommateur;
+import modele.Consommateur;
 
 public class Permanence {
 	private Semaine semaine;

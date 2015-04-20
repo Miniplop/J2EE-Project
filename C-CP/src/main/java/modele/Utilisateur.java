@@ -1,4 +1,4 @@
-package java.modele;
+package modele;
 
 public abstract class Utilisateur {
 	private final short id;

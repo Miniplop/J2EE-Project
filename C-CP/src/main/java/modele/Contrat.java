@@ -1,4 +1,4 @@
-package java.modele;
+package modele;
 
 public class Contrat {
 	private final int id;

@@ -1,10 +1,18 @@
-package java.controller;
+package controller;
 
-public abstract class Controller {
+import java.io.IOException;
+import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+public abstract class Controller extends HttpServlet {
+    
 	@Resource(name = "jdbc/cooperative")
-	private DataSource ds;
+	protected DataSource ds;
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		throw new UnsupportedOperationException();
-	}
+        @Override
+	public abstract void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 }

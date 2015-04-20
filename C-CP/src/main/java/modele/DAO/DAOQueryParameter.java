@@ -1,4 +1,6 @@
-package java.modele.DAO;
+package modele.DAO;
+
+import java.sql.PreparedStatement;
 
 public interface DAOQueryParameter {
 

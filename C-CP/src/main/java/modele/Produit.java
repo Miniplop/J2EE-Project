@@ -1,6 +1,7 @@
-package java.modele;
+package modele;
 
 public class Produit {
+    
 	private final int id;
 	private String nom;
 	private String unite;

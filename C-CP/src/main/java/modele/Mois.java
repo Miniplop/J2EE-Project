@@ -1,7 +1,6 @@
-package java.modele;
+package modele;
 
 import java.util.ArrayList;
-import java.modele.Semaine;
 
 public class Mois {
 	private final String annee;
