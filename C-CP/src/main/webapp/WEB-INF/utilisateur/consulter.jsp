@@ -25,8 +25,18 @@
                         <label class="sr-only" for="password">Mot de passe:</label>
                         <input type="password" class="form-control" id="password" placeholder="Mot de passe">
                     </div>
+                    <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Producteur 
+                        </label>
+                    </div>                    
+                    <div class="checkbox">
+                         <label>
+                          <input type="checkbox"> Consomateur
+                        </label>
+                    </div>
                     <button type="submit" class="btn btn-default">Connexion</button>
-                    <INPUT type="hidden" id="action" name="action" value="login"/><BR>
+                    <input type="hidden" id="action" name="action" value="login"/><BR>
                 </form>
             </div>
         </header>

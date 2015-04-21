@@ -6,7 +6,7 @@ import modele.Consommateur;
 
 public class ConsommateurDAO extends UtilisateurDAO {
     
-    private static final String SELECT_CONSOMMATEURS = "";
+    private static final String SELECT_CONSOMMATEURS = "SELECT ";
     private static final String SELECT_CONSOMMATEUR = "";
 
     public ConsommateurDAO(DataSource ds) {
@@ -16,7 +16,7 @@ public class ConsommateurDAO extends UtilisateurDAO {
     public Consommateur addConsommateur(String nom, String prenom, String email, String adresse) {
             throw new UnsupportedOperationException();
     }
-
+ 
     public void modifyConsommateur(Consommateur consommateur, String nom, String prenom, String email, String adresse) {
             throw new UnsupportedOperationException();
     }

@@ -16,4 +16,7 @@ public class Consommateur extends Utilisateur {
             this.contrats = contrats;
         this.permanence = permanence;
     }
+    
+    
 }
+

@@ -29,7 +29,7 @@ public class UtilisateurController extends Controller {
     }
 
     public void connexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
+    throw new UnsupportedOperationException();
     }
 
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
@@ -37,7 +37,8 @@ public class UtilisateurController extends Controller {
         request.setAttribute("produits", produitDAO.getProduits());
         getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
     }
-
+    
+    // Impossible techniquement  car il n'y a pas de bouton de déconexion dans la partie utilisateur ...
     public void deconnexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
             throw new UnsupportedOperationException();
     }

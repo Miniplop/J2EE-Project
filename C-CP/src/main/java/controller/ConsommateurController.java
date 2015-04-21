@@ -6,6 +6,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.DAO.DAOException;
+import modele.DAO.ConsommateurDAO;
+import modele.DAO.ProduitDAO;
 
 @WebServlet(name = "Consommateur", urlPatterns = {"/consommateur"})
 public class ConsommateurController extends UtilisateurController {
@@ -34,7 +36,11 @@ public class ConsommateurController extends UtilisateurController {
     
     @Override
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
+        ConsommateurDAO ConsommateurDAO = new ConsommateurDAO(super.ds);
+        // request.setAttribute("consommateur", ConsommateurDAO()); <-- Récupérer l'user en cours 
+        ProduitDAO produitConsommateurDAO = new ProduitDAO(super.ds);
+        request.setAttribute("produits", produitConsommateurDAO.getProduits());
+        getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consommateur.jsp").forward(request, response);
     }
 
     public void signerContrat(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
