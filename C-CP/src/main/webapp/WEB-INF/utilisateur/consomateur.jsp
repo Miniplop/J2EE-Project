@@ -1,7 +1,7 @@
 <%-- 
-    Document   : consulter
-    Created on : 20 avr. 2015, 16:11:51
-    Author     : loiseln
+    Document   : consomateur
+    Created on : 21 avr. 2015, 16:21:40
+    Author     : jeanke
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,35 +11,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>
-        <!-- Nom du site + connection -->
+            
         <header>
             <h1>Cooperative L.J.P.D.</h1>
-            <div>
-                <form class="form-inline">
-                    <div class="form-group">
-                        <label class="sr-only" for="email">email:</label>
-                        <input type="email" class="form-control" id="email" placeholder="Entrer l'email">
-                    </div>
-                    <div class="form-group">
-                        <label class="sr-only" for="nom">Nom:</label>
-                        <input type="nom" class="form-control" id="password" placeholder="Nom:">
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> Producteur 
-                        </label>
-                    </div>                    
-                    <div class="checkbox">
-                         <label>
-                          <input type="checkbox"> Consomateur
-                        </label>
-                    </div>
-                    <button type="submit" class="btn btn-default">Connexion</button>
-                    <input type="hidden" id="action" name="action" value="login"/><BR>
-                </form>
+            <div id ="nom_user">${consommateur.nom} </div>
+            <div id ="prenom_user">${consommateur.prenom} </div>
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default">déconexion</button>
             </div>
         </header>
+        
+        
         <!-- Liste des produits -->
         <section>
             <div class="panel-group" id="produits" role="tablist" aria-multiselectable="true">
@@ -62,9 +44,5 @@
                 </c:forEach>
             </div>
         </section>
-        <!-- Contact -->
-        <footer>
-            
-        </footer>
-    </body>
+    
 </html>

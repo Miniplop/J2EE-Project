@@ -40,7 +40,7 @@ public class UtilisateurController extends Controller {
             getServletContext().getRequestDispatcher("/WEB-INF/erreur/erreur_connexion.jsp").forward(request, response);
         } else {
             session.setAttribute("user_id", utilisateur.getId());
-            session.setAttribute("is_consommateur", utilisateur instanceof Consommateur);
+            session.setAttribute("is_consommateur", new Boolean(utilisateur instanceof Consommateur));
         }
         if(utilisateur instanceof Consommateur)
             getServletContext().getRequestDispatcher("/WEB-INF/consommateur/consulter.jsp").forward(request, response);
@@ -51,7 +51,7 @@ public class UtilisateurController extends Controller {
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("user_id") != null) {
-            if(session.getAttribute("is_consommateur") == true) {
+            if((Boolean) session.getAttribute("is_consommateur") == true) {
                 
             } else {
                 
@@ -62,7 +62,8 @@ public class UtilisateurController extends Controller {
             getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
         }
     }
-
+    
+    // Impossible techniquement  car il n'y a pas de bouton de déconexion dans la partie utilisateur ...
     public void deconnexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
             throw new UnsupportedOperationException();
     }
