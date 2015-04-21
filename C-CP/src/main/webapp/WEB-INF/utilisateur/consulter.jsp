@@ -30,10 +30,10 @@
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="type" id="type">Vous êtes :</label>
-                        <select name="type" id="type" class="form-control">
+                        <select name="type" id="user-type" class="form-control">
                             <option>producteur</option>
                             <option>consommateur</option>
-                        </select>       
+                        </select>
                     </div>
                     <input type="submit" class="btn btn-default" id="connexion" value="Connexion">
                     <input type="hidden" id="action" name="action" value="login"/><BR>
@@ -68,22 +68,27 @@
             
         </footer>
 
-        <script src="https://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+        <script src="<c:url value="js/jquery.js"/>" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-
+                $("#form-connexion").submit(function(e) {
+                    e.preventDefault();
+                    return false;
+                });
                 $("#connexion").click(function(e) {
-                    console.log("sqddddddddd");
+                    e.preventDefault();
                     var email= $("#email").val();
                     var nom = $("#nom").val();
-                    var type= $("#type").find(":selected").val();
+                    var type= $("#user-type").val();
                     console.log(email);
                     console.log(nom);
                     console.log(type);
-                    $.get('Utilisateur',{nom:nom, email:email, type:type, action:"login"},function(responseText) { 
-                        $('#erreur').text(responseText);         
+                    $.get('utilisateur',{nom:nom, email:email, type:type, action:"login"},function(responseText) {
+                        if(responseText == "erreur")
+                            $('#erreur').text("Utilisateur inconnu");
+                        else
+                            document.write(responseText);
                     });
-                    e.defaultPrevented();
                     return false;
                 });
             });

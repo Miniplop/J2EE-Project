@@ -11,8 +11,8 @@ import modele.Utilisateur;
 
 public class ConsommateurDAO extends UtilisateurDAO {
     
-    private static final String SELECT_CONSOMMATEURS = "SELECT ";
-    private static final String SELECT_CONSOMMATEUR = "";
+    private static final String SELECT_CONSOMMATEURS = "SELECT * FROM Consommateur";
+    private static final String SELECT_CONSOMMATEUR = "SELECT * FROM Consommateur WHERE id = ?";
 
     public ConsommateurDAO(DataSource ds) {
         super(ds, null, SELECT_CONSOMMATEURS, null, SELECT_CONSOMMATEUR);
@@ -34,7 +34,7 @@ public class ConsommateurDAO extends UtilisateurDAO {
         
         final ContratDAO contratDAO = new ContratDAO(super.dataSource);
         final ConsommateurDAO utilisateurDAO = new ConsommateurDAO(super.dataSource);
-        
+        System.out.println("1");
         DAOModeleBuilder<Consommateur> builder = new DAOModeleBuilder<Consommateur>() {
             
             @Override
@@ -42,13 +42,15 @@ public class ConsommateurDAO extends UtilisateurDAO {
                 try {
                     Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
                     Consommateur conso = new Consommateur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse(), null);
-                    contratDAO.getContratsByConsommateur(conso);
+                    
+        System.out.println("2");contratDAO.getContratsByConsommateur(conso);
                     return conso;
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
                 }
             }
         };
+        System.out.println("1.2");
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws DAOException {
