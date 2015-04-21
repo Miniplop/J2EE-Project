@@ -33,7 +33,6 @@
         <!-- Liste des produits -->
         <section>
             <div class="panel-group" id="produits" role="tablist" aria-multiselectable="true">
-                
                 <c:forEach items="${produits}" var="produit">
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="heading_${produit.id}">
