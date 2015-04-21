@@ -35,20 +35,25 @@ public class UtilisateurController extends Controller {
     public void connexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         HttpSession session = request.getSession();
         UtilisateurDAO utilisateurDAO = new ConsommateurDAO(super.ds);
+        System.out.println(request.getParameter("email"));
+        System.out.println(request.getParameter("nom"));
+        System.out.println(request.getParameter("type"));
         Utilisateur utilisateur = utilisateurDAO.getUtilisateur(request.getParameter("email"), request.getParameter("nom"), request.getParameter("type"));
         if(utilisateur == null) {
-            getServletContext().getRequestDispatcher("/WEB-INF/erreur/erreur_connexion.jsp").forward(request, response);
+            response.setContentType("text/plain");  
+            response.setCharacterEncoding("UTF-8"); 
+            response.getWriter().write("identifiants inconnus");
         } else {
+            request.login(request.getParameter("email"), request.getParameter("nom"));
             session.setAttribute("utilisateur", utilisateur);
+            if(utilisateur instanceof Consommateur)
+                new ConsommateurController().consulter(request, response);
+            else if(utilisateur instanceof Producteur)
+                new ProducteurController().consulter(request, response);
         }
-        if(utilisateur instanceof Consommateur)
-            new ConsommateurController().consulter(request, response);
-        else if(utilisateur instanceof Producteur)
-            new ProducteurController().consulter(request, response);
     }
 
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-        this.log("UtilisateurController consulter");
         HttpSession session = request.getSession();
         if(session.getAttribute("utilisateur") != null) {
             if(session.getAttribute("utilisateur") instanceof Consommateur) {

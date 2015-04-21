@@ -69,21 +69,25 @@ public class UtilisateurDAO extends AbstractDAO {
         Connection conn = null;
         PreparedStatement pSt;
         ResultSet rs;
-        Utilisateur utilisateur;
+        Utilisateur utilisateur = null;
         try {
             conn = getConnection();
             pSt = conn.prepareStatement("SELECT * FROM Utilisateur WHERE nom = ? AND email = ?");
             pSt.setString(1, nom);
-            pSt.setString(1, email);
+            pSt.setString(2, email);
             rs = pSt.executeQuery();
-            if("producteur".equals(type)) {
-                ProducteurDAO producteurDAO = new ProducteurDAO(super.dataSource);
-                utilisateur = producteurDAO.getProducteur(rs.getInt("id"));
-            } else if ("consommateur".equals(type)) {
-                ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.dataSource);
-                utilisateur = consommateurDAO.getConsommateur(rs.getInt("id"));
+            if(rs.next()) {
+                if("producteur".equals(type)) {
+                    ProducteurDAO producteurDAO = new ProducteurDAO(super.dataSource);
+                    utilisateur = producteurDAO.getProducteur(rs.getInt("id"));
+                } else if ("consommateur".equals(type)) {
+                    ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.dataSource);
+                    utilisateur = consommateurDAO.getConsommateur(rs.getInt("id"));
+                } else {
+                    throw new DAOException("Demande d'utilisateur non typé");
+                }
             } else {
-                utilisateur = null;
+                System.out.println("pas de rs next");
             }
             pSt.close();
         } catch (SQLException e) {

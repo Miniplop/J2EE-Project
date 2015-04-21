@@ -39,7 +39,7 @@ public class ContratDAO extends AbstractDAO {
         Connection conn = null;
         PreparedStatement pSt;
         ResultSet rs;
-        Contrat contrat;
+        Contrat contrat = null;
         ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
         SemaineDAO semaineDAO = new SemaineDAO(super.dataSource);
         try {
@@ -47,11 +47,13 @@ public class ContratDAO extends AbstractDAO {
             pSt = conn.prepareStatement("SELECT * FROM Contrat WHERE consommateur_id = ?");
             pSt.setInt(1, conso.getId());
             rs = pSt.executeQuery();
-            contrat = new Contrat(rs.getInt("id"), rs.getInt("quantite"),
-                    (rs.getByte("valide") != 0),
-                    conso, 
-                    produitDAO.getProduit(rs.getInt("produit_id")),
-                    semaineDAO.getSemaine(rs.getInt("debut_semaine_id")));
+            if(rs.next()) {
+                contrat = new Contrat(rs.getInt("id"), rs.getInt("quantite"),
+                        (rs.getByte("valide") != 0),
+                        conso, 
+                        produitDAO.getProduit(rs.getInt("produit_id")),
+                        semaineDAO.getSemaine(rs.getInt("debut_semaine_id")));
+            }
             pSt.close();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
