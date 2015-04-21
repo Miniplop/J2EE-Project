@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+import modele.Consommateur;
 import modele.Producteur;
 import modele.Produit;
 import modele.Utilisateur;
@@ -37,17 +38,12 @@ public class UtilisateurDAO extends AbstractDAO {
     }
 
     public Utilisateur getUtilisateur(final int id) throws DAOException {
-        final ProducteurDAO producteurDAO = new ProducteurDAO(super.dataSource);
-        final ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.dataSource);
         
         DAOModeleBuilder<Utilisateur> builder = new DAOModeleBuilder<Utilisateur>() {
             @Override
             public Utilisateur build(ResultSet rs) throws DAOException {
                 try {
-                    Utilisateur  utilisateur = producteurDAO.getProducteur(rs.getInt("id"));
-                    if(utilisateur == null) {
-                        utilisateur = consommateurDAO.getConsommateur(rs.getInt("id"));
-                    }
+                    Utilisateur utilisateur = new Producteur(rs.getShort("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("adresse"));
                     return utilisateur;
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
