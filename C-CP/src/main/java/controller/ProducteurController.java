@@ -22,11 +22,11 @@ public class ProducteurController extends UtilisateurController {
             } else if (action.equals("valider_contrat")) {
                 validerContrat(request, response);
             } else {
-                getServletContext().getRequestDispatcher("/WEB-INF/controleurErreur.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/WEB-INF/erreur/controleurErreur.jsp").forward(request, response);
             }
         } catch (DAOException e) {
             request.setAttribute("erreurMessage", e.getMessage());
-            getServletContext().getRequestDispatcher("/WEB-INF/bdErreur.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/WEB-INF/erreur/bdErreur.jsp").forward(request, response);
         }
     }
 

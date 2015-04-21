@@ -22,8 +22,8 @@
                         <input type="email" class="form-control" id="email" placeholder="Entrer l'email">
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="password">Mot de passe:</label>
-                        <input type="password" class="form-control" id="password" placeholder="Mot de passe">
+                        <label class="sr-only" for="nom">Nom:</label>
+                        <input type="nom" class="form-control" id="password" placeholder="Nom:">
                     </div>
                     <button type="submit" class="btn btn-default">Connexion</button>
                     <INPUT type="hidden" id="action" name="action" value="login"/><BR>

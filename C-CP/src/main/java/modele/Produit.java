@@ -16,6 +16,7 @@ public class Produit {
         this.quantite = quantite;
         this.duree = duree;
         this.producteur = producteur;
+        this.producteur.addProduits(this);
     }
 
     public int getId() {

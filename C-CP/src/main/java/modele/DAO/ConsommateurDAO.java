@@ -1,8 +1,13 @@
 package modele.DAO;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Consommateur;
+import modele.Producteur;
+import modele.Utilisateur;
 
 public class ConsommateurDAO extends UtilisateurDAO {
     
@@ -23,5 +28,38 @@ public class ConsommateurDAO extends UtilisateurDAO {
 
     public List<Consommateur> getConsommateurs() {
             throw new UnsupportedOperationException();
+    }
+
+    public Consommateur getConsommateur(final int id) throws DAOException {
+        
+        final ContratDAO contratDAO = new ContratDAO(super.dataSource);
+        final ConsommateurDAO utilisateurDAO = new ConsommateurDAO(super.dataSource);
+        
+        DAOModeleBuilder<Consommateur> builder = new DAOModeleBuilder<Consommateur>() {
+            
+            @Override
+            public Consommateur build(ResultSet rs) throws DAOException {
+                try {
+                    Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
+                    Consommateur conso = new Consommateur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse(), null);
+                    contratDAO.getContratsByConsommateur(conso);
+                    return conso;
+                } catch (SQLException ex) {
+                    throw new DAOException(ex.getMessage(), ex);
+                }
+            }
+        };
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws DAOException {
+                try {
+                    statement.setInt(1, id);
+                } catch (SQLException ex) {
+                    throw new DAOException(ex.getMessage(), ex);
+                }
+            }
+        };
+        
+        return (Consommateur) super.get(builder, setter);
     }
 }
