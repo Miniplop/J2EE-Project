@@ -1,16 +1,16 @@
 package modele.DAO;
 
 import java.util.List;
+import javax.sql.DataSource;
 import modele.Consommateur;
 
 public class ConsommateurDAO extends UtilisateurDAO {
-    //TODO
-    private static final String INSERT_CONSOMMATEUR = "";
+    
     private static final String SELECT_CONSOMMATEURS = "";
-    private static final String UPDATE_CONSOMMATEUR = "";
+    private static final String SELECT_CONSOMMATEUR = "";
 
-    public ConsommateurDAO(Object ds, String insert_query, String select_query, String update_query) {
-        super(ds, insert_query, select_query, update_query);
+    public ConsommateurDAO(DataSource ds) {
+        super(ds, null, SELECT_CONSOMMATEURS, null, SELECT_CONSOMMATEUR);
     }
 
     public Consommateur addConsommateur(String nom, String prenom, String email, String adresse) {

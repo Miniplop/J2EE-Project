@@ -7,10 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.DAO.DAOException;
 
-@WebServlet (
-	name = "ResponsablePlanningController",
-	urlPatterns = "/responsable"
-)
+@WebServlet(name = "ResponsablePlanning", urlPatterns = {"/responsable"})
 public class ResponsablePlanningController extends UtilisateurController {
     
     

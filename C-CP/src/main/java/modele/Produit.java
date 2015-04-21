@@ -1,51 +1,60 @@
 package modele;
 
 public class Produit {
-    
-	private final int id;
-	private String nom;
-	private String unite;
-	private int quantite;
-	private int duree;
-	private Producteur producteur;
 
-	public Produit(int id) {
-		throw new UnsupportedOperationException();
-	}
+    private final int id;
+    private String nom;
+    private String unite;
+    private int quantite;
+    private int duree;
+    private final Producteur producteur;
 
-	public int getId() {
-		return this.id;
-	}
+    public Produit(int id, String nom, String unite, int quantite, int duree, Producteur producteur) {
+        this.id = id;
+        this.nom = nom;
+        this.unite = unite;
+        this.quantite = quantite;
+        this.duree = duree;
+        this.producteur = producteur;
+    }
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    public int getId() {
+            return this.id;
+    }
 
-	public String getNom() {
-		return this.nom;
-	}
+    public void setNom(String nom) {
+            this.nom = nom;
+    }
 
-	public void setUnite(String unite) {
-		this.unite = unite;
-	}
+    public String getNom() {
+            return this.nom;
+    }
 
-	public String getUnite() {
-		return this.unite;
-	}
+    public void setUnite(String unite) {
+            this.unite = unite;
+    }
 
-	public void setQuantite(int quantite) {
-		this.quantite = quantite;
-	}
+    public String getUnite() {
+            return this.unite;
+    }
 
-	public int getQuantite() {
-		return this.quantite;
-	}
+    public void setQuantite(int quantite) {
+            this.quantite = quantite;
+    }
 
-	public void setDuree(int duree) {
-		this.duree = duree;
-	}
+    public int getQuantite() {
+            return this.quantite;
+    }
 
-	public int getDuree() {
-		return this.duree;
-	}
+    public void setDuree(int duree) {
+            this.duree = duree;
+    }
+
+    public int getDuree() {
+            return this.duree;
+    }
+
+    public Producteur getProducteur() {
+        return producteur;
+    }
 }

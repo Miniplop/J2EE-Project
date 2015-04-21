@@ -7,8 +7,12 @@ public abstract class Utilisateur {
 	private String email;
 	private String adresse;
 
-	public Utilisateur(short id) {
-		throw new UnsupportedOperationException();
+	public Utilisateur(short id, String nom, String prenom, String email, String adresse) {
+            this.id = id;
+            this.nom = nom;
+            this.prenom = prenom;
+            this.email = email;
+            this.adresse = adresse;
 	}
 
 	public short getId() {

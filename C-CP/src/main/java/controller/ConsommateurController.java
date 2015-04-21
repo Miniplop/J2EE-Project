@@ -7,10 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.DAO.DAOException;
 
-@WebServlet (
-	urlPatterns = "/producteur",
-	name = "ConsommateurController"
-)
+@WebServlet(name = "Consommateur", urlPatterns = {"/consommateur"})
 public class ConsommateurController extends UtilisateurController {
     
     

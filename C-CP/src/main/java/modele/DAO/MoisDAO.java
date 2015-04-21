@@ -1,6 +1,7 @@
 package modele.DAO;
 
 import java.util.List;
+import javax.sql.DataSource;
 import modele.Mois;
 import modele.Semaine;
 
@@ -8,9 +9,10 @@ public class MoisDAO extends AbstractDAO {
 	private static final String INSERT_MOIS="";
 	private static final String SELECT_MOIS="";
 	private static final String UPDATE_MOIS="";
+	private static final String SELECT_MOIS_BY_ID="";
 
-    public MoisDAO(Object ds, String insert_query, String select_query, String update_query) {
-        super(ds, insert_query, select_query, update_query);
+    public MoisDAO(DataSource ds) {
+        super(ds, INSERT_MOIS, SELECT_MOIS, UPDATE_MOIS, SELECT_MOIS_BY_ID);
     }
 
     public Mois addMois(int annee, String nom, Semaine semaine1, Semaine semaine2, Semaine semaine3, Semaine semaine4) {
@@ -22,18 +24,6 @@ public class MoisDAO extends AbstractDAO {
     }
 
     public List<Mois> getMois() {
-            throw new UnsupportedOperationException();
-    }
-
-    protected Object add(DAOQueryParameter setter) {
-            throw new UnsupportedOperationException();
-    }
-
-    protected void modify(DAOQueryParameter setter) {
-            throw new UnsupportedOperationException();
-    }
-
-    protected List get(DAOQueryParameter setter) {
             throw new UnsupportedOperationException();
     }
 }

@@ -1,15 +1,20 @@
 package modele.DAO;
 
 import java.util.List;
+import javax.sql.DataSource;
 import modele.Utilisateur;
 
 public class UtilisateurDAO extends AbstractDAO {
-	private static final String INSERT_UTILISATEUR="";
-	private static final String SELECT_UTILISATEURS="";
-	private static final String UPDATE_UTILISATEUR="";
+    
+    private static final String SELECT_UTILISATEURS = "SELECT * FROM Utilisateur";
+    private static final String SELECT_UTILISATEUR = "SELECT * FROM Utilisateur WHERE id = ?";
 
-    public UtilisateurDAO(Object ds, String insert_query, String select_query, String update_query) {
-        super(ds, insert_query, select_query, update_query);
+    public UtilisateurDAO(DataSource ds, String insert_query, String select_query, String update_query, String select_by_id_query) {
+        super(ds, insert_query, select_query, update_query, select_by_id_query);
+    }
+    
+    public UtilisateurDAO(DataSource ds) {
+        super(ds, null, SELECT_UTILISATEURS, null, SELECT_UTILISATEUR);
     }
 
     protected Utilisateur addUtilisateur(String nom, String prenom, String email, String adresse) {
@@ -24,15 +29,7 @@ public class UtilisateurDAO extends AbstractDAO {
             throw new UnsupportedOperationException();
     }
 
-    protected Object add(DAOQueryParameter setter) {
-            throw new UnsupportedOperationException();
-    }
-
-    protected void modify(DAOQueryParameter setter) {
-            throw new UnsupportedOperationException();
-    }
-
-    protected List get(DAOQueryParameter setter) {
-            throw new UnsupportedOperationException();
+    Utilisateur getUtilisateur(int aInt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -1,6 +1,7 @@
 package modele.DAO;
 
 import java.util.List;
+import javax.sql.DataSource;
 import modele.Semaine;
 import modele.Consommateur;
 
@@ -8,9 +9,10 @@ public class SemaineDAO extends AbstractDAO {
 	private static final String INSERT_SEMAINE="";
 	private static final String SELECT_SEMAINES="";
 	private static final String UPDATE_SEMAINE="";
+	private static final String SELECT_SEMAINE="";
 
-    public SemaineDAO(Object ds, String insert_query, String select_query, String update_query) {
-        super(ds, insert_query, select_query, update_query);
+    public SemaineDAO(DataSource ds) {
+        super(ds, INSERT_SEMAINE, SELECT_SEMAINES, UPDATE_SEMAINE, SELECT_SEMAINE);
     }
 
     public Semaine addSemaine(int numero) {
