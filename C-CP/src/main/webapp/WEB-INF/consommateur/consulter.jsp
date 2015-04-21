@@ -15,26 +15,17 @@
         <!-- Nom du site + connection -->
         <header>
             <h1>Cooperative L.J.P.D.</h1>
-            <div>
-                <form class="form-inline">
-                    <div class="form-group">
-                        <label class="sr-only" for="email">email:</label>
-                        <input type="email" class="form-control" id="email" placeholder="Entrer l'email">
-                    </div>
-                    <div class="form-group">
-                        <label class="sr-only" for="nom">Nom:</label>
-                        <input type="nom" class="form-control" id="password" placeholder="Nom:">
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> Producteur 
-                        </label>
-                    </div>                    
-                    <div class="checkbox">
-                         <label>
-                          <input type="checkbox"> Consomateur
-                        </label>
-                    </div>
+          <header>
+
++            <h1>Cooperative L.J.P.D.</h1>
++            <div id ="nom_user">${consommateur.nom} </div>
++            <div id ="prenom_user">${consommateur.prenom} </div>
++            <div class="btn-group" role="group" aria-label="...">
++                <button type="button" class="btn btn-default">déconexion</button>
+            </div>
++        </header>
+
+
                     <button type="submit" class="btn btn-default">Connexion</button>
                     <input type="hidden" id="action" name="action" value="login"/><BR>
                 </form>

@@ -10,12 +10,11 @@ import modele.Contrat;
 import modele.Produit;
 import modele.Consommateur;
 import modele.Semaine;
-import modele.Utilisateur;
 
 public class ContratDAO extends AbstractDAO {
     //TODO
-	private static final String INSERT_CONTRAT ="";
-	private static final String SELECT_CONTRATS="";
+	private static final String INSERT_CONTRAT ="INSERT INTO Contrat ( quantite,produit_id,consommateur_id,debut_semaine_id) VALUES (?,?,?,?)";
+	private static final String SELECT_CONTRATS="SELECT * FROM Contrat";
 	private static final String UPDATE_CONTRAT="";
 	private static final String SELECT_CONTRAT="";
 

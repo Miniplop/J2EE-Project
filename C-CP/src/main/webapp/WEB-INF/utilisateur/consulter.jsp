@@ -25,6 +25,11 @@
                         <label class="sr-only" for="nom">Nom:</label>
                         <input type="nom" class="form-control" id="password" placeholder="Nom:">
                     </div>
+                     <span class="erreur"> 
+                         <%
+                                 out.println(request.getParameter("Erreur"));
+                         %> 
+                     </span>
                     <div class="checkbox">
                         <label>
                           <input type="checkbox"> Producteur 
