@@ -9,6 +9,7 @@ import java.util.List;
 import javax.sql.DataSource;
 import modele.Produit;
 import modele.Producteur;
+import modele.Utilisateur;
 
 public class ProduitDAO extends AbstractDAO {
 	private static final String INSERT_PRODUIT = "";
@@ -60,5 +61,32 @@ public class ProduitDAO extends AbstractDAO {
             closeConnection(conn);
         }
         return result;
+    }
+
+    public Produit getProduit(final int id) throws DAOException {
+         DAOModeleBuilder<Produit> builder;
+            builder = new DAOModeleBuilder<Produit>() {
+                
+                @Override
+                public Produit build(ResultSet rs) throws DAOException {
+                    try {
+                        return new Produit(rs.getInt("id"), rs.getString("nom"), rs.getString("unite"), rs.getInt("quantite"), rs.getInt("duree"), null);
+                    } catch (SQLException ex) {
+                        throw new DAOException(ex.getMessage(), ex);
+                    }
+                }
+            };
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws DAOException {
+                try {
+                    statement.setInt(1, id);
+                } catch (SQLException ex) {
+                    throw new DAOException(ex.getMessage(), ex);
+                }
+            }
+        };
+        
+        return (Produit) super.get(builder, setter);
     }
 }

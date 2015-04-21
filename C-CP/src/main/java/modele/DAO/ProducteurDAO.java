@@ -33,11 +33,9 @@ public class ProducteurDAO extends UtilisateurDAO {
         builder = new DAOModeleBuilder<Producteur>() {
             @Override
             public Producteur build(ResultSet rs) throws DAOException {
-                Utilisateur utilisateur;
                 Producteur prod;
-                
                 try {
-                    utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
+                    Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
                     prod = new Producteur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse());
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);

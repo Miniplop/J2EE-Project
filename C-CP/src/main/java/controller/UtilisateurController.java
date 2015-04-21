@@ -39,28 +39,29 @@ public class UtilisateurController extends Controller {
         if(utilisateur == null) {
             getServletContext().getRequestDispatcher("/WEB-INF/erreur/erreur_connexion.jsp").forward(request, response);
         } else {
-            session.setAttribute("user_id", utilisateur.getId());
-            session.setAttribute("is_consommateur", new Boolean(utilisateur instanceof Consommateur));
+            session.setAttribute("utilisateur", utilisateur);
         }
         if(utilisateur instanceof Consommateur)
-            getServletContext().getRequestDispatcher("/WEB-INF/consommateur/consulter.jsp").forward(request, response);
+            new ConsommateurController().consulter(request, response);
         else if(utilisateur instanceof Producteur)
-            getServletContext().getRequestDispatcher("/WEB-INF/erreur_connexion.jsp").forward(request, response);
+            new ProducteurController().consulter(request, response);
     }
 
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
+       /* this.log("UtilisateurController consulter");
         HttpSession session = request.getSession();
-        if(session.getAttribute("user_id") != null) {
-            if((Boolean) session.getAttribute("is_consommateur") == true) {
-                
+        if(session.getAttribute("utilisateur") != null) {
+            if(session.getAttribute("utilisateur") instanceof Consommateur) {
+                new ConsommateurController().consulter(request, response);
             } else {
-                
+                new ProducteurController().consulter(request, response);
             }
-        } else {
-            ProduitDAO produitDAO = new ProduitDAO(super.ds);
-            request.setAttribute("produits", produitDAO.getProduits());
+        } else {*/
+           /* ProduitDAO produitDAO = new ProduitDAO(super.ds);
+            request.setAttribute("produits", produitDAO.getProduits());*/
+            System.out.println("UtilisateurController /WEB-INF/utilisateur/consulter.jsp");
             getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
-        }
+       /* }*/
     }
     
     // Impossible techniquement  car il n'y a pas de bouton de déconexion dans la partie utilisateur ...

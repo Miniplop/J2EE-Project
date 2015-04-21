@@ -38,4 +38,8 @@ public class SemaineDAO extends AbstractDAO {
     protected List get(DAOQueryParameter setter) {
             throw new UnsupportedOperationException();
     }
+
+    Semaine getSemaine(int aInt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

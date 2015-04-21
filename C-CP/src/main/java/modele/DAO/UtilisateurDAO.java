@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+import modele.Producteur;
 import modele.Produit;
 import modele.Utilisateur;
 
@@ -35,8 +36,36 @@ public class UtilisateurDAO extends AbstractDAO {
             throw new UnsupportedOperationException();
     }
 
-    Utilisateur getUtilisateur(int aInt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Utilisateur getUtilisateur(final int id) throws DAOException {
+        final ProducteurDAO producteurDAO = new ProducteurDAO(super.dataSource);
+        final ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.dataSource);
+        
+        DAOModeleBuilder<Utilisateur> builder = new DAOModeleBuilder<Utilisateur>() {
+            @Override
+            public Utilisateur build(ResultSet rs) throws DAOException {
+                try {
+                    Utilisateur  utilisateur = producteurDAO.getProducteur(rs.getInt("id"));
+                    if(utilisateur == null) {
+                        utilisateur = consommateurDAO.getConsommateur(rs.getInt("id"));
+                    }
+                    return utilisateur;
+                } catch (SQLException ex) {
+                    throw new DAOException(ex.getMessage(), ex);
+                }
+            }
+        };
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws DAOException {
+                try {
+                    statement.setInt(1, id);
+                } catch (SQLException ex) {
+                    throw new DAOException(ex.getMessage(), ex);
+                }
+            }
+        };
+        
+        return (Utilisateur) super.get(builder, setter);
     }
 
     public Utilisateur getUtilisateur(String email, String nom, String type) throws DAOException {
@@ -51,10 +80,10 @@ public class UtilisateurDAO extends AbstractDAO {
             pSt.setString(1, nom);
             pSt.setString(1, email);
             rs = pSt.executeQuery();
-            if(type == "producteur") {
+            if("producteur".equals(type)) {
                 ProducteurDAO producteurDAO = new ProducteurDAO(super.dataSource);
                 utilisateur = producteurDAO.getProducteur(rs.getInt("id"));
-            } else if (type == "consommateur") {
+            } else if ("consommateur".equals(type)) {
                 ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.dataSource);
                 utilisateur = consommateurDAO.getConsommateur(rs.getInt("id"));
             } else {

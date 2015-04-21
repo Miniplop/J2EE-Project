@@ -40,7 +40,7 @@ public class ConsommateurController extends UtilisateurController {
         // request.setAttribute("consommateur", ConsommateurDAO()); <-- Récupérer l'user en cours 
         ProduitDAO produitConsommateurDAO = new ProduitDAO(super.ds);
         request.setAttribute("produits", produitConsommateurDAO.getProduits());
-        getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consommateur.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/consommateur/consulter.jsp").forward(request, response);
     }
 
     public void signerContrat(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
