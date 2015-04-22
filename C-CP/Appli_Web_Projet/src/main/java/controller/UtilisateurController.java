@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,9 +53,26 @@ public class UtilisateurController extends Controller {
     }
 
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-        ProduitDAO produitDAO = new ProduitDAO(super.ds);
-        request.setAttribute("produits", produitDAO.getProduits());
-        getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        Utilisateur user = null;
+        UtilisateurController userController = null;
+        if((user = (Utilisateur) session.getAttribute("utilisateur")) != null) {
+            if(user instanceof Producteur) {
+                userController = new ProducteurController();
+            }else {
+                userController = new ConsommateurController();
+            }
+            userController.init(this.getServletConfig());
+            try {
+                userController.consulter(request, response);
+            } catch (DAOException ex) {
+                getServletContext().getRequestDispatcher("/WEB-INF/erreur/bdErreur.jsp").forward(request, response);
+            }
+        } else {
+            ProduitDAO produitDAO = new ProduitDAO(super.ds);
+            request.setAttribute("produits", produitDAO.getProduits());
+            getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
+        }
     }
     
     // Impossible techniquement  car il n'y a pas de bouton de déconexion dans la partie utilisateur ...
