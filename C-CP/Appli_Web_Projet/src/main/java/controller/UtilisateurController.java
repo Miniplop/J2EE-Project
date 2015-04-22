@@ -83,6 +83,10 @@ public class UtilisateurController extends Controller {
     
     // Impossible techniquement  car il n'y a pas de bouton de déconexion dans la partie utilisateur ...
     public void deconnexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
-            throw new UnsupportedOperationException();
+        HttpSession session = request.getSession();
+        session.removeAttribute("utilisateur");
+        UtilisateurController userController = new UtilisateurController();
+        userController.init(this.getServletConfig());
+        userController.consulter(request, response);
     }
 }
