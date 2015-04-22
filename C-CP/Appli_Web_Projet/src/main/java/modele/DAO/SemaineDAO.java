@@ -1,8 +1,11 @@
 package modele.DAO;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import modele.Semaine;
 import modele.Consommateur;
@@ -26,9 +29,8 @@ public class SemaineDAO extends AbstractDAO {
             throw new UnsupportedOperationException();
     }
 
-    public List<Semaine> getSemaines(final Mois mois,int id) throws DAOException {
-        DAOModeleBuilder<Semaine> builder;
-            builder = new DAOModeleBuilder<Semaine>() {     
+    public Semaine getSemaine(final Mois mois, final int id) throws DAOException {
+        DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     
                 @Override
                 public Semaine build(ResultSet rs) throws DAOException {
                     try {
@@ -38,7 +40,18 @@ public class SemaineDAO extends AbstractDAO {
                     }
                 }
             };
-        return super.gets(builder);
+        DAOQueryParameter setter = new DAOQueryParameter() {
+
+            @Override
+            public void set(PreparedStatement statement) throws DAOException {
+                try {
+                    statement.setInt(1, id);
+                } catch (SQLException ex) {
+                        throw new DAOException(ex.getMessage(), ex);
+                }
+            }
+            };
+        return (Semaine) super.getSingle(builder, setter, SemaineDAO.SELECT_SEMAINE);
     }
 
     Semaine getSemaine(int id) {

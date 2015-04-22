@@ -40,10 +40,10 @@ public class MoisDAO extends AbstractDAO {
                 Mois mois = null;
                 try {
                     mois = new Mois(rs.getString("annee"), rs.getString("nom"));
-                    semaineDAO.getSemaines(mois,rs.getShort("semaine_1_id"));
-                    semaineDAO.getSemaines(mois,rs.getShort("semaine_2_id"));
-                    semaineDAO.getSemaines(mois,rs.getShort("semaine_3_id"));
-                    semaineDAO.getSemaines(mois,rs.getShort("semaine_4_id"));
+                    semaineDAO.getSemaine(mois, rs.getShort("semaine_1_id"));
+                    semaineDAO.getSemaine(mois, rs.getShort("semaine_2_id"));
+                    semaineDAO.getSemaine(mois, rs.getShort("semaine_3_id"));
+                    semaineDAO.getSemaine(mois, rs.getShort("semaine_4_id"));
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
                 }
