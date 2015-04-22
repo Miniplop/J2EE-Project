@@ -15,7 +15,7 @@ public class SemaineDAO extends AbstractDAO {
 	private static final String INSERT_SEMAINE="";
         private static final String SELECT_SEMAINES="SELECT * FROM semaine ";
 	private static final String UPDATE_SEMAINE="";
-	private static final String SELECT_SEMAINE="";
+	private static final String SELECT_SEMAINE="SELECT * FROM semaine WHERE id = ? ";
 
     public SemaineDAO(DataSource ds) {
         super(ds, INSERT_SEMAINE, SELECT_SEMAINES, UPDATE_SEMAINE);
