@@ -6,6 +6,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.DAO.DAOException;
+import modele.DAO.MoisDAO;
+import modele.DAO.SemaineDAO;
 
 @WebServlet(name = "ResponsablePlanning", urlPatterns = {"/responsable"})
 public class ResponsablePlanningController extends UtilisateurController {
@@ -29,7 +31,7 @@ public class ResponsablePlanningController extends UtilisateurController {
                 }  else if (action.equals("statistique_permanences")) {
                     statistiquePermanences(request, response);
                 } else {
-                    getServletContext().getRequestDispatcher("/WEB-INF/erreur/controleurErreur.jsp").forward(request, response);
+                    consulter(request,response);
                 }
             }
         } catch (DAOException e) {
@@ -40,11 +42,13 @@ public class ResponsablePlanningController extends UtilisateurController {
 
     @Override
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
+            MoisDAO MoisDAO = new MoisDAO(super.ds);
+            request.setAttribute("Mois", MoisDAO.getMois());
+            getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/consulter.jsp").forward(request, response);
     }
 
     public void demarrerMois(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
+             getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/ajouterMois.jsp").forward(request, response);
     }
 
     public void affecterPermanences(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {

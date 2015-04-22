@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Consommateur;
-import modele.Producteur;
 import modele.Utilisateur;
 
 public class ConsommateurDAO extends UtilisateurDAO {
@@ -34,7 +33,6 @@ public class ConsommateurDAO extends UtilisateurDAO {
         
         final ContratDAO contratDAO = new ContratDAO(super.dataSource);
         final UtilisateurDAO utilisateurDAO = this;
-        System.out.println("1");
         DAOModeleBuilder<Consommateur> builder = new DAOModeleBuilder<Consommateur>() {
             
             @Override
@@ -49,7 +47,6 @@ public class ConsommateurDAO extends UtilisateurDAO {
                 }
             }
         };
-        System.out.println("1.2");
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws DAOException {

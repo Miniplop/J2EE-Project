@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,8 @@ import modele.Utilisateur;
 @WebServlet(name = "Utilisateur", urlPatterns = {"/utilisateur"})
 public class UtilisateurController extends Controller {
 
+    private static final String EMAIl_RESPO = "loisel@hotmail.fr";
+    
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
@@ -36,30 +40,41 @@ public class UtilisateurController extends Controller {
         HttpSession session = request.getSession();
         UtilisateurDAO utilisateurDAO = new ConsommateurDAO(super.ds);
         Utilisateur utilisateur = utilisateurDAO.getUtilisateur(request.getParameter("email"), request.getParameter("nom"), request.getParameter("type"));
-        
         response.setContentType("text/plain");  
         response.setCharacterEncoding("UTF-8"); 
         if(utilisateur == null) {
-            response.getWriter().write("erreur");
+            if (request.getParameter("email").equalsIgnoreCase(UtilisateurController.EMAIl_RESPO)) {
+                response.getWriter().write("responsable");
+            } else {
+                response.getWriter().write("erreur");
+            }
         } else {
-            session.setAttribute("utilisateur", utilisateur);
+            session.setAttribute("utilisateur", utilisateur);                
             if(utilisateur instanceof Consommateur)
                 response.getWriter().write("consommateur");
             else if(utilisateur instanceof Producteur)
                 response.getWriter().write("producteur");
         }
+        
     }
 
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("utilisateur") != null) {
-            if(session.getAttribute("utilisateur") instanceof Consommateur) {
-                new ConsommateurController().consulter(request, response);
-            } else {
-                new ProducteurController().consulter(request, response);
+        Utilisateur user = null;
+        UtilisateurController userController = null;
+        if((user = (Utilisateur) session.getAttribute("utilisateur")) != null) {
+            if(user instanceof Producteur) {
+                userController = new ProducteurController();
+            }else {
+                userController = new ConsommateurController();
+            }
+            userController.init(this.getServletConfig());
+            try {
+                userController.consulter(request, response);
+            } catch (DAOException ex) {
+                getServletContext().getRequestDispatcher("/WEB-INF/erreur/bdErreur.jsp").forward(request, response);
             }
         } else {
-            System.out.println("UtilisateurController /WEB-INF/utilisateur/consulter.jsp");
             ProduitDAO produitDAO = new ProduitDAO(super.ds);
             request.setAttribute("produits", produitDAO.getProduits());
             getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
@@ -68,6 +83,10 @@ public class UtilisateurController extends Controller {
     
     // Impossible techniquement  car il n'y a pas de bouton de déconexion dans la partie utilisateur ...
     public void deconnexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
-            throw new UnsupportedOperationException();
+        HttpSession session = request.getSession();
+        session.removeAttribute("utilisateur");
+        UtilisateurController userController = new UtilisateurController();
+        userController.init(this.getServletConfig());
+        userController.consulter(request, response);
     }
 }
