@@ -9,11 +9,13 @@ import javax.sql.DataSource;
 import modele.Contrat;
 import modele.Produit;
 import modele.Consommateur;
+import modele.Producteur;
 import modele.Semaine;
+import modele.Utilisateur;
 
 public class ContratDAO extends AbstractDAO {
     //TODO
-	private static final String INSERT_CONTRAT ="INSERT INTO Contrat ( quantite,produit_id,consommateur_id,debut_semaine_id) VALUES (?,?,?,?)";
+	private static final String INSERT_CONTRAT ="INSERT INTO Contrat (quantite, valide, produit_id, consommateur_id, debut_semaine_id) VALUES (?,?,?,?,?)";
 	private static final String SELECT_CONTRATS="SELECT * FROM Contrat";
 	private static final String UPDATE_CONTRAT="";
 	private static final String SELECT_CONTRAT="SELECT * FROM Contrat WHERE id = ?";
@@ -30,8 +32,26 @@ public class ContratDAO extends AbstractDAO {
             throw new UnsupportedOperationException();
     }
 
-    public List<Contrat> getContrats() {
-            throw new UnsupportedOperationException();
+    public List<Contrat> getContrats() throws DAOException {
+        final ProduitDAO produitDAO = new ProduitDAO(dataSource);
+        final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
+        final SemaineDAO semaineDAO = new SemaineDAO(dataSource);
+        DAOModeleBuilder<Contrat> builder = new DAOModeleBuilder<Contrat>() {
+            @Override
+            public Contrat build(ResultSet rs) throws DAOException {
+                Contrat contrat;
+                try {
+                    Produit produit = produitDAO.getProduit(rs.getShort("produit_id"));
+                    Consommateur consommateur = consommateurDAO.getConsommateur(rs.getShort("consommateur_id"));
+                    Semaine semaine_debut = semaineDAO.getSemaine(rs.getShort("debut_semaine_id"));
+                    contrat = new Contrat(rs.getShort("id"), rs.getInt("quantite"), rs.getShort("valide")!=0, consommateur, produit, semaine_debut);
+                } catch (SQLException ex) {
+                    throw new DAOException(ex.getMessage(), ex);
+                }
+                return contrat;
+            }
+        };
+        return this.gets(builder);
     }
 
     public Contrat getContratsByConsommateur(Consommateur conso) throws DAOException {
