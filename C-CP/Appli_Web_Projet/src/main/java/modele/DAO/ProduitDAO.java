@@ -86,7 +86,6 @@ public class ProduitDAO extends AbstractDAO {
 
             while (rs.next()) {
                 Produit produit = new Produit(rs.getInt("id"), rs.getString("nom"), rs.getString("unite"), rs.getInt("quantite"), rs.getInt("duree"), producteur);
-                
                 result.add(produit);
             }
             pSt.close();
@@ -109,11 +108,14 @@ public class ProduitDAO extends AbstractDAO {
                 }
             }
         };
-         DAOModeleBuilder<Produit> builder = new DAOModeleBuilder<Produit>() {
+        final ProducteurDAO producteurDAO = new ProducteurDAO(dataSource);
+         DAOModeleBuilder<Produit> builder;
+            builder = new DAOModeleBuilder<Produit>() {
                 @Override
                 public Produit build(ResultSet rs) throws DAOException {
                     try {
-                        return new Produit(rs.getInt("id"), rs.getString("nom"), rs.getString("unite"), rs.getInt("quantite"), rs.getInt("duree"), null);
+                        
+                        return new Produit(rs.getInt("id"), rs.getString("nom"), rs.getString("unite"), rs.getInt("quantite"), rs.getInt("duree"), producteurDAO.getProducteur(rs.getInt("producteur_id")));
                     } catch (SQLException ex) {
                         throw new DAOException(ex.getMessage(), ex);
                     }

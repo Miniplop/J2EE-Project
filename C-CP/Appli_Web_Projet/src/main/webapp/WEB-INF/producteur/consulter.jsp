@@ -28,58 +28,57 @@
         </header>
         <!-- Liste des produits -->
         <section class="col-lg-6 col-lg-offset-3">
-            <div class="panel-group" id="produits" role="tablist" aria-multiselectable="true">
-                <div id="list_produit">
-                    <c:forEach items="${self.getProduits()}" var="produit">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="heading_${produit.id}">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#produits" href="#collapse_${produit.id}" aria-expanded="true" aria-controls="collapse_${produit.id}">
-                                    <h2>${produit.nom}</h2>
-                                    <p>durée du contrat : ${produit.duree} semaines</p>
-                                </a>
-                            </h4>
+            <div id="list_produit">
+                <c:forEach items="${self.getProduits()}" var="produit">
+                <div>
+                    <div>
+                        <h2>${produit.nom}</h2>
+                        <p>durée du contrat : <span>${produit.duree} semaines</span></p>
+                    </div>
+                    <c:if test="${contrats.get(produit.getId()) != null}">
+                    <div>
+                        <c:forEach items="${contrats.get(produit.getId())}" var="contrat">
+                        <div>
+                            <h4> Contrat passé par : ${contrat.getConsommateur().getNom()} ${contrat.getConsommateur().getPrenom()} </h4>
+                            <span>${contrat.getConsommateur().getAdresse()}</span>
+                            <span>${contrat.getConsommateur().getEmail()}</span>
+                            <p>
+                                Quantité commandée : <span>${contrat.getQuantite()}</span>
+                            </p>
+                            <button type="button" class="btn btn-success" id="valider" data-id="${contrat.getId()}">Valider le contrat</button>
                         </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_${produit.id}">
-                            <div class="panel-body">
-
-                            </div>
+                        </c:forEach>
+                    </div>
+                    </c:if>
+                </div>
+                </c:forEach>
+            </div>
+            
+            <div>
+                <h2>Ajouter un produit</h2>
+                <form class="form-horizontal text-center" id="nouveau_produit">
+                    <div class="form-group">
+                        <label for="nouveau_nom" class="col-lg-3 control-label">Nom du produit</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="nouveau_nom" placeholder="Nom" name="nom" required="true">
+                        </div>
+                        <label for="nouveau_unite" class="col-lg-3 control-label">Unité de mesure</label>
+                        <div class="col-lg-3">
+                            <input type="text" class="form-control" id="nouveau_unite" placeholder="Unité" name="unite" required="true">
                         </div>
                     </div>
-                    </c:forEach>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading" id="heading_add">
-                        <h4 class="panel-title">
-                            <div aria-expanded="true">
-                                <h2>Ajouter un produit</h2>
-                                <form class="form-horizontal text-center" id="nouveau_produit">
-                                    <div class="form-group">
-                                        <label for="nouveau_nom" class="col-lg-3 control-label">Nom du produit</label>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control" id="nouveau_nom" placeholder="Nom" name="nom" required="true">
-                                        </div>
-                                        <label for="nouveau_unite" class="col-lg-3 control-label">Unité de mesure</label>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control" id="nouveau_unite" placeholder="Unité" name="unite" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="nouveau_quantite" class="col-lg-3 control-label">Quantité</label>
-                                        <div class="col-lg-3">
-                                            <input type="number" class="form-control" id="nouveau_quantite" placeholder="Quantité" name="quantite" required="true">
-                                        </div>
-                                        <label for="nouveau_duree" class="col-lg-3 control-label">Durée des contrats <p class="small">(en semaine)</p></label>
-                                        <div class="col-lg-3">
-                                            <input type="number" class="form-control" id="nouveau_duree" placeholder="durée" name="duree" required="true">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-lg" id="ajouter_produit">Ajouter</button>
-                                </form>
-                            </div>
-                        </h4>
+                    <div class="form-group">
+                        <label for="nouveau_quantite" class="col-lg-3 control-label">Quantité</label>
+                        <div class="col-lg-3">
+                            <input type="number" class="form-control" id="nouveau_quantite" placeholder="Quantité" name="quantite" required="true">
+                        </div>
+                        <label for="nouveau_duree" class="col-lg-3 control-label">Durée des contrats <p class="small">(en semaine)</p></label>
+                        <div class="col-lg-3">
+                            <input type="number" class="form-control" id="nouveau_duree" placeholder="durée" name="duree" required="true">
+                        </div>
                     </div>
-                </div>
+                    <button type="submit" class="btn btn-primary btn-lg" id="ajouter_produit">Ajouter</button>
+                </form>
             </div>
         </section>   
         
@@ -100,22 +99,30 @@
                     $.get('producteur',{nom:nom, unite:unite, quantite:quantite, duree:duree, action:"renseigner_produit"},function(responseText) {
                         if(!isNaN(responseText))
                             $('#list_produit').append(
-                                '<div class="panel panel-default">\
-                                    <div class="panel-heading" role="tab" id="heading_'+responseText+'">\
-                                        <h4 class="panel-title">\
-                                            <div data-toggle="collapse" aria-expanded="true" aria-controls="collapse_'+responseText+'">\
-                                                <h2>'+nom+'</h2>\
-                                                <p>durée du contrat : '+duree+' semaines</p>\
-                                            </div>\
-                                        </h4>\
+                                '<div>\
+                                    <div>\
+                                        <h4>'+nom+'</h4>\
+                                        <p>durée du contrat : <span>'+duree+' semaines</span></p>\
                                     </div>\
-                                </div>');
+                                 </div>');
                         else {
                             document.write(responseText);
                         }
                             
                     });
                     return false;
+                });
+                
+                $("#valider").click(function(e) {
+                    var button = this;
+                    var contrat_id = $(button).data("id");
+                    $.get('producteur',{contrat_id:contrat_id, action:"valider_contrat"},function(responseText) {
+                        if(responseText === "ok") {
+                            $(button).css('display', 'none');
+                        } else {
+                            
+                        }
+                    }
                 });
             });
         </script>

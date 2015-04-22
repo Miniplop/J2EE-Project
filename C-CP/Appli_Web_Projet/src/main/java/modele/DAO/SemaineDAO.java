@@ -82,11 +82,35 @@ public class SemaineDAO extends AbstractDAO {
                         throw new DAOException(ex.getMessage(), ex);
                 }
             }
-            };
+        };
         return (Semaine) super.getSingle(builder, setter, SemaineDAO.SELECT_SEMAINE);
     }
 
-    Semaine getSemaine(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Semaine getSemaine(final int id) throws DAOException {
+        final MoisDAO moisDAO = new MoisDAO(dataSource);
+                
+        DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     
+                @Override
+                public Semaine build(ResultSet rs) throws DAOException {
+                    try {
+                        Mois mois = moisDAO.getMoisBySemaineId(rs.getInt("id"));
+                        return new Semaine((short) rs.getInt("id"), rs.getInt("numero"), rs.getInt("consommateur_1_id"), rs.getInt("consommateur_2_id"), mois);
+                    } catch (SQLException ex) {
+                        throw new DAOException(ex.getMessage(), ex);
+                    }
+                }
+            };
+        DAOQueryParameter setter = new DAOQueryParameter() {
+
+            @Override
+            public void set(PreparedStatement statement) throws DAOException {
+                try {
+                    statement.setInt(1, id);
+                } catch (SQLException ex) {
+                        throw new DAOException(ex.getMessage(), ex);
+                }
+            }
+        };
+        return (Semaine) this.getSingle(builder, setter, SemaineDAO.SELECT_SEMAINE);
     }
 }

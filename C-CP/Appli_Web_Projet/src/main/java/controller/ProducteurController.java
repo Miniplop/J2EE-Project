@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import modele.DAO.ContratDAO;
 import modele.DAO.DAOException;
 import modele.DAO.ProduitDAO;
 import modele.Producteur;
@@ -49,7 +50,9 @@ public class ProducteurController extends UtilisateurController {
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         HttpSession session = request.getSession();
         Producteur self = (Producteur) session.getAttribute("utilisateur");
+        ContratDAO contratDAO = new ContratDAO(ds);
         request.setAttribute("self", self);
+        request.setAttribute("contrats", contratDAO.getContratEnAttente());
         getServletContext().getRequestDispatcher("/WEB-INF/producteur/consulter.jsp").forward(request, response);
     }
 
@@ -73,6 +76,10 @@ public class ProducteurController extends UtilisateurController {
     }
 
     public void validerContrat(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
+        HttpSession session = request.getSession();
+        Producteur self = (Producteur) session.getAttribute("utilisateur");
+        int contrat_id = Integer.parseInt(request.getParameter("contrat_id"));
+        ContratDAO contratDAO = new ContratDAO(ds);
+        contratDAO.modifyContrat(contratDAO.getContrat(contrat_id), 0, null);
     }
 }

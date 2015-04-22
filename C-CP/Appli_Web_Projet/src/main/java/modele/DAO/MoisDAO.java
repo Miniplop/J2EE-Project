@@ -1,14 +1,9 @@
 package modele.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import modele.Mois;
 import modele.Semaine;
@@ -24,6 +19,7 @@ public class MoisDAO extends AbstractDAO {
 	private static final String SELECT_MOIS="SELECT * FROM mois ";
 	private static final String UPDATE_MOIS="UPDATE Mois SET";
 	private static final String SELECT_MOIS_BY_ID="SELECT * FROM mois WHERE id = ? ";
+	private static final String SELECT_MOIS_BY_SEMAINE_ID="SELECT * FROM mois WHERE semaine_1_id = ? OR semaine_2_id = ? OR semaine_3_id = ? OR semaine_4_id = ?";
 
     public MoisDAO(DataSource ds) {
         super(ds, INSERT_MOIS, SELECT_MOIS, UPDATE_MOIS);
@@ -77,5 +73,33 @@ public class MoisDAO extends AbstractDAO {
             }
         };
         return super.gets(builder);
+    }
+
+    Mois getMoisBySemaineId(final int semaine_id) throws DAOException {
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws DAOException {
+                try {
+                    statement.setInt(1, semaine_id);
+                    statement.setInt(2, semaine_id);
+                    statement.setInt(3, semaine_id);
+                    statement.setInt(4, semaine_id);
+                } catch (SQLException ex) {
+                    throw new DAOException(ex.getMessage(), ex);
+                }
+            }
+        };
+         DAOModeleBuilder<Mois> builder = new DAOModeleBuilder<Mois>() {
+                @Override
+                public Mois build(ResultSet rs) throws DAOException {
+                    try {
+                        return new Mois(rs.getString("annee"), rs.getString("nom"));
+                    } catch (SQLException ex) {
+                        throw new DAOException(ex.getMessage(), ex);
+                    }
+                }
+            };
+        
+        return (Mois) super.getSingle(builder, setter, MoisDAO.SELECT_MOIS_BY_SEMAINE_ID);
     }
 }

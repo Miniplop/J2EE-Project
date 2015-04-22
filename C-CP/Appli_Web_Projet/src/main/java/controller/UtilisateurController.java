@@ -1,8 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -69,11 +67,7 @@ public class UtilisateurController extends Controller {
                 userController = new ConsommateurController();
             }
             userController.init(this.getServletConfig());
-            try {
-                userController.consulter(request, response);
-            } catch (DAOException ex) {
-                getServletContext().getRequestDispatcher("/WEB-INF/erreur/bdErreur.jsp").forward(request, response);
-            }
+            userController.consulter(request, response);
         } else {
             ProduitDAO produitDAO = new ProduitDAO(super.ds);
             request.setAttribute("produits", produitDAO.getProduits());
@@ -85,8 +79,8 @@ public class UtilisateurController extends Controller {
     public void deconnexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
         HttpSession session = request.getSession();
         session.removeAttribute("utilisateur");
-        UtilisateurController userController = new UtilisateurController();
-        userController.init(this.getServletConfig());
-        userController.consulter(request, response);
+        ProduitDAO produitDAO = new ProduitDAO(super.ds);
+        request.setAttribute("produits", produitDAO.getProduits());
+        getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
     }
 }

@@ -4,19 +4,27 @@ public class Contrat {
     
     private final int id;
     private final int quantite;
-    private boolean valide = false;
-    private Semaine debut_semaine;
+    private int valide = 2;
+    private Semaine debut_semaine = null;
     private final Consommateur consommateur;
     private final Produit produit;
 
-    public Contrat(int id, int quantite, boolean valide, Consommateur consommateur, Produit produit, Semaine semaine) {
+    public Contrat(int id, int quantite, int valide, Consommateur consommateur, Produit produit, Semaine semaine) {
         this.id = id;
         this.quantite = quantite;
         this.valide = valide;
         this.consommateur = consommateur;
         this.produit = produit;
         this.debut_semaine = semaine;
-        consommateur.addContrat(this);
+        consommateur.addContrat(produit.getId(), this);
+    }
+
+    public Contrat(int id, int quantite, Produit produit, Consommateur consommateur) {
+        this.id = id;
+        this.quantite = quantite;
+        this.consommateur = consommateur;
+        this.produit = produit;
+        consommateur.addContrat(produit.getId(), this);
     }
 
     public int getId() {
@@ -27,11 +35,11 @@ public class Contrat {
             return this.quantite;
     }
 
-    public void setValide(boolean valide) {
+    public void setValide(int valide) {
             this.valide = valide;
     }
 
-    public boolean isValide() {
+    public int getValide() {
             return this.valide;
     }
 
