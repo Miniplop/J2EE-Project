@@ -48,7 +48,7 @@ public class ResponsablePlanningController extends UtilisateurController {
     }
 
     public void demarrerMois(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
+             getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/ajouterMois.jsp").forward(request, response);
     }
 
     public void affecterPermanences(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
