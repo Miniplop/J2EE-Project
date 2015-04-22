@@ -41,6 +41,7 @@
                 <p id="erreur"></p>
             </div>
         </header>
+        
         <!-- Liste des produits -->
         <section class="col-lg-6 col-lg-offset-3">
             <div class="panel-group" id="produits" role="tablist" aria-multiselectable="true">
