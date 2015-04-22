@@ -14,6 +14,8 @@ import modele.Utilisateur;
 @WebServlet(name = "Utilisateur", urlPatterns = {"/utilisateur"})
 public class UtilisateurController extends Controller {
 
+    private static final String EMAIl_RESPO = "loisel@hotmail.fr";
+    
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
@@ -36,18 +38,22 @@ public class UtilisateurController extends Controller {
         HttpSession session = request.getSession();
         UtilisateurDAO utilisateurDAO = new ConsommateurDAO(super.ds);
         Utilisateur utilisateur = utilisateurDAO.getUtilisateur(request.getParameter("email"), request.getParameter("nom"), request.getParameter("type"));
-        
         response.setContentType("text/plain");  
         response.setCharacterEncoding("UTF-8"); 
         if(utilisateur == null) {
-            response.getWriter().write("erreur");
+            if (request.getParameter("email").equalsIgnoreCase(UtilisateurController.EMAIl_RESPO)) {
+                response.getWriter().write("responsable");
+            } else {
+                response.getWriter().write("erreur");
+            }
         } else {
-            session.setAttribute("utilisateur", utilisateur);
+            session.setAttribute("utilisateur", utilisateur);                
             if(utilisateur instanceof Consommateur)
                 response.getWriter().write("consommateur");
             else if(utilisateur instanceof Producteur)
                 response.getWriter().write("producteur");
         }
+        
     }
 
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
@@ -57,9 +63,9 @@ public class UtilisateurController extends Controller {
                 new ConsommateurController().consulter(request, response);
             } else {
                 new ProducteurController().consulter(request, response);
-            }
+            }                    
         } else {
-            System.out.println("UtilisateurController /WEB-INF/utilisateur/consulter.jsp");
+            //System.out.println("UtilisateurController /WEB-INF/utilisateur/consulter.jsp");
             ProduitDAO produitDAO = new ProduitDAO(super.ds);
             request.setAttribute("produits", produitDAO.getProduits());
             getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
