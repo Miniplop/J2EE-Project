@@ -14,7 +14,7 @@ public class ProducteurDAO extends UtilisateurDAO {
     private static final String SELECT_PRODUCTEUR_BY_ID = "SELECT * FROM Producteur WHERE id = ?";
 
     public ProducteurDAO(DataSource dataSource) {
-        super(dataSource, null, SELECT_PRODUCTEURS, null, SELECT_PRODUCTEUR_BY_ID);
+        super(dataSource, null, SELECT_PRODUCTEURS, null);
     }
 
     public Producteur addProducteur(String nom, String prenom, String email, String adresse) {
@@ -51,7 +51,7 @@ public class ProducteurDAO extends UtilisateurDAO {
 
     public Producteur getProducteur(final int id) throws DAOException {
         final ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
-        final UtilisateurDAO utilisateurDAO = new UtilisateurDAO(super.dataSource);
+        final UtilisateurDAO utilisateurDAO = this;
         
         DAOModeleBuilder<Producteur> builder = new DAOModeleBuilder<Producteur>() {
             
@@ -77,7 +77,7 @@ public class ProducteurDAO extends UtilisateurDAO {
                 }
             }
         };
-        Object prod = super.get(builder, setter);
+        Object prod = super.getSingle(builder, setter, this.SELECT_PRODUCTEUR_BY_ID);
         return (Producteur) prod;
     }
 }

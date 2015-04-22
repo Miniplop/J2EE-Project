@@ -17,12 +17,12 @@ public class UtilisateurDAO extends AbstractDAO {
     private static final String SELECT_UTILISATEURS = "SELECT * FROM Utilisateur";
     private static final String SELECT_UTILISATEUR = "SELECT * FROM Utilisateur WHERE id = ?";
 
-    public UtilisateurDAO(DataSource ds, String insert_query, String select_query, String update_query, String select_by_id_query) {
-        super(ds, insert_query, select_query, update_query, select_by_id_query);
+    public UtilisateurDAO(DataSource ds, String insert_query, String select_query, String update_query) {
+        super(ds, insert_query, select_query, update_query);
     }
     
     public UtilisateurDAO(DataSource ds) {
-        super(ds, null, SELECT_UTILISATEURS, null, SELECT_UTILISATEUR);
+        super(ds, null, SELECT_UTILISATEURS, null);
     }
 
     protected Utilisateur addUtilisateur(String nom, String prenom, String email, String adresse) {
@@ -43,7 +43,8 @@ public class UtilisateurDAO extends AbstractDAO {
             @Override
             public Utilisateur build(ResultSet rs) throws DAOException {
                 try {
-                    Utilisateur utilisateur = new Producteur(rs.getShort("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("adresse"));
+                    Utilisateur utilisateur = new Producteur((short)rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("adresse"));
+                    
                     return utilisateur;
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
@@ -61,7 +62,7 @@ public class UtilisateurDAO extends AbstractDAO {
             }
         };
         
-        return (Utilisateur) super.get(builder, setter);
+        return (Utilisateur) super.getSingle(builder, setter, this.SELECT_UTILISATEUR);
     }
 
     public Utilisateur getUtilisateur(String email, String nom, String type) throws DAOException {

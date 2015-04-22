@@ -12,10 +12,10 @@ import modele.Utilisateur;
 public class ConsommateurDAO extends UtilisateurDAO {
     
     private static final String SELECT_CONSOMMATEURS = "SELECT * FROM Consommateur";
-    private static final String SELECT_CONSOMMATEUR = "SELECT * FROM Consommateur WHERE id = ?";
+    private static final String SELECT_CONSOMMATEUR_BY_ID = "SELECT * FROM Consommateur WHERE id = ?";
 
     public ConsommateurDAO(DataSource ds) {
-        super(ds, null, SELECT_CONSOMMATEURS, null, SELECT_CONSOMMATEUR);
+        super(ds, null, SELECT_CONSOMMATEURS, null);
     }
 
     public Consommateur addConsommateur(String nom, String prenom, String email, String adresse) {
@@ -33,7 +33,7 @@ public class ConsommateurDAO extends UtilisateurDAO {
     public Consommateur getConsommateur(final int id) throws DAOException {
         
         final ContratDAO contratDAO = new ContratDAO(super.dataSource);
-        final ConsommateurDAO utilisateurDAO = new ConsommateurDAO(super.dataSource);
+        final UtilisateurDAO utilisateurDAO = this;
         System.out.println("1");
         DAOModeleBuilder<Consommateur> builder = new DAOModeleBuilder<Consommateur>() {
             
@@ -41,9 +41,8 @@ public class ConsommateurDAO extends UtilisateurDAO {
             public Consommateur build(ResultSet rs) throws DAOException {
                 try {
                     Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
-                    Consommateur conso = new Consommateur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse(), null);
-                    
-        System.out.println("2");contratDAO.getContratsByConsommateur(conso);
+                    Consommateur conso = new Consommateur((short) rs.getInt("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse(), null);
+                    contratDAO.getContratsByConsommateur(conso);
                     return conso;
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
@@ -62,6 +61,6 @@ public class ConsommateurDAO extends UtilisateurDAO {
             }
         };
         
-        return (Consommateur) super.get(builder, setter);
+        return (Consommateur) super.getSingle(builder, setter, this.SELECT_CONSOMMATEUR_BY_ID);
     }
 }

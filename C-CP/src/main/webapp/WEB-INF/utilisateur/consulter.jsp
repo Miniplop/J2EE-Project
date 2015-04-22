@@ -84,8 +84,12 @@
                     console.log(nom);
                     console.log(type);
                     $.get('utilisateur',{nom:nom, email:email, type:type, action:"login"},function(responseText) {
-                        if(responseText == "erreur")
+                        if(responseText === "erreur")
                             $('#erreur').text("Utilisateur inconnu");
+                        else if(responseText === "consommateur")
+                            document.location.replace("${pageContext.request.contextPath}/consommateur");
+                        else if(responseText === "producteur")
+                            document.location.replace("${pageContext.request.contextPath}/producteur");
                         else
                             document.write(responseText);
                     });

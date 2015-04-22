@@ -35,22 +35,18 @@ public class UtilisateurController extends Controller {
     public void connexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         HttpSession session = request.getSession();
         UtilisateurDAO utilisateurDAO = new ConsommateurDAO(super.ds);
-            System.out.println("utilisateur");
         Utilisateur utilisateur = utilisateurDAO.getUtilisateur(request.getParameter("email"), request.getParameter("nom"), request.getParameter("type"));
         
+        response.setContentType("text/plain");  
+        response.setCharacterEncoding("UTF-8"); 
         if(utilisateur == null) {
-            System.out.println("null");
-            response.setContentType("text/plain");  
-            response.setCharacterEncoding("UTF-8"); 
             response.getWriter().write("erreur");
         } else {
-            System.out.println(utilisateur.getId());
             session.setAttribute("utilisateur", utilisateur);
-            System.out.println(utilisateur.getId());
             if(utilisateur instanceof Consommateur)
-                new ConsommateurController().consulter(request, response);
+                response.getWriter().write("consommateur");
             else if(utilisateur instanceof Producteur)
-                new ProducteurController().consulter(request, response);
+                response.getWriter().write("producteur");
         }
     }
 

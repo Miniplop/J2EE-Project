@@ -12,7 +12,7 @@ public class MoisDAO extends AbstractDAO {
 	private static final String SELECT_MOIS_BY_ID="SELECT * FROM mois WHERE id = ? ";
 
     public MoisDAO(DataSource ds) {
-        super(ds, INSERT_MOIS, SELECT_MOIS, UPDATE_MOIS, SELECT_MOIS_BY_ID);
+        super(ds, INSERT_MOIS, SELECT_MOIS, UPDATE_MOIS);
     }
 
     public Mois addMois(int annee, String nom, Semaine semaine1, Semaine semaine2, Semaine semaine3, Semaine semaine4) {

@@ -16,7 +16,7 @@ public class ProduitDAO extends AbstractDAO {
 	private static final String SELECT_PRODUIT = "SELECT * FROM Produit WHERE id = ?";
 
     public ProduitDAO(DataSource ds) {
-        super(ds, INSERT_PRODUIT, null, UPDATE_PRODUIT, SELECT_PRODUIT);
+        super(ds, INSERT_PRODUIT, null, UPDATE_PRODUIT);
     }
 
     public Produit addProduit(String nom, String unite, int quantite, int duree, Producteur producteur) {
@@ -86,6 +86,6 @@ public class ProduitDAO extends AbstractDAO {
             }
         };
         
-        return (Produit) super.get(builder, setter);
+        return (Produit) super.getSingle(builder, setter, this.SELECT_PRODUIT);
     }
 }

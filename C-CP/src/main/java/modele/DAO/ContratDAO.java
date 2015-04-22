@@ -19,7 +19,7 @@ public class ContratDAO extends AbstractDAO {
 	private static final String SELECT_CONTRAT="SELECT * FROM Contrat WHERE id = ?";
 
     public ContratDAO(DataSource ds) {
-        super(ds, INSERT_CONTRAT, SELECT_CONTRATS, UPDATE_CONTRAT, SELECT_CONTRAT);
+        super(ds, INSERT_CONTRAT, SELECT_CONTRATS, UPDATE_CONTRAT);
     }
 
     public Contrat addContrat(int quantite, boolean valide, Produit produit, Consommateur consommateur) {
