@@ -51,19 +51,9 @@ public class UtilisateurController extends Controller {
     }
 
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-        HttpSession session = request.getSession();
-        if(session.getAttribute("utilisateur") != null) {
-            if(session.getAttribute("utilisateur") instanceof Consommateur) {
-                new ConsommateurController().consulter(request, response);
-            } else {
-                new ProducteurController().consulter(request, response);
-            }
-        } else {
-            System.out.println("UtilisateurController /WEB-INF/utilisateur/consulter.jsp");
-            ProduitDAO produitDAO = new ProduitDAO(super.ds);
-            request.setAttribute("produits", produitDAO.getProduits());
-            getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
-        }
+        ProduitDAO produitDAO = new ProduitDAO(super.ds);
+        request.setAttribute("produits", produitDAO.getProduits());
+        getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
     }
     
     // Impossible techniquement  car il n'y a pas de bouton de déconexion dans la partie utilisateur ...

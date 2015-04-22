@@ -73,9 +73,9 @@ public class UtilisateurDAO extends AbstractDAO {
         Utilisateur utilisateur = null;
         try {
             conn = getConnection();
-            pSt = conn.prepareStatement("SELECT * FROM Utilisateur WHERE nom = ? AND email = ?");
-            pSt.setString(1, nom);
-            pSt.setString(2, email);
+            pSt = conn.prepareStatement("SELECT * FROM Utilisateur WHERE LOWER(nom) = ? AND LOWER(email) = ?");
+            pSt.setString(1, nom.toLowerCase());
+            pSt.setString(2, email.toLowerCase());
             rs = pSt.executeQuery();
             if(rs.next()) {
                 if("producteur".equals(type)) {
@@ -88,7 +88,6 @@ public class UtilisateurDAO extends AbstractDAO {
                     throw new DAOException("Demande d'utilisateur non typé");
                 }
             } else {
-                System.out.println("pas de rs next");
             }
             pSt.close();
         } catch (SQLException e) {

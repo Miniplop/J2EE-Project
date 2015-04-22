@@ -36,14 +36,30 @@ public abstract class AbstractDAO<T> {
             }
         }
     }
-
-    protected T add(DAOQueryParameter setter) {
+    
+    protected void add(DAOQueryParameter setter) throws DAOException {
         if(INSERT_QUERY == null)
             throw new UnsupportedOperationException();
-
-        throw new UnsupportedOperationException();
+ 
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = getConnection();
+            
+            stmt = conn.prepareStatement(INSERT_QUERY);
+            setter.set(stmt);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating object failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        } finally {
+            closeConnection(conn);
+        }
+            
     }
-
+    
     protected void modify(DAOQueryParameter setter) {
         if(UPDATE_QUERY == null)
             throw new UnsupportedOperationException();
@@ -56,7 +72,7 @@ public abstract class AbstractDAO<T> {
         if(SELECT_QUERY == null)
             throw new UnsupportedOperationException();
 
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
         ResultSet rs;
         Connection conn = null;
         try {

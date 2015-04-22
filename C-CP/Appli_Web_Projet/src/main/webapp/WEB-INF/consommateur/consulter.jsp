@@ -3,38 +3,29 @@
     Created on : 20 avr. 2015, 16:11:51
     Author     : loiseln
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link href="<c:url value="css/bootstrap.min.css"/>" rel="stylesheet" type="text/css">
+        <title>Consommateur</title>
     </head>
     <body>
         <!-- Nom du site + connection -->
         <header>
             <h1>Cooperative L.J.P.D.</h1>
-          <header>
-
-+            <h1>Cooperative L.J.P.D.</h1>
-+            <div id ="nom_user">${consommateur.nom} </div>
-+            <div id ="prenom_user">${consommateur.prenom} </div>
-+            <div class="btn-group" role="group" aria-label="...">
-+                <button type="button" class="btn btn-default">déconexion</button>
-            </div>
-+        </header>
-
-
-                    <button type="submit" class="btn btn-default">Connexion</button>
-                    <input type="hidden" id="action" name="action" value="login"/><BR>
-                </form>
+            <div id ="nom_user">${self.nom} </div>
+            <div id ="prenom_user">${self.prenom} </div>
+            <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default">déconnexion</button>
             </div>
         </header>
         <!-- Liste des produits -->
-        <section>
+        <section class="col-lg-6 col-lg-offset-3">
             <div class="panel-group" id="produits" role="tablist" aria-multiselectable="true">
-               <!-- <c:forEach items="${produits}" var="produit">
+                <c:forEach items="${produits}" var="produit">
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="heading_${produit.id}">
                             <h4 class="panel-title">
@@ -50,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                </c:forEach>-->
+                </c:forEach>
             </div>
         </section>
         <!-- Contact -->

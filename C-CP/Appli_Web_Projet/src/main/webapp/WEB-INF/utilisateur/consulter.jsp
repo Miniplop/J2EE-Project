@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="<c:url value="css/bootstrap.min.css"/>" rel="stylesheet" type="text/css">
-        <title>JSP Page</title>
+        <title>Cooperative L.J.P.D.</title>
     </head>
     <body>
             
@@ -42,7 +42,7 @@
             </div>
         </header>
         <!-- Liste des produits -->
-        <section>
+        <section class="col-lg-6 col-lg-offset-3">
             <div class="panel-group" id="produits" role="tablist" aria-multiselectable="true">
                 <c:forEach items="${produits}" var="produit">
                     <div class="panel panel-default">
@@ -53,11 +53,6 @@
                                     <p>durée du contrat : ${produit.duree} semaines</p>
                                 </a>
                             </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_${produit.id}">
-                            <div class="panel-body">
-
-                            </div>
                         </div>
                     </div>
                 </c:forEach>
@@ -73,16 +68,9 @@
             $(document).ready(function() {
                 $("#form-connexion").submit(function(e) {
                     e.preventDefault();
-                    return false;
-                });
-                $("#connexion").click(function(e) {
-                    e.preventDefault();
                     var email= $("#email").val();
                     var nom = $("#nom").val();
                     var type= $("#user-type").val();
-                    console.log(email);
-                    console.log(nom);
-                    console.log(type);
                     $.get('utilisateur',{nom:nom, email:email, type:type, action:"login"},function(responseText) {
                         if(responseText === "erreur")
                             $('#erreur').text("Utilisateur inconnu");
