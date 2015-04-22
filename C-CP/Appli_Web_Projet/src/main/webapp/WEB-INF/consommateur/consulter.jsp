@@ -16,33 +16,57 @@
         <!-- Nom du site + connection -->
         <header>
             <h1>Cooperative L.J.P.D.</h1>
-            <div id ="nom_user">${self.nom} </div>
-            <div id ="prenom_user">${self.prenom} </div>
+            <div>${self.nom} ${self.prenom}</div>
             <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-default">déconnexion</button>
+                <form action="consommateur" method="GET">
+                    <input type="hidden" name="action" id="action" value="logout">
+                    <button type="submit" class="btn btn-default">Déconnexion</button>
+                </form>
             </div>
         </header>
         <!-- Liste des produits -->
-        <section class="col-lg-6 col-lg-offset-3">
-            <div class="panel-group" id="produits" role="tablist" aria-multiselectable="true">
+        <section class="col-lg-12">
                 <c:forEach items="${produits}" var="produit">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="heading_${produit.id}">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#produits" href="#collapse_${produit.id}" aria-expanded="true" aria-controls="collapse_${produit.id}">
-                                    <h2>${produit.nom}</h2>
-                                    <p>durée du contrat : ${produit.duree} semaines</p>
-                                </a>
-                            </h4>
+                    <div class="col-lg-3">
+                        <h2 >${produit.nom}</h2>
+                        <span >Quantité : ${produit.quantite} semaines</span>
+                        <span >Durée du contrat : ${produit.duree} semaines</span>
+                        <span >Producteur : ${produit.getProducteur().getNom()} ${produit.getProducteur().getPrenom()}</span>
+                        <c:if test="${self.getContrats().get(produit.getId()) != null}">
+                        <div>
+                            <c:forEach items="${self.getContrats().get(produit.getId())}" var="contrat">
+                                <div>
+                                    <h3>${contrat.getQuantite()}</h3>
+                                    <c:choose>
+                                        <c:when test="${contrat.getValide() == 2}">
+                                            <span>Contrat en attente de validation</span>
+                                        </c:when>
+                                        <c:when test="${contrat.getValide() == 1}">
+                                            <span>Contrat validé</span>
+                                        </c:when>
+                                        <c:when test="${contrat.getValide() == 0}">
+                                            <span>Contrat refusé</span>
+                                        </c:when>
+                                    </c:choose>
+                                    <c:if test="${contrat.getDebutSemaine() != null}">
+                                        <span>semaine ${contrat.getDebutSemaine().getNumero()} ${contrat.getDebutSemaine().getMois().getNom()} ${contrat.getDebutSemaine().getMois().getAnnee()}</span>
+                                    </c:if>
+                                </div>
+                            </c:forEach>
                         </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_${produit.id}">
-                            <div class="panel-body">
-
+                        </c:if>
+                        <form class="form-inline" action="consommateur" method="get" id="signer_contrat_form">
+                            <label class="sr-only" for="type" id="type">Signer un contrat</label>
+                            <div class="form-group">
+                                <label class="sr-only" for="quantite_contrat" id="type">Quantité</label>
+                                <input type="number" id="quantite_contrat" name="quantite_contrat" required>
+                                <input type="hidden" name="action" value="signer_contrat">
+                                <input type="hidden" name="produit_id" value="${produit.getId()}">
                             </div>
-                        </div>
+                            <button type="submit" class="btn btn-default">Signer</button>
+                        </form>
                     </div>
                 </c:forEach>
-            </div>
         </section>
         <!-- Contact -->
         <footer>

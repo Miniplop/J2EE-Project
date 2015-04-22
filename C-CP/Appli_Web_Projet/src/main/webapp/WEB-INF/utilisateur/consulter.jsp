@@ -48,10 +48,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="heading_${produit.id}">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#produits" href="#collapse_${produit.id}" aria-expanded="true" aria-controls="collapse_${produit.id}">
+                                <div aria-expanded="true">
                                     <h2>${produit.nom}</h2>
                                     <p>durée du contrat : ${produit.duree} semaines</p>
-                                </a>
+                                    <p>producteur : ${produit.getProducteur().getNom()} ${produit.getProducteur().getPrenom()}</p>
+                                </div>
                             </h4>
                         </div>
                     </div>

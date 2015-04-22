@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.Consommateur;
+import modele.DAO.ContratDAO;
 import modele.DAO.DAOException;
 import modele.DAO.ProduitDAO;
 
@@ -54,7 +55,14 @@ public class ConsommateurController extends UtilisateurController {
     }
 
     public void signerContrat(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
-            throw new UnsupportedOperationException();
+            HttpSession session = request.getSession();
+            Consommateur self = (Consommateur) session.getAttribute("utilisateur");
+            int quantite = Integer.parseInt(request.getParameter("quantite_contrat"));
+            int produitId = Integer.parseInt(request.getParameter("produit_id"));
+            ProduitDAO produitDAO = new ProduitDAO(ds);
+            ContratDAO contratDAO = new ContratDAO(ds);
+            contratDAO.addContrat(quantite, produitDAO.getProduit(produitId), self);
+            this.consulter(request, response);
     }
 
     public void renseignerDisponibilites(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {

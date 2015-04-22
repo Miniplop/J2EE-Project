@@ -42,12 +42,12 @@ CREATE TABLE Semaine (
   consommateur_2_id number(5), 
   PRIMARY KEY (id));
 CREATE TABLE Contrat (
-  id               number(10) DEFAULT seq_produit.nextval NOT NULL, 
+  id               number(10) DEFAULT seq_contrat.nextval NOT NULL, 
   quantite         number(10) NOT NULL, 
-  valide           number(1) DEFAULT '0' NOT NULL, 
+  valide           number(1) DEFAULT '2' NOT NULL, 
   produit_id       number(10) NOT NULL, 
   consommateur_id  number(5) NOT NULL, 
-  debut_semaine_id number(5), 
+  debut_semaine_id number(5) DEFAULT NULL, 
   PRIMARY KEY (id));
 CREATE TABLE Produit (
   id            number(10) DEFAULT seq_produit.nextval NOT NULL, 

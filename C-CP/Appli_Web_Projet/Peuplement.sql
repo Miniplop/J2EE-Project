@@ -166,12 +166,12 @@ INSERT INTO Mois (annee, nom, semaine_1_id, semaine_2_id, semaine_3_id, semaine_
 
 -- Création de Contrats
 
-INSERT INTO Contrat ( quantite,produit_id,consommateur_id,debut_semaine_id) VALUES 
-('10',(SELECT id FROM Produit WHERE id = '3'),'6',(SELECT semaine_1_id FROM Mois WHERE nom = 'Janvier' AND annee = '2015'));
+INSERT INTO Contrat ( quantite, valide, produit_id,consommateur_id,debut_semaine_id) VALUES 
+('10','0', (SELECT id FROM Produit WHERE id = '3'),'6',(SELECT semaine_1_id FROM Mois WHERE nom = 'Janvier' AND annee = '2015'));
 
-INSERT INTO Contrat ( quantite,produit_id,consommateur_id,debut_semaine_id) VALUES 
-('5',(SELECT id FROM Produit WHERE id = '2'),'7',(SELECT semaine_2_id FROM Mois WHERE nom = 'Février' AND annee = '2015'));
+INSERT INTO Contrat ( quantite, valide,produit_id,consommateur_id,debut_semaine_id) VALUES 
+('5','0',(SELECT id FROM Produit WHERE id = '2'),'7',(SELECT semaine_2_id FROM Mois WHERE nom = 'Février' AND annee = '2015'));
 
-INSERT INTO Contrat ( quantite,produit_id,consommateur_id,debut_semaine_id) VALUES 
-('8',(SELECT id FROM Produit WHERE id = '7'), '8',(SELECT semaine_3_id FROM Mois WHERE nom = 'Janvier' AND annee = '2015'));
+INSERT INTO Contrat ( quantite, valide,produit_id,consommateur_id,debut_semaine_id) VALUES 
+('8','0',(SELECT id FROM Produit WHERE id = '7'), '8',(SELECT semaine_3_id FROM Mois WHERE nom = 'Janvier' AND annee = '2015'));
 

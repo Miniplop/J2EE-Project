@@ -1,21 +1,22 @@
 package modele;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Consommateur extends Utilisateur {
     private Permanence permanence;
-    private final List<Contrat> contrats;
+    private final Map<Integer, List<Contrat>> contrats;
 
         
     public Consommateur(short id, String nom, String prenom, String email, String adresse, Permanence permanence) {
         super(id, nom, prenom, email, adresse);
-        this.contrats = new ArrayList<Contrat>();
+        this.contrats = new HashMap<>();
         this.permanence = permanence;
     }
 
-    void addContrat(Contrat contrat) {
-        this.contrats.add(contrat);
+    void addContrat(Integer produitId, Contrat contrat) {
+        if(this.contrats.get(produitId) == null)
+            this.contrats.put(produitId, new ArrayList<Contrat>());
+        this.contrats.get(produitId).add(contrat);
     }
 
     public Permanence getPermanence() {
@@ -26,7 +27,7 @@ public class Consommateur extends Utilisateur {
         this.permanence = permanence;
     }
 
-    public List<Contrat> getContrats() {
+    public Map<Integer, List<Contrat>> getContrats() {
         return contrats;
     }
 }
