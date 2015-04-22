@@ -14,7 +14,7 @@ public class ProducteurDAO extends UtilisateurDAO {
     private static final String SELECT_PRODUCTEUR_BY_ID = "SELECT * FROM Producteur WHERE id = ?";
 
     public ProducteurDAO(DataSource dataSource) {
-        super(dataSource, null, SELECT_PRODUCTEURS, null, SELECT_PRODUCTEUR_BY_ID);
+        super(dataSource, null, SELECT_PRODUCTEURS, null);
     }
 
     public Producteur addProducteur(String nom, String prenom, String email, String adresse) {
@@ -26,6 +26,7 @@ public class ProducteurDAO extends UtilisateurDAO {
     }
 
     public List<Producteur> getProducteurs() throws DAOException {
+        System.out.println("getProducteurs");
         final ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
         final UtilisateurDAO utilisateurDAO = new UtilisateurDAO(super.dataSource);
         
@@ -37,10 +38,11 @@ public class ProducteurDAO extends UtilisateurDAO {
                 try {
                     Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
                     prod = new Producteur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse());
+                    produitDAO.getProduitsByProducteur(prod);
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
                 }
-                produitDAO.getProduitsByProducteur(prod);
+               // produitDAO.getProduitsByProducteur(prod);
                 return prod;
             }
         };
@@ -48,9 +50,8 @@ public class ProducteurDAO extends UtilisateurDAO {
     }
 
     public Producteur getProducteur(final int id) throws DAOException {
-        
         final ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
-        final UtilisateurDAO utilisateurDAO = new UtilisateurDAO(super.dataSource);
+        final UtilisateurDAO utilisateurDAO = this;
         
         DAOModeleBuilder<Producteur> builder = new DAOModeleBuilder<Producteur>() {
             
@@ -76,7 +77,7 @@ public class ProducteurDAO extends UtilisateurDAO {
                 }
             }
         };
-        
-        return (Producteur) super.get(builder, setter);
+        Object prod = super.getSingle(builder, setter, this.SELECT_PRODUCTEUR_BY_ID);
+        return (Producteur) prod;
     }
 }

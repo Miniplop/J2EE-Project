@@ -17,18 +17,20 @@ public class ResponsablePlanningController extends UtilisateurController {
         
         String action = request.getParameter("action");
         try {
-            if (action.equals("demarrer_mois")) {
-                demarrerMois(request, response);
-            } else if (action.equals("affecter_permanences")) {
-                affecterPermanences(request, response);
-            } else if (action.equals("modifier_permanence")) {
-                modifierPermanence(request, response);
-            }  else if (action.equals("visualiser_permanences_passees")) {
-                visualiserPermanencesPassees(request, response);
-            }  else if (action.equals("statistique_permanences")) {
-                statistiquePermanences(request, response);
-            } else {
-                getServletContext().getRequestDispatcher("/WEB-INF/erreur/controleurErreur.jsp").forward(request, response);
+            if (action != null) {
+                if (action.equals("demarrer_mois")) {
+                    demarrerMois(request, response);
+                } else if (action.equals("affecter_permanences")) {
+                    affecterPermanences(request, response);
+                } else if (action.equals("modifier_permanence")) {
+                    modifierPermanence(request, response);
+                }  else if (action.equals("visualiser_permanences_passees")) {
+                    visualiserPermanencesPassees(request, response);
+                }  else if (action.equals("statistique_permanences")) {
+                    statistiquePermanences(request, response);
+                } else {
+                    getServletContext().getRequestDispatcher("/WEB-INF/erreur/controleurErreur.jsp").forward(request, response);
+                }
             }
         } catch (DAOException e) {
             request.setAttribute("erreurMessage", e.getMessage());

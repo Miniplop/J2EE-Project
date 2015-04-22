@@ -15,14 +15,12 @@ public abstract class AbstractDAO<T> {
     private final String SELECT_QUERY;
     private final String INSERT_QUERY;
     private final String UPDATE_QUERY;
-    private final String SELECT_BY_ID_QUERY;
 
-    protected AbstractDAO(DataSource ds, String insert_query, String select_query, String update_query, String select_by_id_query) {
+    protected AbstractDAO(DataSource ds, String insert_query, String select_query, String update_query) {
         this.dataSource = ds;
         this.INSERT_QUERY = insert_query;
         this.SELECT_QUERY = select_query;
         this.UPDATE_QUERY = update_query;
-        this.SELECT_BY_ID_QUERY = select_by_id_query;
     }
 
     protected Connection getConnection() throws SQLException {
@@ -78,22 +76,20 @@ public abstract class AbstractDAO<T> {
         return result;
     }
 
-    protected T get(DAOModeleBuilder<T> builder, DAOQueryParameter setter) throws DAOException {
+    protected T getSingle(DAOModeleBuilder<T> builder, DAOQueryParameter setter, String QUERY) throws DAOException {
 
-        if(SELECT_BY_ID_QUERY == null)
-            throw new UnsupportedOperationException();
-        
         Connection conn = null;
         PreparedStatement pSt;
         ResultSet rs;
         T result = null;
         try {
             conn = getConnection();
-            pSt = conn.prepareStatement(SELECT_BY_ID_QUERY);
+            pSt = conn.prepareStatement(QUERY);
             setter.set(pSt);
             rs = pSt.executeQuery();
-            rs.next();
-            result = builder.build(rs);
+            if(rs.next()) {
+                result = builder.build(rs);
+            }
             pSt.close();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);

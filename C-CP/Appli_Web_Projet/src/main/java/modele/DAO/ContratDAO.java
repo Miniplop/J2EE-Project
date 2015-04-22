@@ -16,10 +16,10 @@ public class ContratDAO extends AbstractDAO {
 	private static final String INSERT_CONTRAT ="INSERT INTO Contrat ( quantite,produit_id,consommateur_id,debut_semaine_id) VALUES (?,?,?,?)";
 	private static final String SELECT_CONTRATS="SELECT * FROM Contrat";
 	private static final String UPDATE_CONTRAT="";
-	private static final String SELECT_CONTRAT="";
+	private static final String SELECT_CONTRAT="SELECT * FROM Contrat WHERE id = ?";
 
     public ContratDAO(DataSource ds) {
-        super(ds, INSERT_CONTRAT, SELECT_CONTRATS, UPDATE_CONTRAT, SELECT_CONTRAT);
+        super(ds, INSERT_CONTRAT, SELECT_CONTRATS, UPDATE_CONTRAT);
     }
 
     public Contrat addContrat(int quantite, boolean valide, Produit produit, Consommateur consommateur) {
@@ -38,7 +38,7 @@ public class ContratDAO extends AbstractDAO {
         Connection conn = null;
         PreparedStatement pSt;
         ResultSet rs;
-        Contrat contrat;
+        Contrat contrat = null;
         ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
         SemaineDAO semaineDAO = new SemaineDAO(super.dataSource);
         try {
@@ -46,11 +46,13 @@ public class ContratDAO extends AbstractDAO {
             pSt = conn.prepareStatement("SELECT * FROM Contrat WHERE consommateur_id = ?");
             pSt.setInt(1, conso.getId());
             rs = pSt.executeQuery();
-            contrat = new Contrat(rs.getInt("id"), rs.getInt("quantite"),
-                    (rs.getByte("valide") != 0),
-                    conso, 
-                    produitDAO.getProduit(rs.getInt("produit_id")),
-                    semaineDAO.getSemaine(rs.getInt("debut_semaine_id")));
+            if(rs.next()) {
+                contrat = new Contrat(rs.getInt("id"), rs.getInt("quantite"),
+                        (rs.getByte("valide") != 0),
+                        conso, 
+                        produitDAO.getProduit(rs.getInt("produit_id")),
+                        semaineDAO.getSemaine(rs.getInt("debut_semaine_id")));
+            }
             pSt.close();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);

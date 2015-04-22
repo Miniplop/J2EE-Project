@@ -12,7 +12,7 @@ public class SemaineDAO extends AbstractDAO {
 	private static final String SELECT_SEMAINE="";
 
     public SemaineDAO(DataSource ds) {
-        super(ds, INSERT_SEMAINE, SELECT_SEMAINES, UPDATE_SEMAINE, SELECT_SEMAINE);
+        super(ds, INSERT_SEMAINE, SELECT_SEMAINES, UPDATE_SEMAINE);
     }
 
     public Semaine addSemaine(int numero) {

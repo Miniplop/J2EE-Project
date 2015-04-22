@@ -17,12 +17,14 @@ public class ProducteurController extends UtilisateurController {
         
         String action = request.getParameter("action");
         try {
-            if (action.equals("renseigner_produit")) {
-                renseignerProduit(request, response);
-            } else if (action.equals("valider_contrat")) {
-                validerContrat(request, response);
-            } else {
-                getServletContext().getRequestDispatcher("/WEB-INF/erreur/controleurErreur.jsp").forward(request, response);
+            if (action != null) {
+                if (action.equals("renseigner_produit")) {
+                    renseignerProduit(request, response);
+                } else if (action.equals("valider_contrat")) {
+                    validerContrat(request, response);
+                } else {
+                    getServletContext().getRequestDispatcher("/WEB-INF/erreur/controleurErreur.jsp").forward(request, response);
+                }
             }
         } catch (DAOException e) {
             request.setAttribute("erreurMessage", e.getMessage());
