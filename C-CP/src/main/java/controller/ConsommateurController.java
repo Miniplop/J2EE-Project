@@ -5,6 +5,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modele.Consommateur;
 import modele.DAO.DAOException;
 import modele.DAO.ConsommateurDAO;
 import modele.DAO.ProduitDAO;
@@ -36,10 +38,11 @@ public class ConsommateurController extends UtilisateurController {
     
     @Override
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-        ConsommateurDAO ConsommateurDAO = new ConsommateurDAO(super.ds);
-        // request.setAttribute("consommateur", ConsommateurDAO()); <-- Récupérer l'user en cours 
-        ProduitDAO produitConsommateurDAO = new ProduitDAO(super.ds);
-        request.setAttribute("produits", produitConsommateurDAO.getProduits());
+        /*HttpSession session = request.getSession();
+        Consommateur consommateur = (Consommateur) session.getAttribute("utilisateur");*/
+        ProduitDAO produitDAO = new ProduitDAO(super.ds);
+        System.out.println("dqshsqdo");
+        request.setAttribute("produits", produitDAO.getProduits());
         getServletContext().getRequestDispatcher("/WEB-INF/consommateur/consulter.jsp").forward(request, response);
     }
 

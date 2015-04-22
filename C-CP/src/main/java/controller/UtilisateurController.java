@@ -35,20 +35,26 @@ public class UtilisateurController extends Controller {
     public void connexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         HttpSession session = request.getSession();
         UtilisateurDAO utilisateurDAO = new ConsommateurDAO(super.ds);
+            System.out.println("utilisateur");
         Utilisateur utilisateur = utilisateurDAO.getUtilisateur(request.getParameter("email"), request.getParameter("nom"), request.getParameter("type"));
+        
         if(utilisateur == null) {
-            getServletContext().getRequestDispatcher("/WEB-INF/erreur/erreur_connexion.jsp").forward(request, response);
+            System.out.println("null");
+            response.setContentType("text/plain");  
+            response.setCharacterEncoding("UTF-8"); 
+            response.getWriter().write("erreur");
         } else {
+            System.out.println(utilisateur.getId());
             session.setAttribute("utilisateur", utilisateur);
+            System.out.println(utilisateur.getId());
+            if(utilisateur instanceof Consommateur)
+                new ConsommateurController().consulter(request, response);
+            else if(utilisateur instanceof Producteur)
+                new ProducteurController().consulter(request, response);
         }
-        if(utilisateur instanceof Consommateur)
-            new ConsommateurController().consulter(request, response);
-        else if(utilisateur instanceof Producteur)
-            new ProducteurController().consulter(request, response);
     }
 
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-       /* this.log("UtilisateurController consulter");
         HttpSession session = request.getSession();
         if(session.getAttribute("utilisateur") != null) {
             if(session.getAttribute("utilisateur") instanceof Consommateur) {
@@ -56,12 +62,12 @@ public class UtilisateurController extends Controller {
             } else {
                 new ProducteurController().consulter(request, response);
             }
-        } else {*/
-           /* ProduitDAO produitDAO = new ProduitDAO(super.ds);
-            request.setAttribute("produits", produitDAO.getProduits());*/
+        } else {
             System.out.println("UtilisateurController /WEB-INF/utilisateur/consulter.jsp");
+            ProduitDAO produitDAO = new ProduitDAO(super.ds);
+            request.setAttribute("produits", produitDAO.getProduits());
             getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
-       /* }*/
+        }
     }
     
     // Impossible techniquement  car il n'y a pas de bouton de déconexion dans la partie utilisateur ...

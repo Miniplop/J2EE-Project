@@ -92,8 +92,9 @@ public abstract class AbstractDAO<T> {
             pSt = conn.prepareStatement(SELECT_BY_ID_QUERY);
             setter.set(pSt);
             rs = pSt.executeQuery();
-            rs.next();
-            result = builder.build(rs);
+            if(rs.next()) {
+                result = builder.build(rs);
+            }
             pSt.close();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);

@@ -9,7 +9,6 @@ import java.util.List;
 import javax.sql.DataSource;
 import modele.Produit;
 import modele.Producteur;
-import modele.Utilisateur;
 
 public class ProduitDAO extends AbstractDAO {
 	private static final String INSERT_PRODUIT = "";
@@ -36,10 +35,9 @@ public class ProduitDAO extends AbstractDAO {
            produits.addAll(prod.getProduits());
        }
        return produits;       
-    }
+     }
 
     List<Produit> getProduitsByProducteur(Producteur producteur) throws DAOException {
-    
         Connection conn = null;
         PreparedStatement pSt;
         ResultSet rs;
@@ -52,6 +50,7 @@ public class ProduitDAO extends AbstractDAO {
 
             while (rs.next()) {
                 Produit produit = new Produit(rs.getInt("id"), rs.getString("nom"), rs.getString("unite"), rs.getInt("quantite"), rs.getInt("duree"), producteur);
+                
                 result.add(produit);
             }
             pSt.close();

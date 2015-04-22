@@ -4,45 +4,41 @@
     Author     : loiseln
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="<c:url value="css/bootstrap.min.css"/>" rel="stylesheet" type="text/css">
         <title>JSP Page</title>
     </head>
     <body>
+            
         <!-- Nom du site + connection -->
         <header>
             <h1>Cooperative L.J.P.D.</h1>
             <div>
-                <form class="form-inline">
+                <form class="form-inline" id="form-connexion">
                     <div class="form-group">
                         <label class="sr-only" for="email">email:</label>
-                        <input type="email" class="form-control" id="email" placeholder="Entrer l'email">
+                        <input type="text" class="form-control" id="email" placeholder="Entrer l'email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="nom">Nom:</label>
-                        <input type="nom" class="form-control" id="password" placeholder="Nom:">
+                        <input type="text" class="form-control" id="nom" placeholder="Nom" name="nom" required>
                     </div>
-                     <span class="erreur"> 
-                         <%
-                                 out.println(request.getParameter("Erreur"));
-                         %> 
-                     </span>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> Producteur 
-                        </label>
-                    </div>                    
-                    <div class="checkbox">
-                         <label>
-                          <input type="checkbox"> Consomateur
-                        </label>
+                    <div class="form-group">
+                        <label class="sr-only" for="type" id="type">Vous êtes :</label>
+                        <select name="type" id="user-type" class="form-control">
+                            <option>producteur</option>
+                            <option>consommateur</option>
+                        </select>
                     </div>
-                    <button type="submit" class="btn btn-default">Connexion</button>
+                    <input type="submit" class="btn btn-default" id="connexion" value="Connexion">
                     <input type="hidden" id="action" name="action" value="login"/><BR>
                 </form>
+                <p id="erreur"></p>
             </div>
         </header>
         <!-- Liste des produits -->
@@ -71,5 +67,31 @@
         <footer>
             
         </footer>
+
+        <script src="<c:url value="js/jquery.js"/>" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#form-connexion").submit(function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+                $("#connexion").click(function(e) {
+                    e.preventDefault();
+                    var email= $("#email").val();
+                    var nom = $("#nom").val();
+                    var type= $("#user-type").val();
+                    console.log(email);
+                    console.log(nom);
+                    console.log(type);
+                    $.get('utilisateur',{nom:nom, email:email, type:type, action:"login"},function(responseText) {
+                        if(responseText == "erreur")
+                            $('#erreur').text("Utilisateur inconnu");
+                        else
+                            document.write(responseText);
+                    });
+                    return false;
+                });
+            });
+        </script>
     </body>
 </html>
