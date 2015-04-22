@@ -41,18 +41,6 @@ public class SemaineDAO extends AbstractDAO {
         return super.gets(builder);
     }
 
-    protected Object add(DAOQueryParameter setter) {
-            throw new UnsupportedOperationException();
-    }
-
-    protected void modify(DAOQueryParameter setter) {
-            throw new UnsupportedOperationException();
-    }
-
-    protected List get(DAOQueryParameter setter) {
-            throw new UnsupportedOperationException();
-    }
-
     Semaine getSemaine(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

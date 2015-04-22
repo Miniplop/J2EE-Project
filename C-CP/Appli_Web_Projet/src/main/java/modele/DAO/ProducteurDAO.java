@@ -26,7 +26,6 @@ public class ProducteurDAO extends UtilisateurDAO {
     }
 
     public List<Producteur> getProducteurs() throws DAOException {
-        System.out.println("getProducteurs");
         final ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
         final UtilisateurDAO utilisateurDAO = new UtilisateurDAO(super.dataSource);
         
