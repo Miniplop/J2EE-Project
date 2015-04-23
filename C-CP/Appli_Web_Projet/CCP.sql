@@ -47,7 +47,8 @@ CREATE TABLE Semaine (
 CREATE TABLE Disponibilite (
   id                number(5) DEFAULT seq_disponibilite.nextval NOT NULL, 
   consommateur_id number(5) NOT NULL, 
-  semaine_id number(5) NOT NULL, 
+  contrat_id number(5) NOT NULL, 
+  numero_semaine number(5) NOT NULL, 
   PRIMARY KEY (id));
 CREATE TABLE Contrat (
   id               number(10) DEFAULT seq_contrat.nextval NOT NULL, 
@@ -78,4 +79,4 @@ ALTER TABLE Produit ADD CONSTRAINT FKProduit675306 FOREIGN KEY (producteur_id) R
 ALTER TABLE Semaine ADD CONSTRAINT permanant1 FOREIGN KEY (consommateur_1_id) REFERENCES Consommateur (id);
 ALTER TABLE Semaine ADD CONSTRAINT permanant2 FOREIGN KEY (consommateur_2_id) REFERENCES Consommateur (id);
 ALTER TABLE Disponibilite ADD CONSTRAINT FKconsommateurid FOREIGN KEY (consommateur_id) REFERENCES Consommateur (id);
-ALTER TABLE Disponibilite ADD CONSTRAINT FKsemaineid FOREIGN KEY (semaine_id) REFERENCES Semaine (id);
+ALTER TABLE Disponibilite ADD CONSTRAINT FKcontratid FOREIGN KEY (contrat_id) REFERENCES Contrat (id);

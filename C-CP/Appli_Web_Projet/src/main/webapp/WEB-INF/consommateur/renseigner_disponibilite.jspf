@@ -1,0 +1,10 @@
+<%@ page pageEncoding="UTF-8" %>
+<form action="consommateur" method="get">
+    <h4>Disponibilités</h4>
+    <c:forEach begin="1" end="${produit.getDuree()}" var="val">
+        <label class="sr-only" for="semaine_${val}" id="type">Semaine ${val}</label>
+        <input type="checkbox" name="semaine_${val}" id="semaine_${val}">
+    </c:forEach>
+    <input type="hidden" name="contrat_id" value="${contrat.getId()}">
+    <input type="hidden" name="action" value="renseigner_disponibilites">
+</form>

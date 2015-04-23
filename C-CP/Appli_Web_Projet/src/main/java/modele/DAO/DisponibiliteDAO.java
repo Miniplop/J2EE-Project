@@ -8,9 +8,13 @@ package modele.DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.sql.DataSource;
 import modele.Consommateur;
+import modele.Contrat;
 import modele.Disponibilite;
 import modele.Semaine;
 
@@ -20,32 +24,33 @@ import modele.Semaine;
  */
 public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
     
-    private static final String INSERT_DISPONIBILITE = "INSERT INTO Disponibilite (consommateur_id, semaine_id) VALUES (?, ?)";
+    private static final String INSERT_DISPONIBILITE = "INSERT INTO Disponibilite (consommateur_id, contrat_id, numero_semaine) VALUES (?, ?, ?)";
     private static final String SELECT_DISPONIBILITES = "SELECT * FROM Disponibilite";
     private static final String SELECT_DISPONIBILITE = "SELECT * FROM Disponibilite WHERE id = ?";
     private static final String SELECT_DISPONIBILITES_BY_CONSOMMATEUR = "SELECT * FROM Disponibilite WHERE consommateur_id = ?";
-    private static final String SELECT_DISPONIBILITES_BY_SEMAINE = "SELECT * FROM Disponibilite WHERE semaine_id = ?";
+    private static final String SELECT_DISPONIBILITES_BY_SEMAINE = "SELECT * FROM Disponibilite WHERE contrat_id = ?";
 
     public DisponibiliteDAO(DataSource ds) {
         super(ds, INSERT_DISPONIBILITE, SELECT_DISPONIBILITES, null);
     }
     
-    public Disponibilite addDisponibilite(final Consommateur consommateur, final int semaine_id) throws DAOException {
+    public Disponibilite addDisponibilite(final Consommateur consommateur, final int contrat_id, final int numero_semaine) throws DAOException {
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws SQLException {
                 statement.setInt(1, consommateur.getId());
-                statement.setInt(2, semaine_id);
+                statement.setInt(2, contrat_id);
+                statement.setInt(3, numero_semaine);
             }
         };
         super.add(setter);
         return this.getDisponibilite(super.getLastId("Disponibilite"));
     }
-    public List<Disponibilite> getDisponibilitesBySemaine(final Semaine semaine) throws DAOException {
+    public List<Disponibilite> getDisponibilitesByContrat(final Contrat contrat) throws DAOException {
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws SQLException {
-                statement.setInt(1, semaine.getId());
+                statement.setInt(1, contrat.getId());
             }
         };
         final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
@@ -53,27 +58,33 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")), semaine);
+                return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")), contrat);
             }
         };
         return this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_SEMAINE);
     }
     
-    public List<Disponibilite> getDisponibilitesByConsommateur(final Consommateur consommateur) throws DAOException {
+    public Map<Integer, List<Disponibilite>> getDisponibilitesByConsommateur(final Consommateur consommateur) throws DAOException {
+        final Map<Integer, List<Disponibilite>> disponibilites = new HashMap<>();
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws SQLException {
                 statement.setInt(1, consommateur.getId());
             }
         };
-        final SemaineDAO semaineDAO = new SemaineDAO(dataSource);
+        final ContratDAO contratDAO = new ContratDAO(dataSource);
         DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                return new Disponibilite(rs.getInt("id"), consommateur, semaineDAO.getSemaine(rs.getInt("semaine_id")));
+                Disponibilite disponibilite = new Disponibilite(rs.getInt("id"), consommateur, contratDAO.getContrat(rs.getInt("contrat_id")));
+                if(disponibilites.get(disponibilite.getContrat().getId()) == null)
+                    disponibilites.put(disponibilite.getContrat().getId(), new ArrayList<Disponibilite>());
+                disponibilites.get(disponibilite.getContrat().getId()).add(disponibilite);
+                return disponibilite;
             }
         };
-        return this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_CONSOMMATEUR);
+       this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_CONSOMMATEUR);
+        return disponibilites;
     }
     
     public Disponibilite getDisponibilite(final int id) throws DAOException {
@@ -83,13 +94,13 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
                 statement.setInt(1, id);
             }
         };
-        final SemaineDAO semaineDAO = new SemaineDAO(dataSource);
+        final ContratDAO contratDAO = new ContratDAO(dataSource);
         final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
         DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
                 return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")), 
-                        semaineDAO.getSemaine(rs.getInt("semaine_id")));
+                        contratDAO.getContrat(rs.getInt("contrat_id")));
             }
         };
         return this.getSingle(builder, setter, SELECT_DISPONIBILITE);
