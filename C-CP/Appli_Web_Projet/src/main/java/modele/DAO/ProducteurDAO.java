@@ -17,31 +17,16 @@ public class ProducteurDAO extends UtilisateurDAO {
         super(dataSource, null, SELECT_PRODUCTEURS, null);
     }
 
-    public Producteur addProducteur(String nom, String prenom, String email, String adresse) {
-            throw new UnsupportedOperationException();
-    }
-
-    public void modifyProducteur(Producteur producteur, String nom, String prenom, String adresse, String email) {
-            throw new UnsupportedOperationException();
-    }
-
     public List<Producteur> getProducteurs() throws DAOException {
         final ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
         final UtilisateurDAO utilisateurDAO = new UtilisateurDAO(super.dataSource);
         
-        DAOModeleBuilder<Producteur> builder;
-        builder = new DAOModeleBuilder<Producteur>() {
+        DAOModeleBuilder<Producteur> builder = new DAOModeleBuilder<Producteur>() {
             @Override
-            public Producteur build(ResultSet rs) throws DAOException {
-                Producteur prod;
-                try {
-                    Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
-                    prod = new Producteur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse());
-                    produitDAO.getProduitsByProducteur(prod);
-                } catch (SQLException ex) {
-                    throw new DAOException(ex.getMessage(), ex);
-                }
-               // produitDAO.getProduitsByProducteur(prod);
+            public Producteur build(ResultSet rs) throws DAOException, SQLException {
+                Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
+                Producteur prod = new Producteur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse());
+                produitDAO.getProduitsByProducteur(prod);
                 return prod;
             }
         };
@@ -55,25 +40,17 @@ public class ProducteurDAO extends UtilisateurDAO {
         DAOModeleBuilder<Producteur> builder = new DAOModeleBuilder<Producteur>() {
             
             @Override
-            public Producteur build(ResultSet rs) throws DAOException {
-                try {
-                    Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
-                    Producteur prod = new Producteur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse());
-                    produitDAO.getProduitsByProducteur(prod);
-                    return prod;
-                } catch (SQLException ex) {
-                    throw new DAOException(ex.getMessage(), ex);
-                }
+            public Producteur build(ResultSet rs) throws DAOException, SQLException {
+                Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
+                Producteur prod = new Producteur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse());
+                produitDAO.getProduitsByProducteur(prod);
+                return prod;
             }
         };
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
-            public void set(PreparedStatement statement) throws DAOException {
-                try {
-                    statement.setInt(1, id);
-                } catch (SQLException ex) {
-                    throw new DAOException(ex.getMessage(), ex);
-                }
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, id);
             }
         };
         Object prod = super.getSingle(builder, setter, this.SELECT_PRODUCTEUR_BY_ID);

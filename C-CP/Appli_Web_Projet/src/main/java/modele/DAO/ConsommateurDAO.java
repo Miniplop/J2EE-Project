@@ -49,12 +49,8 @@ public class ConsommateurDAO extends UtilisateurDAO {
         };
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
-            public void set(PreparedStatement statement) throws DAOException {
-                try {
-                    statement.setInt(1, id);
-                } catch (SQLException ex) {
-                    throw new DAOException(ex.getMessage(), ex);
-                }
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, id);
             }
         };
         

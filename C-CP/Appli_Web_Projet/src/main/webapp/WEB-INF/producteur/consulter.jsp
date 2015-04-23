@@ -45,17 +45,32 @@
                             <p>
                                 Quantité commandée : <span>${contrat.getQuantite()}</span>
                             </p>
-                            <form action="producteur" method="get">
-                                <select name="semaine_id">
-                                    <c:forEach items="${mois.getSemaines()}" var="semaine">
-                                    <option value="${semaine.getId()}">semaine ${semaine.getNumero()} ${semaine.getMois().getNom()} ${semaine.getMois().getAnnee()}</option>
-                                    </c:forEach>
-                                </select>
-                                <input type="hidden" name="action" value="valider_contrat">
-                                <input type="hidden" name="contrat_id" value="${contrat.getId()}">
-                                <button type="submit" class="btn btn-success" name="accept">Valider le contrat</button>
-                                <button type="submit" class="btn btn-success" name="refus">Refuser le contrat</button>
-                            </form>
+                            <c:choose>
+                                <c:when test="${contrat.getValide() == 0}"> <!-- contrat refusé -->
+                                    <div class="text-warning">
+                                        <h5>Contrat refusé</h5>
+                                    </div>
+                                </c:when>
+                                <c:when test="${contrat.getValide() == 1}"> <!-- contrat validé -->
+                                    <div class="text-success">
+                                        <h5>Contrat passé</h5>
+                                    </div>
+                                </c:when>
+                                <c:when test="${contrat.getValide() == 2}">
+                                    <form class="form-horizontal text-center" action="producteur" method="get">
+                                        <select name="semaine_id">
+                                            <c:forEach items="${mois.getSemaines()}" var="semaine">
+                                            <option value="${semaine.getId()}">semaine ${semaine.getNumero()} ${semaine.getMois().getNom()} ${semaine.getMois().getAnnee()}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <input type="hidden" name="action" value="valider_contrat">
+                                        <input type="hidden" name="contrat_id" value="${contrat.getId()}">
+                                        <button type="submit" class="btn btn-success" name="accept">Valider le contrat</button>
+                                        <button type="submit" class="btn btn-success" name="refus">Refuser le contrat</button>
+                                    </form>
+                                </c:when>
+                                <c:otherwise> <jsp:forward page="erreur/controleurErreur.jsp"/></c:otherwise>
+                            </c:choose>
                         </div>
                         </c:forEach>
                     </div>

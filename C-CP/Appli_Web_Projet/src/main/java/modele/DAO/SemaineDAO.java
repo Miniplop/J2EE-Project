@@ -24,36 +24,16 @@ public class SemaineDAO extends AbstractDAO {
     }
 
     public Semaine addSemaine(final int numero) throws DAOException {
-            DAOQueryParameter setter = new DAOQueryParameter() {
+        DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
-            public void set(PreparedStatement statement) throws DAOException {
-                try {
-                    statement.setInt(1,numero);
-                    statement.setNull(2, java.sql.Types.INTEGER);
-                    statement.setNull(3,java.sql.Types.INTEGER);
-                } catch (SQLException ex) {
-                    throw new DAOException(ex.getMessage(), ex);
-                }
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1,numero);
+                statement.setNull(2, java.sql.Types.INTEGER);
+                statement.setNull(3,java.sql.Types.INTEGER);
             }
         };
         super.add(setter);
-        Statement statement = null;
-        ResultSet generatedKeys = null;
-        int id = 0;
-        try {
-            Connection conn = getConnection();
-            statement = conn.createStatement();
-            generatedKeys = statement.executeQuery("SELECT seq_semaine.currval from dual");
-            if (generatedKeys.next()) {
-                id = generatedKeys.getInt(1);
-            } else {
-                throw new SQLException("Creating object failed, no generated key obtained.");
-            }
-        } catch (SQLException ex) {
-            throw new DAOException(ex.getMessage(), ex);
-        }
-        if(id == 0)
-            return null;
+        int id = super.getLastId("Semaine");
         return getSemaine(id);
     }
 
@@ -64,26 +44,17 @@ public class SemaineDAO extends AbstractDAO {
     public Semaine getSemaine(final Mois mois, final int id) throws DAOException {
         final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
         DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     
-                @Override
-                public Semaine build(ResultSet rs) throws DAOException {
-                    try {
-                        Consommateur permanent1 = consommateurDAO.getConsommateur(rs.getInt("consommateur_1_id"));
-                        Consommateur permanent2 = consommateurDAO.getConsommateur(rs.getInt("consommateur_2_id"));
-                        return new Semaine((short) rs.getInt("id"), rs.getInt("numero"), permanent1, permanent2, mois);
-                    } catch (SQLException ex) {
-                        throw new DAOException(ex.getMessage(), ex);
-                    }
-                }
-            };
-        DAOQueryParameter setter = new DAOQueryParameter() {
-
             @Override
-            public void set(PreparedStatement statement) throws DAOException {
-                try {
-                    statement.setInt(1, id);
-                } catch (SQLException ex) {
-                        throw new DAOException(ex.getMessage(), ex);
-                }
+            public Semaine build(ResultSet rs) throws DAOException, SQLException {
+                Consommateur permanent1 = consommateurDAO.getConsommateur(rs.getInt("consommateur_1_id"));
+                Consommateur permanent2 = consommateurDAO.getConsommateur(rs.getInt("consommateur_2_id"));
+                return new Semaine((short) rs.getInt("id"), rs.getInt("numero"), permanent1, permanent2, mois);
+            }
+        };
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, id);
             }
         };
         return (Semaine) super.getSingle(builder, setter, SemaineDAO.SELECT_SEMAINE);
@@ -94,48 +65,25 @@ public class SemaineDAO extends AbstractDAO {
         final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
                 
         DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     
-                @Override
-                public Semaine build(ResultSet rs) throws DAOException {
-                    try {
-                        Mois mois = moisDAO.getMoisBySemaineId(rs.getInt("id"));
-                        Consommateur permanent1 = consommateurDAO.getConsommateur(rs.getInt("consommateur_1_id"));
-                        Consommateur permanent2 = consommateurDAO.getConsommateur(rs.getInt("consommateur_2_id"));
-                        return new Semaine((short) rs.getInt("id"), rs.getInt("numero"), permanent1, permanent2, mois);
-                    } catch (SQLException ex) {
-                        throw new DAOException(ex.getMessage(), ex);
-                    }
-                }
-            };
-        DAOQueryParameter setter = new DAOQueryParameter() {
-
             @Override
-            public void set(PreparedStatement statement) throws DAOException {
-                try {
-                    statement.setInt(1, id);
-                } catch (SQLException ex) {
-                        throw new DAOException(ex.getMessage(), ex);
-                }
+            public Semaine build(ResultSet rs) throws DAOException, SQLException {
+                Mois mois = moisDAO.getMoisBySemaineId(rs.getInt("id"));
+                Consommateur permanent1 = consommateurDAO.getConsommateur(rs.getInt("consommateur_1_id"));
+                Consommateur permanent2 = consommateurDAO.getConsommateur(rs.getInt("consommateur_2_id"));
+                return new Semaine((short) rs.getInt("id"), rs.getInt("numero"), permanent1, permanent2, mois);
+            }
+        };
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, id);
             }
         };
         return (Semaine) this.getSingle(builder, setter, SemaineDAO.SELECT_SEMAINE);
     }
 
     Semaine getLastSemaineAdded() throws DAOException {
-        Statement statement;
-        ResultSet generatedKeys;
-        int id = 0;
-        try {
-            Connection conn = getConnection();
-            statement = conn.createStatement();
-            generatedKeys = statement.executeQuery("SELECT max(id) from semaine");
-            if (generatedKeys.next()) {
-                id = generatedKeys.getInt(1);
-            } else {
-                throw new SQLException("Creating object failed, no generated key obtained.");
-            }
-        } catch (SQLException ex) {
-            throw new DAOException(ex.getMessage(), ex);
-        }
+        int id = super.getLastId("Semaine");
         return this.getSemaine(id);
     }
 }

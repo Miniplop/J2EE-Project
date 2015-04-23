@@ -37,6 +37,75 @@ public abstract class AbstractDAO<T> {
         }
     }
     
+    private void updateQuery(DAOQueryParameter setter, String sql_query) throws DAOException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = getConnection();
+            
+            stmt = conn.prepareStatement(sql_query);
+            setter.set(stmt);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating object failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        } finally {
+            closeConnection(conn);
+        }
+    }
+    
+    private Object selectQuery(DAOQueryParameter setter, DAOModeleBuilder<T> builder, String sql_query, boolean multiple) throws DAOException {
+        Object result = null;
+        ResultSet rs;
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            PreparedStatement st = conn.prepareStatement(sql_query);
+            if(setter != null)
+                setter.set(st);
+            rs = st.executeQuery();
+            if(multiple) {
+                result = new ArrayList<>();
+                while (rs.next()) {
+                    T object = builder.build(rs);
+                    ((ArrayList<T>)result).add(object);
+                }
+            }
+            else {
+                if(rs.next()) {
+                    result = builder.build(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        } finally {
+            closeConnection(conn);
+        }
+        return result;
+    }
+    
+    protected int getLastId(String table_name) throws DAOException {
+        
+        Statement statement = null;
+        ResultSet generatedKeys = null;
+        int id = 0;
+        try {
+            Connection conn = getConnection();
+            statement = conn.createStatement();
+            generatedKeys = statement.executeQuery("SELECT max(id) FROM "+table_name);
+            if (generatedKeys.next()) {
+                id = generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Creating object failed, no generated key obtained.");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
+        }
+        return id;
+    }
+    
     protected void add(DAOQueryParameter setter) throws DAOException {
         if(INSERT_QUERY == null)
             throw new UnsupportedOperationException();
@@ -49,71 +118,20 @@ public abstract class AbstractDAO<T> {
 
         updateQuery(setter, UPDATE_QUERY);
     }
-    
-    private void updateQuery(DAOQueryParameter setter, String QUERY) throws DAOException {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn = getConnection();
-            
-            stmt = conn.prepareStatement(QUERY);
-            setter.set(stmt);
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Creating object failed, no rows affected.");
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        } finally {
-            closeConnection(conn);
-        }
-    }
 
     protected List<T> gets(DAOModeleBuilder<T> builder) throws DAOException {
 
         if(SELECT_QUERY == null)
             throw new UnsupportedOperationException();
 
-        List<T> result = new ArrayList<>();
-        ResultSet rs;
-        Connection conn = null;
-        try {
-            conn = getConnection();
-            Statement st = conn.createStatement();
-            rs = st.executeQuery(SELECT_QUERY);
-
-            while (rs.next()) {
-                T object = builder.build(rs);
-                result.add(object);
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        } finally {
-            closeConnection(conn);
-        }
-        return result;
+        return (List<T>) selectQuery(null, builder, SELECT_QUERY, true);
     }
 
     protected T getSingle(DAOModeleBuilder<T> builder, DAOQueryParameter setter, String QUERY) throws DAOException {
+        return (T) selectQuery(setter, builder, QUERY, false);
+    }
 
-        Connection conn = null;
-        PreparedStatement pSt;
-        ResultSet rs;
-        T result = null;
-        try {
-            conn = getConnection();
-            pSt = conn.prepareStatement(QUERY);
-            setter.set(pSt);
-            rs = pSt.executeQuery();
-            if(rs.next()) {
-                result = builder.build(rs);
-            }
-            pSt.close();
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        } finally {
-            closeConnection(conn);
-        }
-        return result;
+    protected List<T> getMultiple(DAOModeleBuilder<T> builder, DAOQueryParameter setter, String QUERY) throws DAOException {
+        return (List<T>) selectQuery(setter, builder, QUERY, true);
     }
 }
