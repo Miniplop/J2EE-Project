@@ -1,8 +1,10 @@
 package modele.DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Mois;
@@ -71,6 +73,7 @@ public class MoisDAO extends AbstractDAO {
     }
 
     Mois getMoisBySemaineId(final int semaine_id) throws DAOException {
+        final SemaineDAO semaineDAO = new SemaineDAO(dataSource);
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws DAOException {
@@ -88,7 +91,12 @@ public class MoisDAO extends AbstractDAO {
                 @Override
                 public Mois build(ResultSet rs) throws DAOException {
                     try {
-                        return new Mois(rs.getString("annee"), rs.getString("nom"));
+                        Mois mois = new Mois(rs.getString("annee"), rs.getString("nom"));
+                        semaineDAO.getSemaine(mois, rs.getShort("semaine_1_id"));
+                        semaineDAO.getSemaine(mois, rs.getShort("semaine_2_id"));
+                        semaineDAO.getSemaine(mois, rs.getShort("semaine_3_id"));
+                        semaineDAO.getSemaine(mois, rs.getShort("semaine_4_id"));
+                        return mois;
                     } catch (SQLException ex) {
                         throw new DAOException(ex.getMessage(), ex);
                     }
@@ -96,5 +104,11 @@ public class MoisDAO extends AbstractDAO {
             };
         
         return (Mois) super.getSingle(builder, setter, MoisDAO.SELECT_MOIS_BY_SEMAINE_ID);
+    }
+
+    public Mois getLastMois() throws DAOException {
+        SemaineDAO semaineDAO = new SemaineDAO(dataSource);
+        Semaine semaine = semaineDAO.getLastSemaineAdded();
+        return this.getMoisBySemaineId(semaine.getId());
     }
 }

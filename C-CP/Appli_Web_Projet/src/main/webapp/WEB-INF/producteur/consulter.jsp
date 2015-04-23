@@ -46,13 +46,15 @@
                                 Quantité commandée : <span>${contrat.getQuantite()}</span>
                             </p>
                             <form action="producteur" method="get">
-                                <option>
-                                    <c:forEach items="${semaines}" var="semaine">
-                                    <select>semaine ${semaine.getNumero()} ${semaine.getMois().getNom()} ${semaine.getMois().getAnnee()}</select>
+                                <select name="semaine_id">
+                                    <c:forEach items="${mois.getSemaines()}" var="semaine">
+                                    <option value="${semaine.getId()}">semaine ${semaine.getNumero()} ${semaine.getMois().getNom()} ${semaine.getMois().getAnnee()}</option>
                                     </c:forEach>
-                                </option>
+                                </select>
                                 <input type="hidden" name="action" value="valider_contrat">
-                                <button type="submit" class="btn btn-success">Valider le contrat</button>
+                                <input type="hidden" name="contrat_id" value="${contrat.getId()}">
+                                <button type="submit" class="btn btn-success" name="accept">Valider le contrat</button>
+                                <button type="submit" class="btn btn-success" name="refus">Refuser le contrat</button>
                             </form>
                         </div>
                         </c:forEach>

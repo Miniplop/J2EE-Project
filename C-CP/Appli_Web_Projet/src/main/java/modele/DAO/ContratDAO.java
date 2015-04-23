@@ -16,10 +16,9 @@ import modele.Consommateur;
 import modele.Semaine;
 
 public class ContratDAO extends AbstractDAO {
-    //TODO
 	private static final String INSERT_CONTRAT ="INSERT INTO Contrat (quantite, produit_id, consommateur_id) VALUES (?,?,?)";
 	private static final String SELECT_CONTRATS = "SELECT * FROM Contrat";
-	private static final String UPDATE_CONTRAT = "";
+	private static final String UPDATE_CONTRAT = "UPDATE Contrat SET valide=?, consommateur_id=? WHERE id=?";
 	private static final String SELECT_CONTRAT = "SELECT * FROM Contrat WHERE id = ?";
 
     public ContratDAO(DataSource ds) {
@@ -63,7 +62,7 @@ public class ContratDAO extends AbstractDAO {
     }
 
     public void modifyContrat(Contrat contrat, int valide, Semaine semaineDebut) {
-            throw new UnsupportedOperationException();
+        
     }
 
     public List<Contrat> getContrats() throws DAOException {

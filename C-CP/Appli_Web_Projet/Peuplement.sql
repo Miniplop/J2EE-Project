@@ -134,35 +134,15 @@ INSERT INTO Semaine(numero,consommateur_1_id,consommateur_2_id) VALUES
 
 
 INSERT INTO Mois (annee, nom, semaine_1_id, semaine_2_id, semaine_3_id, semaine_4_id) VALUES
-('2015','Janvier',
-(SELECT id FROM Semaine WHERE id = '1'),
-(SELECT id FROM Semaine WHERE id = '2'),
-(SELECT id FROM Semaine WHERE id = '3'),
-(SELECT id FROM Semaine WHERE id = '4'));
+('2015','Janvier', '1', '2', '3', '4');
 INSERT INTO Mois (annee, nom, semaine_1_id, semaine_2_id, semaine_3_id, semaine_4_id) VALUES
-('2015','Février',
-(SELECT id FROM Semaine WHERE id = '5'),
-(SELECT id FROM Semaine WHERE id = '6'),
-(SELECT id FROM Semaine WHERE id = '7'),
-(SELECT id FROM Semaine WHERE id = '8'));
+('2015','Février', '5', '6', '7', '8');
 INSERT INTO Mois (annee, nom, semaine_1_id, semaine_2_id, semaine_3_id, semaine_4_id) VALUES
-('2015','Mars',
-(SELECT id FROM Semaine WHERE id = '7'),
-(SELECT id FROM Semaine WHERE id = '8'),
-(SELECT id FROM Semaine WHERE id = '9'),
-(SELECT id FROM Semaine WHERE id = '10'));
+('2015','Mars', '9', '10', '11', '12');
 INSERT INTO Mois (annee, nom, semaine_1_id, semaine_2_id, semaine_3_id, semaine_4_id) VALUES
-('2015','Avril',
-(SELECT id FROM Semaine WHERE id = '11'),
-(SELECT id FROM Semaine WHERE id = '12'),
-(SELECT id FROM Semaine WHERE id = '13'),
-(SELECT id FROM Semaine WHERE id = '14'));
+('2015','Avril', '13', '14', '15', '16');
 INSERT INTO Mois (annee, nom, semaine_1_id, semaine_2_id, semaine_3_id, semaine_4_id) VALUES
-('2015','Mai',
-(SELECT id FROM Semaine WHERE id = '15'),
-(SELECT id FROM Semaine WHERE id = '16'),
-(SELECT id FROM Semaine WHERE id = '17'),
-(SELECT id FROM Semaine WHERE id = '18'));
+('2015','Mai', '17', '18', '19', '20');
 
 -- Création de Contrats
 

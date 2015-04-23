@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.DAO.ContratDAO;
 import modele.DAO.DAOException;
+import modele.DAO.MoisDAO;
 import modele.DAO.ProduitDAO;
+import modele.DAO.SemaineDAO;
 import modele.Producteur;
 import modele.Produit;
 
@@ -51,8 +53,10 @@ public class ProducteurController extends UtilisateurController {
         HttpSession session = request.getSession();
         Producteur self = (Producteur) session.getAttribute("utilisateur");
         ContratDAO contratDAO = new ContratDAO(ds);
+        MoisDAO moisDAO = new MoisDAO(ds);
         request.setAttribute("self", self);
         request.setAttribute("contrats", contratDAO.getContratEnAttente());
+        request.setAttribute("mois", moisDAO.getLastMois());
         getServletContext().getRequestDispatcher("/WEB-INF/producteur/consulter.jsp").forward(request, response);
     }
 
@@ -79,7 +83,11 @@ public class ProducteurController extends UtilisateurController {
         HttpSession session = request.getSession();
         Producteur self = (Producteur) session.getAttribute("utilisateur");
         int contrat_id = Integer.parseInt(request.getParameter("contrat_id"));
+        int semaine_id = Integer.parseInt(request.getParameter("semaine_id"));
+        int valide = request.getParameter("accept") != null ? 1 : 0;
+        
         ContratDAO contratDAO = new ContratDAO(ds);
-        contratDAO.modifyContrat(contratDAO.getContrat(contrat_id), 0, null);
+        SemaineDAO semaineDAO = new SemaineDAO(ds);
+        contratDAO.modifyContrat(contratDAO.getContrat(contrat_id), valide, semaineDAO.getSemaine(semaine_id));
     }
 }

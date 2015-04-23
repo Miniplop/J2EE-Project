@@ -76,13 +76,13 @@
                                                 <li class="list-group-item">
                                                     Semaine n°${semaine.numero}
                                                     <c:choose>
-                                                        <c:when test="${semaine.consommateur_1_id != 0}"><a>${semaine.consommateur_1_id}</a></c:when>
+                                                        <c:when test="${semaine.permanent1 != null}"><a>${semaine.consommateur_1_id}</a></c:when>
                                                         <c:otherwise><a>Permanent Non attribué</a>
                                                             <input type="hidden" name="action" id="action" value="affecter_permanences">
                                                         </c:otherwise>
                                                     </c:choose>
                                                     <c:choose>
-                                                        <c:when test="${semaine.consommateur_2_id != 0}"><a>${semaine.consommateur_2_id}</a></c:when>
+                                                        <c:when test="${semaine.consommateur_2_id != null}"><a>${semaine.consommateur_2_id}</a></c:when>
                                                         <c:otherwise><a>Pemanent Non attribué</a>
                                                             <input type="hidden" name="action" id="action" value="affecter_permanences">
                                                         </c:otherwise>
