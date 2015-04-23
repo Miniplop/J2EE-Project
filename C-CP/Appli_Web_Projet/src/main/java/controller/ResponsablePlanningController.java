@@ -29,10 +29,8 @@ public class ResponsablePlanningController extends UtilisateurController {
                     demarrerMois(request, response);
                 } else if (action.equals("affecter_permanences")) {
                     affecterPermanences(request, response);
-                } else if (action.equals("modifier_permanence")) {
-                    modifierPermanence(request, response);
-                }  else if (action.equals("visualiser_permanences_passees")) {
-                    visualiserPermanencesPassees(request, response);
+                } else if (action.equals("update_permanence")) {
+                    updatePermanence(request, response);
                 }  else if (action.equals("statistique_permanences")) {
                     statistiquePermanences(request, response);
                 } else {
@@ -47,14 +45,7 @@ public class ResponsablePlanningController extends UtilisateurController {
 
     @Override
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-        if (request.getAttribute("permamnent_choisi") != null){
-           SemaineDAO semaineDAO = new SemaineDAO(super.ds);
-           if ((int)request.getAttribute("num_perm") == 1 ){
-             semaineDAO.modifySemainePermanent1((Semaine) request.getAttribute("id_semaine"),(Consommateur) request.getAttribute("permamnent_choisi"));  
-           }else if ((int)request.getAttribute("num_perm") == 2){
-             semaineDAO.modifySemainePermanent1((Semaine) request.getAttribute("id_semaine"),(Consommateur) request.getAttribute("permamnent_choisi"));  
-           }
-        }
+        
         MoisDAO MoisDAO = new MoisDAO(super.ds);
             request.setAttribute("Mois", MoisDAO.getMois());
             getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/consulter.jsp").forward(request, response);
@@ -76,17 +67,20 @@ public class ResponsablePlanningController extends UtilisateurController {
             request.setAttribute("semaine", request.getAttribute("semaine"));
             getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/choisir_user.jsp").forward(request, response);
     }
-    
-
-    public void modifierPermanence(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
-    }
-
-    public void visualiserPermanencesPassees(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
-    }
 
     public void statistiquePermanences(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
+            getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/statistique.jsp").forward(request, response);
+    }
+
+    private void updatePermanence(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
+        if (request.getAttribute("permamnent_choisi") != null){
+           SemaineDAO semaineDAO = new SemaineDAO(super.ds);
+           if ((int)request.getAttribute("num_perm") == 1 ){
+             semaineDAO.modifySemainePermanent1((Semaine) request.getAttribute("id_semaine"),(Consommateur) request.getAttribute("permamnent_choisi"));  
+           }else if ((int)request.getAttribute("num_perm") == 2){
+             semaineDAO.modifySemainePermanent1((Semaine) request.getAttribute("id_semaine"),(Consommateur) request.getAttribute("permamnent_choisi"));  
+           }
+        }
+        this.consulter(request, response);
     }
 }
