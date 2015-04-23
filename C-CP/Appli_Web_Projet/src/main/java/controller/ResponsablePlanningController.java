@@ -55,8 +55,9 @@ public class ResponsablePlanningController extends UtilisateurController {
 
         String annee = request.getParameter("annee");
         String month = request.getParameter("nom_mois");
-        MoisDAO MoisDAO = new MoisDAO (super.ds);
-        Mois mois = MoisDAO.addMois(annee,month);
+        MoisDAO moisDAO = new MoisDAO (super.ds);
+        SemaineDAO semaineDAO = new SemaineDAO (super.ds);
+        moisDAO.addMois(annee,month, semaineDAO.addSemaine(1), semaineDAO.addSemaine(2), semaineDAO.addSemaine(3), semaineDAO.addSemaine(4));
         this.consulter(request,response);
     }
 

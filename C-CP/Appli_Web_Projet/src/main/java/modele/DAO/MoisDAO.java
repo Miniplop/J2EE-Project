@@ -19,21 +19,17 @@ public class MoisDAO extends AbstractDAO<Mois> {
         super(ds, INSERT_MOIS, SELECT_MOIS, null);
     }
 
-    public Mois addMois(final String annee, final String nom) throws DAOException  {
-        SemaineDAO semaineDAO = new SemaineDAO(dataSource);
-        final Semaine sem1 = semaineDAO.addSemaine(1);
-        final Semaine sem2 = semaineDAO.addSemaine(2);
-        final Semaine sem3 = semaineDAO.addSemaine(3);
-        final Semaine sem4 = semaineDAO.addSemaine(4);
+    public Mois addMois(final String annee, final String nom, final Semaine semaine1, final Semaine semaine2, final Semaine semaine3, final Semaine semaine4) throws DAOException  {
+
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws SQLException {
                 statement.setInt(1,Integer.parseInt(annee));
                 statement.setString(2, nom);
-                statement.setInt(3, sem1.getId());
-                statement.setInt(4, sem2.getId());
-                statement.setInt(5, sem3.getId());
-                statement.setInt(6, sem4.getId());
+                statement.setInt(3, semaine1.getId());
+                statement.setInt(4, semaine2.getId());
+                statement.setInt(5, semaine2.getId());
+                statement.setInt(6, semaine4.getId());
             }
         };
         super.add(setter);
@@ -41,23 +37,26 @@ public class MoisDAO extends AbstractDAO<Mois> {
     }
 
     public List<Mois> getMois() throws DAOException {
-        final SemaineDAO semaineDAO = new SemaineDAO(dataSource);
         DAOModeleBuilder<Mois> builder = new DAOModeleBuilder<Mois>() {
             @Override
             public Mois build(ResultSet rs) throws SQLException, DAOException {
-                Mois mois = new Mois(rs.getString("annee"), rs.getString("nom"));
-                semaineDAO.getSemaine(mois, rs.getShort("semaine_1_id"));
-                semaineDAO.getSemaine(mois, rs.getShort("semaine_2_id"));
-                semaineDAO.getSemaine(mois, rs.getShort("semaine_3_id"));
-                semaineDAO.getSemaine(mois, rs.getShort("semaine_4_id"));
+                Mois mois = new Mois(rs.getString("annee"), rs.getString("nom"), rs.getInt("semaine_1_id"),
+                            rs.getInt("semaine_2_id"), rs.getInt("semaine_3_id"), rs.getInt("semaine_4_id"));
                 return mois;
             }
         };
-        return super.gets(builder);
+        List<Mois> mois = super.gets(builder);
+        SemaineDAO semaineDAO = new SemaineDAO(dataSource);
+        for(Mois moi : mois) {
+            moi.addSemaine(semaineDAO.getSemaine(moi.getSemaine_1_id()));
+            moi.addSemaine(semaineDAO.getSemaine(moi.getSemaine_2_id()));
+            moi.addSemaine(semaineDAO.getSemaine(moi.getSemaine_3_id()));
+            moi.addSemaine(semaineDAO.getSemaine(moi.getSemaine_4_id()));
+        }
+        return mois;
     }
 
     Mois getMoisBySemaineId(final int semaine_id) throws DAOException {
-        final SemaineDAO semaineDAO = new SemaineDAO(dataSource);
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws SQLException {
@@ -70,11 +69,8 @@ public class MoisDAO extends AbstractDAO<Mois> {
          DAOModeleBuilder<Mois> builder = new DAOModeleBuilder<Mois>() {
                 @Override
                 public Mois build(ResultSet rs) throws DAOException, SQLException {
-                    Mois mois = new Mois(rs.getString("annee"), rs.getString("nom"));
-                    semaineDAO.getSemaine(mois, rs.getShort("semaine_1_id"));
-                    semaineDAO.getSemaine(mois, rs.getShort("semaine_2_id"));
-                    semaineDAO.getSemaine(mois, rs.getShort("semaine_3_id"));
-                    semaineDAO.getSemaine(mois, rs.getShort("semaine_4_id"));
+                    Mois mois = new Mois(rs.getString("annee"), rs.getString("nom"), rs.getInt("semaine_1_id"),
+                            rs.getInt("semaine_2_id"), rs.getInt("semaine_3_id"), rs.getInt("semaine_4_id"));
                     return mois;
                 }
             };
@@ -85,6 +81,7 @@ public class MoisDAO extends AbstractDAO<Mois> {
     public Mois getLastMois() throws DAOException {
         SemaineDAO semaineDAO = new SemaineDAO(dataSource);
         Semaine semaine = semaineDAO.getLastSemaineAdded();
-        return this.getMoisBySemaineId(semaine.getId());
+        Mois mois = this.getMoisBySemaineId(semaine.getId());
+        return mois;
     }
 }

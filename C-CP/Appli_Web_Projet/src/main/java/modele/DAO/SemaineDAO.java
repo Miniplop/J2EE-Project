@@ -1,13 +1,8 @@
 package modele.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import modele.Semaine;
 import modele.Consommateur;
@@ -48,13 +43,12 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
     }
 
     public Semaine getSemaine(final Mois mois, final int id) throws DAOException {
-        final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
         DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     
             @Override
             public Semaine build(ResultSet rs) throws DAOException, SQLException {
-                Consommateur permanent1 = consommateurDAO.getConsommateur(rs.getInt("consommateur_1_id"));
-                Consommateur permanent2 = consommateurDAO.getConsommateur(rs.getInt("consommateur_2_id"));
-                return new Semaine((short) rs.getInt("id"), rs.getInt("numero"), permanent1, permanent2, mois);
+                Semaine semaine = new Semaine((short) rs.getInt("id"), rs.getInt("numero"));
+                semaine.setMois(mois);
+                return semaine;
             }
         };
         DAOQueryParameter setter = new DAOQueryParameter() {
@@ -67,16 +61,10 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
     }
 
     public Semaine getSemaine(final int id) throws DAOException {
-        final MoisDAO moisDAO = new MoisDAO(dataSource);
-        final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
-                
         DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     
             @Override
             public Semaine build(ResultSet rs) throws DAOException, SQLException {
-                Mois mois = moisDAO.getMoisBySemaineId(rs.getInt("id"));
-                Consommateur permanent1 = consommateurDAO.getConsommateur(rs.getInt("consommateur_1_id"));
-                Consommateur permanent2 = consommateurDAO.getConsommateur(rs.getInt("consommateur_2_id"));
-                return new Semaine((short) rs.getInt("id"), rs.getInt("numero"), permanent1, permanent2, mois);
+                return new Semaine((short) rs.getInt("id"), rs.getInt("numero"));
             }
         };
         DAOQueryParameter setter = new DAOQueryParameter() {

@@ -12,14 +12,35 @@ package modele;
 public class Disponibilite {
     
     private final int id;
-    private final Consommateur consommateur;
-    private final Contrat contrat;
+    private Consommateur consommateur;
+    private Contrat contrat;
+    private int contrat_id;
+    private int consommateur_id;
 
-    public Disponibilite(int id, Consommateur consommateur, Contrat contrat) {
+    public Disponibilite(int id, Contrat contrat, int consommateur_id) {
+        this.id = id;
+        this.contrat = contrat;
+        this.consommateur_id = consommateur_id;
+    }
+
+    public Disponibilite(int id, Consommateur consommateur, int contrat_id) {
         this.id = id;
         this.consommateur = consommateur;
-        this.contrat = contrat;
+        this.contrat_id = contrat_id;
     }
+
+    public Disponibilite(int id) {
+        this.id = id;
+    }
+
+    public int getContrat_id() {
+        return contrat_id;
+    }
+
+    public int getConsommateur_id() {
+        return consommateur_id;
+    }
+
 
     public int getId() {
         return id;
@@ -28,8 +49,16 @@ public class Disponibilite {
     public Consommateur getConsommateur() {
         return consommateur;
     }
+    
+    public void setConsommateur(Consommateur consommateur) {
+        this.consommateur = consommateur;
+    }
 
     public Contrat getContrat() {
         return contrat;
+    }
+    
+    public void setContrat(Contrat contrat) {
+        this.contrat = contrat;
     }
 }

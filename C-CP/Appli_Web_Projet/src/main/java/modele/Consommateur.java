@@ -13,7 +13,12 @@ public class Consommateur extends Utilisateur {
         this.permanence = permanence;
     }
 
-    void addContrat(Integer produitId, Contrat contrat) {
+    public Consommateur(short id) {
+        super(id);
+        this.contrats = new HashMap<>();
+    }
+
+    public void addContrat(Integer produitId, Contrat contrat) {
         if(this.contrats.get(produitId) == null)
             this.contrats.put(produitId, new ArrayList<Contrat>());
         this.contrats.get(produitId).add(contrat);

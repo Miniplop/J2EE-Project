@@ -7,16 +7,19 @@ public class Produit {
     private String unite;
     private int quantite;
     private int duree;
-    private final Producteur producteur;
+    private Producteur producteur;
 
-    public Produit(int id, String nom, String unite, int quantite, int duree, Producteur producteur) {
+    public void setProducteur(Producteur producteur) {
+        producteur.addProduits(this);
+        this.producteur = producteur;
+    }
+
+    public Produit(int id, String nom, String unite, int quantite, int duree) {
         this.id = id;
         this.nom = nom;
         this.unite = unite;
         this.quantite = quantite;
         this.duree = duree;
-        this.producteur = producteur;
-        this.producteur.addProduits(this);
     }
 
     public int getId() {

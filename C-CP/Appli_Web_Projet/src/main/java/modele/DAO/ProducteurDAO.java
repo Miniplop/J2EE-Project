@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Producteur;
-import modele.Utilisateur;
+import modele.Produit;
 
 public class ProducteurDAO extends UtilisateurDAO {
     
@@ -18,33 +18,27 @@ public class ProducteurDAO extends UtilisateurDAO {
     }
 
     public List<Producteur> getProducteurs() throws DAOException {
-        final ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
-        final UtilisateurDAO utilisateurDAO = this;
         
         DAOModeleBuilder<Producteur> builder = new DAOModeleBuilder<Producteur>() {
             @Override
             public Producteur build(ResultSet rs) throws DAOException, SQLException {
-                Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
-                Producteur prod = new Producteur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse());
-                produitDAO.getProduitsByProducteur(prod);
+                Producteur prod = new Producteur(rs.getShort("id"));
                 return prod;
             }
         };
-        return super.gets(builder);
+        List<Producteur> producteurs = super.gets(builder);
+        for(Producteur producteur : producteurs)
+            this.getUtilisateur(producteur);
+        return producteurs;
     }
 
     public Producteur getProducteur(final int id) throws DAOException {
-        final ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
-        final UtilisateurDAO utilisateurDAO = this;
         
         DAOModeleBuilder<Producteur> builder = new DAOModeleBuilder<Producteur>() {
             
             @Override
             public Producteur build(ResultSet rs) throws DAOException, SQLException {
-                Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
-                Producteur prod = new Producteur(rs.getShort("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse());
-                produitDAO.getProduitsByProducteur(prod);
-                return prod;
+                return new Producteur(rs.getShort("id"));
             }
         };
         DAOQueryParameter setter = new DAOQueryParameter() {
@@ -53,7 +47,24 @@ public class ProducteurDAO extends UtilisateurDAO {
                 statement.setInt(1, id);
             }
         };
-        Object prod = super.getSingle(builder, setter, this.SELECT_PRODUCTEUR_BY_ID);
-        return (Producteur) prod;
+        Producteur producteur = (Producteur) this.getSingle(builder, setter, SELECT_PRODUCTEUR_BY_ID);
+        return (Producteur) this.getUtilisateur(producteur);
+    }
+
+    public Producteur getProducteurOfProduit(final Produit produit) throws DAOException {
+        DAOModeleBuilder<Producteur> builder = new DAOModeleBuilder<Producteur>() {
+            @Override
+            public Producteur build(ResultSet rs) throws DAOException, SQLException {
+                return new Producteur(rs.getShort("id"));
+            }
+        };
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, produit.getId());
+            }
+        };
+        Producteur producteur = (Producteur) this.getSingle(builder, setter, "SELECT * FROM Producteur WHERE id = (SELECT producteur_id FROM Produit WHERE id = ?)");
+        return (Producteur) this.getUtilisateur(producteur);
     }
 }

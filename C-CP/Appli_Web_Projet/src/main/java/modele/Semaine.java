@@ -6,17 +6,15 @@ public class Semaine {
         private Consommateur permanent1 ;
         private Consommateur permanent2 ;
         private Mois mois; 
-        
-	public Semaine(short id, int numero, Consommateur permanent1, Consommateur permanent2, Mois mois) {
+
+    public void setMois(Mois mois) {
+        this.mois.addSemaine(this);
+        this.mois = mois;
+    }
+    public Semaine(short id, int numero) {
             this.numero = numero;
             this.id =id;
-            this.permanent1 = permanent1;
-            this.permanent2 = permanent2;
-            if (mois != null){
-                this.mois = mois;
-                this.mois.addSemaine(this);
-            }
-	}
+    }
 
 	public short getId() {
 		return this.id;
@@ -41,5 +39,13 @@ public class Semaine {
 	public Consommateur getPermanent2() {
 		return this.permanent2;
 	}
+
+    public void setPermanent1(Consommateur permanent1) {
+        this.permanent1 = permanent1;
+    }
+
+    public void setPermanent2(Consommateur permanent2) {
+        this.permanent2 = permanent2;
+    }
 
 }

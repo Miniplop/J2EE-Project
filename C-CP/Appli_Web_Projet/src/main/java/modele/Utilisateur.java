@@ -6,6 +6,11 @@ public abstract class Utilisateur {
 	private String prenom;
 	private String email;
 	private String adresse;
+        
+        
+	public Utilisateur(short id) {
+            this.id = id;
+        }
 
 	public Utilisateur(short id, String nom, String prenom, String email, String adresse) {
             this.id = id;
