@@ -1,8 +1,10 @@
 package modele.DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.sql.DataSource;
 import modele.Semaine;
 import modele.Consommateur;
@@ -29,9 +31,15 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
         return getSemaine(id);
     }
 
-    public void modifySemaine(Semaine semaine, Consommateur permanent, int numero) throws DAOException {
-        String UPDATE_SEMAINE = "UPDATE Semaine SET consommateur_"+numero+"_id == "+permanent.getId()+" WHERE ";
-        this.modify(null, UPDATE_SEMAINE);
+    public void modifySemaine(final Semaine semaine, final Consommateur permanent, int numero) throws DAOException {
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, permanent.getId());
+                statement.setInt(2, semaine.getId());
+            }
+        };
+        this.modify(setter, "UPDATE Semaine SET consommateur_"+numero+"_id = ? WHERE id = ?");
     }
 
     public void modifySemainePermanent1(Semaine semaine, Consommateur permanent1) throws DAOException {
@@ -59,7 +67,32 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
         };
         return (Semaine) super.getSingle(builder, setter, SemaineDAO.SELECT_SEMAINE);
     }
-
+    
+    
+    protected int getCount(int id) throws DAOException {
+        
+        Statement statement = null;
+        ResultSet generatedKeys = null;
+        try {
+            Connection conn = getConnection();
+            statement = conn.createStatement();
+            generatedKeys = statement.executeQuery("SELECT COUNT (id) FROM (SELECT * Semaine WHERE consommateur_1_id = "+id+" OR consommateur_2_id "+id+" ) ");
+            if (generatedKeys.next()) {
+                id = generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Creating object failed, no generated key obtained.");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
+        }
+        return id;
+    }
+    
+    public int getNombreSemaineByConsommateur(int id ) throws DAOException{
+        return this.getCount(id);
+    }
+    
+    
     public Semaine getSemaine(final int id) throws DAOException {
         DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     
             @Override

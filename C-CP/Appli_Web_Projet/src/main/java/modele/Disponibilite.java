@@ -14,23 +14,37 @@ public class Disponibilite {
     private final int id;
     private Consommateur consommateur;
     private Contrat contrat;
+    private int numero;
     private int contrat_id;
     private int consommateur_id;
 
-    public Disponibilite(int id, Contrat contrat, int consommateur_id) {
+
+    public Disponibilite(int id, int numero, Consommateur consommateur, Contrat contrat) {
         this.id = id;
         this.contrat = contrat;
-        this.consommateur_id = consommateur_id;
+        this.numero = numero;
+        this.consommateur = consommateur;
     }
 
-    public Disponibilite(int id, Consommateur consommateur, int contrat_id) {
+    public Disponibilite(int id, int numero, Consommateur consommateur, int contrat_id) {
         this.id = id;
         this.consommateur = consommateur;
         this.contrat_id = contrat_id;
+        this.numero = numero;
     }
 
-    public Disponibilite(int id) {
+    public Disponibilite(int id, int numero, Contrat contrat, int consommateur_id) {
         this.id = id;
+        this.consommateur_id = consommateur_id;
+        this.numero = numero;
+        this.contrat = contrat;
+    }
+
+    public Disponibilite(int id, int numero, int contrat_id, int consommateur_id) {
+        this.id = id;
+        this.numero = numero;
+        this.contrat_id = contrat_id;
+        this.consommateur_id = consommateur_id;
     }
 
     public int getContrat_id() {
@@ -60,5 +74,9 @@ public class Disponibilite {
     
     public void setContrat(Contrat contrat) {
         this.contrat = contrat;
+    }
+
+    public int getNumero() {
+        return numero;
     }
 }

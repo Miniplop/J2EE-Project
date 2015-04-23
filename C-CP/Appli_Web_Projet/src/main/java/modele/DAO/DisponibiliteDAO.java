@@ -56,7 +56,7 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                return new Disponibilite(rs.getInt("id"), contrat, rs.getInt("consommateur_id"));
+                return new Disponibilite(rs.getInt("id"), rs.getInt("numero_semaine"), contrat, rs.getInt("consommateur_id"));
             }
         };
         return this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_SEMAINE);
@@ -73,7 +73,7 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                Disponibilite disponibilite = new Disponibilite(rs.getInt("id"), consommateur, rs.getInt("contrat_id"));
+                Disponibilite disponibilite = new Disponibilite(rs.getInt("id"), rs.getInt("numero_semaine"), consommateur, rs.getInt("contrat_id"));
                 if(disponibilites.get(disponibilite.getContrat_id()) == null)
                     disponibilites.put(disponibilite.getContrat_id(), new ArrayList<Disponibilite>());
                 disponibilites.get(disponibilite.getContrat_id()).add(disponibilite);
@@ -94,7 +94,7 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                return new Disponibilite(rs.getInt("id"));
+                return new Disponibilite(rs.getInt("id"), rs.getInt("numero_semaine"), rs.getInt("contrat_id"), rs.getInt("consommateur_id"));
             }
         };
         return this.getSingle(builder, setter, SELECT_DISPONIBILITE);

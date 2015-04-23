@@ -25,7 +25,7 @@ public class ProduitDAO extends AbstractDAO<Produit> {
                     statement.setString(1, nom);
                     statement.setString(2, unite);
                     statement.setInt(3, quantite);
-                    statement.setInt(4, duree);
+                    //statement.setInt(4, duree);
                     statement.setInt(5, producteur.getId());
             }
         };

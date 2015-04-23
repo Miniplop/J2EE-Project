@@ -14,9 +14,50 @@
         <title>Cooperative L.J.P.D.</title>
     </head>
     <body>
+        
+        
+        <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Coopérative L.J.P.D.</a>
+              </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <p class="navbar-text" id="erreur"></p>
+                    <form class="navbar-form navbar-left" id="form-connexion">
+                        <div class="form-group">
+                            <label class="sr-only" for="email">email:</label>
+                            <input type="text" class="form-control" id="email" placeholder="Entrer l'email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="nom">Nom:</label>
+                            <input type="text" class="form-control" id="nom" placeholder="Nom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="type" id="type">Vous êtes :</label>
+                            <select name="type" id="user-type" class="form-control">
+                                <option>producteur</option>
+                                <option>consommateur</option>
+                            </select>
+                        </div>
+                        <input type="submit" class="btn btn-default" id="connexion" value="Connexion">
+                        <input type="hidden" id="action" name="action" value="login"/><BR>
+                    </form>
+                </ul>
+              </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+         </nav>
+         </header>
             
         <!-- Nom du site + connection -->
-        <header>
+<!--        <header>
             <h1>Cooperative L.J.P.D.</h1>
             <div>
                 <form class="form-inline" id="form-connexion" action="utilisateur" method="get">
@@ -40,7 +81,7 @@
                 </form>
                 <p id="erreur"></p>
             </div>
-        </header>
+        </header>-->
         
         <!-- Liste des produits -->
         <section class="col-lg-6 col-lg-offset-3">

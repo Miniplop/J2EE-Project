@@ -1,6 +1,6 @@
 package modele;
 
-public class Semaine {
+public class Semaine implements Comparable {
 	private final short id;
 	private int numero;
         private Consommateur permanent1 ;
@@ -16,29 +16,29 @@ public class Semaine {
             this.id =id;
     }
 
-	public short getId() {
-		return this.id;
-	}
+    public short getId() {
+            return this.id;
+    }
 
-	public void setNumero(int numero) {
-		this.numero = numero;
-	}
+    public void setNumero(int numero) {
+            this.numero = numero;
+    }
 
-	public int getNumero() {
-		return this.numero;
-	}
+    public int getNumero() {
+            return this.numero;
+    }
 
-	public Mois getMois() {
-		return this.mois;
-	}
+    public Mois getMois() {
+            return this.mois;
+    }
 
-	public Consommateur getPermanent1() {
-		return this.permanent1;
-	}
+    public Consommateur getPermanent1() {
+            return this.permanent1;
+    }
 
-	public Consommateur getPermanent2() {
-		return this.permanent2;
-	}
+    public Consommateur getPermanent2() {
+            return this.permanent2;
+    }
 
     public void setPermanent1(Consommateur permanent1) {
         this.permanent1 = permanent1;
@@ -46,6 +46,11 @@ public class Semaine {
 
     public void setPermanent2(Consommateur permanent2) {
         this.permanent2 = permanent2;
+    }
+    
+    @Override
+    public int compareTo(Object t) {
+        return this.numero - ((Semaine)t).numero;
     }
 
 }
