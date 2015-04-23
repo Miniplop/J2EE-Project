@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Mois;
@@ -55,6 +56,7 @@ public class MoisDAO extends AbstractDAO {
                 return mois;
             }
         };
+        Collections.sort(super.gets(builder));
         return super.gets(builder);
     }
 

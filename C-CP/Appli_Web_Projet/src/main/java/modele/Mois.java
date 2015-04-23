@@ -2,7 +2,7 @@ package modele;
 
 import java.util.ArrayList;
 
-public class Mois {
+public class Mois implements Comparable {
 	private final String annee;
 	private final String nom;
 	private final ArrayList<Semaine> semaines = new ArrayList<>();
@@ -27,4 +27,20 @@ public class Mois {
         public ArrayList<Semaine> getSemaines(){
             return this.semaines;
         }
+    
+    private enum MoisEnum {
+        JANVIER, FEVRIER, MARS, AVRIL, MAI, JUIN, JUILLET, AOUT, SEPTEMBRE, OCTOBRE, NOVEMBRE, DECEMBRE;
+    }
+
+    @Override
+    public int compareTo(Object t) {
+        Mois m = (Mois) t;
+        if (Integer.parseInt(this.annee) != Integer.parseInt(m.annee)) {
+            return Integer.parseInt(this.annee) - Integer.parseInt(m.annee);
+        } else {
+            MoisEnum thisme = MoisEnum.valueOf(this.getNom());
+            MoisEnum tme = MoisEnum.valueOf(m.getNom());
+            return thisme.ordinal() - tme.ordinal();
+        }
+    }
 }

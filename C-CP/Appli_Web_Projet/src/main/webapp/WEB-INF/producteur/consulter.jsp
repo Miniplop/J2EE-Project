@@ -14,6 +14,34 @@
         <title>Producteur</title>
     </head>
     <body>
+        
+        <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Coopérative L.J.P.D.</a>
+              </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <div class="navbar-text" id ="nom_user">${self.nom} </div>
+                    <div class="navbar-text" id ="prenom_user">${self.prenom} </div>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <form class="navbar-form navbar-right" action="producteur" method="GET">
+                            <input type="hidden" name="action" id="action" value="logout">
+                            <button type="submit" class="btn btn-default">déconnexion</button>
+                        </form>
+                    </div>
+                </ul>
+              </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+         </nav>
+         </header>
         <!-- Nom du site + connection -->
         <header>
             <h1>Cooperative L.J.P.D.</h1>
