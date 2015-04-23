@@ -88,6 +88,8 @@ INSERT INTO Produit (nom,unite,quantite,duree,producteur_id) VALUES
 ('Pistache', 'kg', '52', '2', (SELECT id FROM Producteur WHERE id = '5'));
 INSERT INTO Produit (nom,unite,quantite,duree,producteur_id) VALUES
 ('Raisins secs', 'kg', '63', '3', (SELECT id FROM Producteur WHERE id = '5'));
+INSERT INTO Produit (nom,unite,quantite,duree,producteur_id) VALUES
+('Bébé (frais)', 'kg', '50', '3', (SELECT id FROM Producteur WHERE id = '5'));
 
 -- Création du Calendrier 
 

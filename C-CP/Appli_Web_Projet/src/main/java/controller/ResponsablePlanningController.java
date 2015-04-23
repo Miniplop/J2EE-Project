@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import modele.DAO.ConsommateurDAO;
 import modele.DAO.DAOException;
 import modele.DAO.MoisDAO;
 import modele.DAO.ProduitDAO;
@@ -59,20 +60,13 @@ public class ResponsablePlanningController extends UtilisateurController {
         
         MoisDAO MoisDAO = new MoisDAO (super.ds);
         Mois mois = MoisDAO.addMois(annee,month);
-        /*
-        response.setContentType("text/plain");  
-        response.setCharacterEncoding("UTF-8"); 
-        if(produit == null) {
-            response.getWriter().write("erreur");
-        } else {
-            response.getWriter().write(Integer.toString(produit.getId()));
-        }*/
-        request.removeAttribute("action");
-        getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/consulter.jsp").forward(request, response);
+        this.consulter(request,response);
     }
 
     public void affecterPermanences(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
+            ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.ds);
+            request.setAttribute("consommateur", consommateurDAO.getConsommateurs());
+            getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/choisi_user.jsp").forward(request, response);
     }
 
     public void modifierPermanence(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {

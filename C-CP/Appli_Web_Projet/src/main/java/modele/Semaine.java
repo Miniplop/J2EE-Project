@@ -30,7 +30,6 @@ public class Semaine {
 		return this.numero;
 	}
 
-
 	public Mois getMois() {
 		return this.mois;
 	}
