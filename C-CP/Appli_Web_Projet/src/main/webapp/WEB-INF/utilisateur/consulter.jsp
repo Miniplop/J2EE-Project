@@ -60,9 +60,9 @@
 <!--        <header>
             <h1>Cooperative L.J.P.D.</h1>
             <div>
-                <form class="form-inline" id="form-connexion">
+                <form class="form-inline" id="form-connexion" action="utilisateur" method="get">
                     <div class="form-group">
-                        <label class="sr-only" for="email">email:</label>
+                        <label class="sr-only" for="email">Email:</label>
                         <input type="text" class="form-control" id="email" placeholder="Entrer l'email" name="email" required>
                     </div>
                     <div class="form-group">
@@ -92,6 +92,7 @@
                             <h4 class="panel-title">
                                 <div aria-expanded="true">
                                     <h2>${produit.nom}</h2>
+                                    <p>Quantite : <span>${produit.quantite} ${produit.unite}</span></p>
                                     <p>durée du contrat : ${produit.duree} semaines</p>
                                     <p>producteur : ${produit.getProducteur().getNom()} ${produit.getProducteur().getPrenom()}</p>
                                 </div>

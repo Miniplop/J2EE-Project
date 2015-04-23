@@ -59,8 +59,8 @@
                     <button type="submit" class="btn btn-default btn-lg">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter mois
                     </button>
-
                 </div>
+               </div>
         </form>
 
 
@@ -86,7 +86,7 @@
                                                         <c:when test="${semaine.permanent1 != null}">
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                                                    ${semaine.permanent2.nom} ${semaine.permanent2.prenom} 
+                                                                    ${semaine.permanent1.nom} ${semaine.permanent1.prenom} 
                                                                     <span class="caret"></span>
                                                                 </button>
                                                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
@@ -98,7 +98,7 @@
                                                             <form action = "responsable" methode = "GET">
                                                                 <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 1">
                                                                 <input type="hidden" name="num_perm"  value="1">
-                                                                <input type="hidden" name="semaine"  value="${semaine}">
+                                                                <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
                                                                 <input type="hidden" name="action" id="action3" value="affecter_permanences">
                                                             </form>
                                                         </c:otherwise>
@@ -114,6 +114,7 @@
                                                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                                                         <form action = "responsable" methode = "GET">
                                                                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Modifier</a></li>
+                                                                            <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
                                                                             <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 2">
                                                                             <input type="hidden" name="action" id="action2" value="affecter_permanences">
                                                                         </form>
@@ -124,8 +125,8 @@
                                                             <form action = "responsable" methode = "GET">
                                                                 <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 2">
                                                                 <input type="hidden" name="num_perm"  value="2">
-                                                                <input type="hidden" name="semaine"  value="${semaine}">
-                                                                <input type="hidden" name="action" id="action2" value="affecter_permanences">
+                                                                <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
+                                                                <input type="hidden" name="action" id="action" value="affecter_permanences">
                                                             </form>
                                                         </c:otherwise>
                                                     </c:choose>

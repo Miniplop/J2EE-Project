@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Consommateur;
-import modele.Utilisateur;
 
 public class ConsommateurDAO extends UtilisateurDAO {
     
@@ -17,38 +16,26 @@ public class ConsommateurDAO extends UtilisateurDAO {
         super(ds, null, SELECT_CONSOMMATEURS, null);
     }
 
-    public Consommateur addConsommateur(String nom, String prenom, String email, String adresse) {
-            throw new UnsupportedOperationException();
-    }
- 
-    public void modifyConsommateur(Consommateur consommateur, String nom, String prenom, String email, String adresse) {
-            throw new UnsupportedOperationException();
-    }
-
     public List<Consommateur> getConsommateurs() throws DAOException {
-        final UtilisateurDAO utilisateurDAO = this;
         DAOModeleBuilder<Consommateur> builder = new DAOModeleBuilder<Consommateur>() {
             @Override
             public Consommateur build(ResultSet rs) throws DAOException,SQLException {
-                Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
-                return new Consommateur(rs.getShort("id"),utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse(), null);
+                return new Consommateur(rs.getShort("id"));
             }
         };
-        return super.gets(builder);
+        
+        List<Consommateur> consommateurs = super.gets(builder);
+        for(Consommateur consommateur : consommateurs)
+            this.getUtilisateur(consommateur);
+        return consommateurs;
     }
 
     public Consommateur getConsommateur(final int id) throws DAOException {
-        
-        final ContratDAO contratDAO = new ContratDAO(super.dataSource);
-        final UtilisateurDAO utilisateurDAO = this;
         DAOModeleBuilder<Consommateur> builder = new DAOModeleBuilder<Consommateur>() {
-            
             @Override
             public Consommateur build(ResultSet rs) throws DAOException {
                 try {
-                    Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
-                    Consommateur conso = new Consommateur((short) rs.getInt("id"), utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse(), null);
-                    contratDAO.getContratsByConsommateur(conso);
+                    Consommateur conso = new Consommateur((short) rs.getInt("id"));
                     return conso;
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
@@ -62,6 +49,7 @@ public class ConsommateurDAO extends UtilisateurDAO {
             }
         };
         
-        return (Consommateur) super.getSingle(builder, setter, this.SELECT_CONSOMMATEUR_BY_ID);
+        Consommateur consommateur = (Consommateur) super.getSingle(builder, setter, this.SELECT_CONSOMMATEUR_BY_ID);
+        return (Consommateur)this.getUtilisateur(consommateur);
     }
 }

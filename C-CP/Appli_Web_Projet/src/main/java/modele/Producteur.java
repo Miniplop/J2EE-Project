@@ -1,18 +1,23 @@
 package modele;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Producteur extends Utilisateur {
     
-    private final List<Produit> produits;
+    private final Set<Produit> produits;
         
     public Producteur(short id, String nom, String prenom, String email, String adresse) {
         super(id, nom, prenom, email, adresse);
-        produits = new ArrayList<Produit>();
+        produits = new HashSet<>();
     }
 
-    public List<Produit> getProduits() {
+    public Producteur(short id) {
+        super(id);
+        produits = new HashSet<>();
+    }
+
+    public Set<Produit> getProduits() {
         return produits;
     }
     

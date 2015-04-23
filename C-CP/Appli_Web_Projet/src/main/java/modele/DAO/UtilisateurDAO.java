@@ -3,7 +3,6 @@ package modele.DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import javax.sql.DataSource;
 import modele.Producteur;
 import modele.Utilisateur;
@@ -20,24 +19,21 @@ public abstract class UtilisateurDAO extends AbstractDAO {
         super(ds, null, null, null);
     }
 
-    public Utilisateur getUtilisateur(final int id) throws DAOException {
-        
+    public Utilisateur getUtilisateur(final Utilisateur utilisateur) throws DAOException {
         DAOModeleBuilder<Utilisateur> builder = new DAOModeleBuilder<Utilisateur>() {
             @Override
-            public Utilisateur build(ResultSet rs) throws DAOException {
-                try {
-                    Utilisateur utilisateur = new Producteur((short)rs.getInt("id"), rs.getString("nom"), 
-                                    rs.getString("prenom"), rs.getString("email"), rs.getString("adresse"));
-                    return utilisateur;
-                } catch (SQLException ex) {
-                    throw new DAOException(ex.getMessage(), ex);
-                }
+            public Utilisateur build(ResultSet rs) throws DAOException, SQLException {
+                utilisateur.setNom(rs.getString("nom"));
+                utilisateur.setPrenom(rs.getString("prenom"));
+                utilisateur.setEmail(rs.getString("email"));
+                utilisateur.setAdresse(rs.getString("adresse"));
+                return utilisateur;
             }
         };
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws SQLException {
-                statement.setInt(1, id);
+                statement.setInt(1, utilisateur.getId());
             }
         };
         

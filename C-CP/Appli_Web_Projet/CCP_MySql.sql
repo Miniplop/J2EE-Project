@@ -39,7 +39,7 @@ CREATE TABLE Semaine (
 CREATE TABLE Contrat (
   id               int NOT NULL AUTO_INCREMENT, 
   quantite         INT NOT NULL, 
-  valide           INT DEFAULT '0' NOT NULL, 
+  valide           INT DEFAULT '2' NOT NULL, 
   produit_id       int NOT NULL, 
   debut_semaine_id int, 
   consommateur_id  int NOT NULL, 

@@ -6,7 +6,7 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
-context.xml
+C-CP/Appli_Web_Projet/src/main/webapp/META-INF/context.xml
 
 # Class Files #
 *.class
