@@ -12,6 +12,7 @@ import java.util.List;
 import javax.sql.DataSource;
 import modele.Consommateur;
 import modele.Disponibilite;
+import modele.Semaine;
 
 /**
  *
@@ -23,6 +24,7 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
     private static final String SELECT_DISPONIBILITES = "SELECT * FROM Disponibilite";
     private static final String SELECT_DISPONIBILITE = "SELECT * FROM Disponibilite WHERE id = ?";
     private static final String SELECT_DISPONIBILITES_BY_CONSOMMATEUR = "SELECT * FROM Disponibilite WHERE consommateur_id = ?";
+    private static final String SELECT_DISPONIBILITES_BY_SEMAINE = "SELECT * FROM Disponibilite WHERE semaine_id = ?";
 
     public DisponibiliteDAO(DataSource ds) {
         super(ds, INSERT_DISPONIBILITE, SELECT_DISPONIBILITES, null);
@@ -38,6 +40,23 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         };
         super.add(setter);
         return this.getDisponibilite(super.getLastId("Disponibilite"));
+    }
+    public List<Disponibilite> getDisponibilitesBySemaine(final Semaine semaine) throws DAOException {
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, semaine.getId());
+            }
+        };
+        final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
+        DAOModeleBuilder<Disponibilite> builder;
+        builder = new DAOModeleBuilder<Disponibilite>() {
+            @Override
+            public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
+                return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")), semaine);
+            }
+        };
+        return this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_SEMAINE);
     }
     
     public List<Disponibilite> getDisponibilitesByConsommateur(final Consommateur consommateur) throws DAOException {
@@ -69,11 +88,11 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")), semaineDAO.getSemaine(rs.getInt("semaine_id")));
+                return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")), 
+                        semaineDAO.getSemaine(rs.getInt("semaine_id")));
             }
         };
         return this.getSingle(builder, setter, SELECT_DISPONIBILITE);
-        
     }
     
 }
