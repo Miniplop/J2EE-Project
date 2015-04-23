@@ -16,6 +16,7 @@
     <body>
         
         
+        <header>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
               <!-- Brand and toggle get grouped for better mobile display -->
@@ -52,10 +53,11 @@
                 </ul>
               </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
-          </nav>
+         </nav>
+         </header>
             
         <!-- Nom du site + connection -->
-        <header>
+<!--        <header>
             <h1>Cooperative L.J.P.D.</h1>
             <div>
                 <form class="form-inline" id="form-connexion">
@@ -79,7 +81,7 @@
                 </form>
                 <p id="erreur"></p>
             </div>
-        </header>
+        </header>-->
         
         <!-- Liste des produits -->
         <section class="col-lg-6 col-lg-offset-3">
