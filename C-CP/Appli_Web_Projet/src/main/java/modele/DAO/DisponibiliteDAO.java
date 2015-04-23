@@ -16,7 +16,6 @@ import javax.sql.DataSource;
 import modele.Consommateur;
 import modele.Contrat;
 import modele.Disponibilite;
-import modele.Semaine;
 
 /**
  *

@@ -1,7 +1,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS Disponibilite CASCADE;
 DROP TABLE IF EXISTS Mois CASCADE;
-DROP TABLE IF EXISTS Permanence CASCADE;
 DROP TABLE IF EXISTS Consommateur CASCADE;
 DROP TABLE IF EXISTS Contrat CASCADE;
 DROP TABLE IF EXISTS Semaine CASCADE;
@@ -53,15 +52,10 @@ CREATE TABLE Produit (
   duree         INT NOT NULL, 
   producteur_id int NOT NULL, 
   PRIMARY KEY (id));
-CREATE TABLE Permanence (
-  Semaineid       int NOT NULL, 
-  Consommateurid  int, 
-  Consommateurid2 int, 
-  PRIMARY KEY (Semaineid));
 CREATE TABLE Disponibilite (
   id             int NOT NULL AUTO_INCREMENT, 
-  Consommateurid int NOT NULL, 
-  Contratid      int NOT NULL, 
+  consommateur_id int NOT NULL, 
+  contrat_id      int NOT NULL, 
   numero_semaine INT NOT NULL, 
   PRIMARY KEY (id));
 ALTER TABLE Contrat ADD CONSTRAINT FKContrat962754 FOREIGN KEY (produit_id) REFERENCES Produit (id);
@@ -70,17 +64,14 @@ ALTER TABLE Contrat ADD CONSTRAINT FKContrat922840 FOREIGN KEY (debut_semaine_id
 ALTER TABLE Produit ADD CONSTRAINT FKProduit65084 FOREIGN KEY (producteur_id) REFERENCES Utilisateur (id);
 ALTER TABLE Producteur ADD CONSTRAINT FKProducteur640769 FOREIGN KEY (id) REFERENCES Utilisateur (id);
 ALTER TABLE Consommateur ADD CONSTRAINT FKConsommate65397 FOREIGN KEY (id) REFERENCES Utilisateur (id);
-ALTER TABLE Permanence ADD CONSTRAINT FKPermanence732394 FOREIGN KEY (Semaineid) REFERENCES Semaine (id);
-ALTER TABLE Permanence ADD CONSTRAINT FKPermanence876738 FOREIGN KEY (Consommateurid) REFERENCES Consommateur (id);
-ALTER TABLE Permanence ADD CONSTRAINT FKPermanence126638 FOREIGN KEY (Consommateurid2) REFERENCES Consommateur (id);
 ALTER TABLE Mois ADD CONSTRAINT FKMois77181 FOREIGN KEY (semaine_1_id) REFERENCES Semaine (id);
 ALTER TABLE Mois ADD CONSTRAINT FKMois106972 FOREIGN KEY (semaine_2_id) REFERENCES Semaine (id);
 ALTER TABLE Mois ADD CONSTRAINT FKMois136763 FOREIGN KEY (semaine_3_id) REFERENCES Semaine (id);
 ALTER TABLE Mois ADD CONSTRAINT FKMois487006 FOREIGN KEY (Semaine_4_id) REFERENCES Semaine (id);
 ALTER TABLE Semaine ADD CONSTRAINT permanant1 FOREIGN KEY (consommateur_1_id) REFERENCES Consommateur (id);
 ALTER TABLE Semaine ADD CONSTRAINT permanant2 FOREIGN KEY (consommateur_2_id) REFERENCES Consommateur (id);
-ALTER TABLE Disponibilite ADD CONSTRAINT FKDisponibil914684 FOREIGN KEY (Consommateurid) REFERENCES Consommateur (id);
-ALTER TABLE Disponibilite ADD CONSTRAINT FKDisponibil514441 FOREIGN KEY (Contratid) REFERENCES Contrat (id);
+ALTER TABLE Disponibilite ADD CONSTRAINT FKDisponibil914684 FOREIGN KEY (consommateur_id) REFERENCES Consommateur (id);
+ALTER TABLE Disponibilite ADD CONSTRAINT FKDisponibil514441 FOREIGN KEY (contrat_id) REFERENCES Contrat (id);
 
 
 

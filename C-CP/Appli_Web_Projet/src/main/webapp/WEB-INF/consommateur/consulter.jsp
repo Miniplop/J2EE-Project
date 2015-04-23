@@ -17,7 +17,7 @@
         <header>
             <h1>Cooperative L.J.P.D.</h1>
             <div>${self.nom} ${self.prenom}</div>
-            <jsp:include page="deconnection.jspf">
+            <jsp:include page="../deconnection.jspf">
                 <jsp:param name="action" value="consommateur"/>
             </jsp:include>
         </header>
@@ -41,7 +41,7 @@
                                         <c:when test="${contrat.getValide() == 1}">
                                             <span>Contrat validé</span>
                                             <c:if test="${disponibilites.get(contrat.getId()) == null}">
-                                                <jsp:include page="consommateur/renseigner_disponibilite.jspf">
+                                                <jsp:include page="renseigner_disponibilite.jspf">
                                                     <jsp:param name="produit" value="${produit}"/>
                                                     <jsp:param name="contrat" value="${contrat}"/>
                                                 </jsp:include>
@@ -58,7 +58,7 @@
                             </c:forEach>
                         </div>
                         </c:if>
-                        <jsp:include page="consommateur/signer_contrat.jspf">
+                        <jsp:include page="signer_contrat.jspf">
                             <jsp:param name="produit" value="${produit}"/>
                         </jsp:include>
                     </div>

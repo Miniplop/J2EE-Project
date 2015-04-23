@@ -19,7 +19,7 @@
             <h1>Cooperative L.J.P.D.</h1>
             <div id ="nom_user">${self.nom} </div>
             <div id ="prenom_user">${self.prenom} </div>
-            <jsp:include page="deconnection.jspf">
+            <jsp:include page="../deconnection.jspf">
                 <jsp:param name="action" value="producteur"/>
             </jsp:include>
         </header>
