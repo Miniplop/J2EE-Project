@@ -3,11 +3,12 @@ package modele.DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javax.sql.DataSource;
 import modele.Producteur;
 import modele.Utilisateur;
 
-public class UtilisateurDAO extends AbstractDAO {
+public abstract class UtilisateurDAO extends AbstractDAO {
     
     private static final String SELECT_UTILISATEUR = "SELECT * FROM Utilisateur WHERE id = ?";
 
@@ -25,8 +26,8 @@ public class UtilisateurDAO extends AbstractDAO {
             @Override
             public Utilisateur build(ResultSet rs) throws DAOException {
                 try {
-                    Utilisateur utilisateur = new Producteur((short)rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("adresse"));
-                    
+                    Utilisateur utilisateur = new Producteur((short)rs.getInt("id"), rs.getString("nom"), 
+                                    rs.getString("prenom"), rs.getString("email"), rs.getString("adresse"));
                     return utilisateur;
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
