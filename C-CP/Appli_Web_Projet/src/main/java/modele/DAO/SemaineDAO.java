@@ -72,10 +72,17 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
     }
     
     
-    public int getNombre(final int id ){
-        return (Int) super.getCount(id);
+    public int getNombre(final int id){
+         DAOQueryParameter setter = new DAOQueryParameter() throws DAOException{
+            @Override
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, id);
+                statement.setInt(2, id);
+            }
+        };
+        final String SELECT_COUNT ="SELECT COUNT (id) FROM (SELECT * Semaine WHERE consommateur_1_id=? OR consommateur_2_id=? )";
+        return super.getCount(setter,SELECT_COUNT);
     }
-    
     
     public Semaine getSemaine(final int id) throws DAOException {
         final MoisDAO moisDAO = new MoisDAO(dataSource);

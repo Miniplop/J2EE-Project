@@ -53,7 +53,17 @@ public class ContratDAO extends AbstractDAO<Contrat> {
             return null;
         return new Contrat(id, quantite, produit, consommateur);
     }
-
+    
+    public int getCountContrat( final int user_id) throws DAOException{
+         DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, user_id);
+            }
+        };
+        final String SELECT_COUNT ="SELECT COUNT (id) FROM (SELECT * Contrat WHERE consommateur_id= ? ) ";
+        return  super.getCount(setter,SELECT_COUNT);
+}
     public void modifyContrat(final Contrat contrat, final int valide, final Semaine semaineDebut) throws DAOException {
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override

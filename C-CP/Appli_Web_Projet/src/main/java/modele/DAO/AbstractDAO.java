@@ -106,14 +106,16 @@ public abstract class AbstractDAO<T> {
         return id;
     }
     
-    protected int getCount(int id) throws DAOException {
-        
+    protected int getCount(DAOQueryParameter setter,String sql_query) throws DAOException {
         Statement statement = null;
         ResultSet generatedKeys = null;
+        int id;
         try {
             Connection conn = getConnection();
-            statement = conn.createStatement();
-            generatedKeys = statement.executeQuery("SELECT COUNT (id) FROM (SELECT * Semaine WHERE consommateur_1_id = "+id+" OR consommateur_2_id "+id+" ) ");
+            PreparedStatement st = conn.prepareStatement(sql_query);
+            if(setter != null)
+                setter.set(st);
+            generatedKeys = st.executeQuery();
             if (generatedKeys.next()) {
                 id = generatedKeys.getInt(1);
             } else {

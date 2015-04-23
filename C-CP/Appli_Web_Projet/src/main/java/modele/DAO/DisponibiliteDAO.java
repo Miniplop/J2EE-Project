@@ -27,8 +27,8 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
     private static final String SELECT_DISPONIBILITES = "SELECT * FROM Disponibilite";
     private static final String SELECT_DISPONIBILITE = "SELECT * FROM Disponibilite WHERE id = ?";
     private static final String SELECT_DISPONIBILITES_BY_CONSOMMATEUR = "SELECT * FROM Disponibilite WHERE consommateur_id = ?";
-    private static final String SELECT_DISPONIBILITES_BY_SEMAINE = "SELECT * FROM Disponibilite WHERE contrat_id = ?";
-
+    private static final String SELECT_DISPONIBILITES_BY_CONTRAT = "SELECT * FROM Disponibilite WHERE contrat_id = ?";
+    private static final String SELECT_DISPONIBILITES_BY_SEMAINE = "SELECT * FROM Disponibilite WHERE numero_semaine = ?";
     public DisponibiliteDAO(DataSource ds) {
         super(ds, INSERT_DISPONIBILITE, SELECT_DISPONIBILITES, null);
     }
@@ -57,10 +57,10 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")), contrat);
+                return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")),null,0);
             }
         };
-        return this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_SEMAINE);
+        return this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_CONTRAT);
     }
     
     public Map<Integer, List<Disponibilite>> getDisponibilitesByConsommateur(final Consommateur consommateur) throws DAOException {
@@ -75,15 +75,33 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                Disponibilite disponibilite = new Disponibilite(rs.getInt("id"), consommateur, contratDAO.getContrat(rs.getInt("contrat_id")));
+                Disponibilite disponibilite = new Disponibilite(rs.getInt("id"), consommateur, contratDAO.getContrat(rs.getInt("contrat_id")),0);
                 if(disponibilites.get(disponibilite.getContrat().getId()) == null)
                     disponibilites.put(disponibilite.getContrat().getId(), new ArrayList<Disponibilite>());
                 disponibilites.get(disponibilite.getContrat().getId()).add(disponibilite);
                 return disponibilite;
             }
         };
-       this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_CONSOMMATEUR);
+       this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_SEMAINE);
         return disponibilites;
+    }
+    
+    public List<Consommateur> getDisponibilitesBySemaine(final int id_semaine) throws DAOException {
+        final List<Consommateur> results = new ArrayList<Consommateur>();
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, id_semaine);
+            }
+        };
+        DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
+            @Override
+            public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
+                return new Disponibilite(rs.getInt("id"), rs.getInt("consommateur_id"), rs.getInt("contrat_id"),id_semaine);
+            }
+        };
+        this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_CONSOMMATEUR);
+        return results;
     }
     
     public Disponibilite getDisponibilite(final int id) throws DAOException {
@@ -98,8 +116,7 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")), 
-                        contratDAO.getContrat(rs.getInt("contrat_id")));
+                return new Disponibilite(rs.getInt("id"), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")),contratDAO.getContrat(rs.getInt("contrat_id")),0);
             }
         };
         return this.getSingle(builder, setter, SELECT_DISPONIBILITE);
