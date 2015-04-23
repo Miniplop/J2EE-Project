@@ -1,6 +1,6 @@
 package modele;
 
-public class Semaine {
+public class Semaine implements Comparable {
 	private final short id;
 	private int numero;
         private Consommateur permanent1 ;
@@ -41,5 +41,10 @@ public class Semaine {
 	public Consommateur getPermanent2() {
 		return this.permanent2;
 	}
+
+    @Override
+    public int compareTo(Object t) {
+        return this.numero - ((Semaine)t).numero;
+    }
 
 }

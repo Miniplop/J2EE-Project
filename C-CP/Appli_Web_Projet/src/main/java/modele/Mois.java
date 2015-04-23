@@ -1,6 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Mois implements Comparable {
 	private final String annee;
@@ -25,6 +26,7 @@ public class Mois implements Comparable {
 	}
         
         public ArrayList<Semaine> getSemaines(){
+            Collections.sort(semaines);
             return this.semaines;
         }
     
