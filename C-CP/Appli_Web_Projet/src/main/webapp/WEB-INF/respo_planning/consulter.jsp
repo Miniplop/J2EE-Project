@@ -91,6 +91,7 @@
                                                         <form action = "responsable" methode = "GET">
                                                             <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 1">
                                                             <input type="hidden" name="num_perm"  value="1">
+                                                            <input type="hidden" name="semaine"  value="${semaine}">
                                                             <input type="hidden" name="action" id="action3" value="affecter_permanences">
                                                         </form>
                                                     </c:otherwise>
@@ -111,6 +112,7 @@
                                                         <form action = "responsable" methode = "GET">
                                                             <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 2">
                                                             <input type="hidden" name="num_perm"  value="2">
+                                                            <input type="hidden" name="semaine"  value="${semaine}">
                                                             <input type="hidden" name="action" id="action2" value="affecter_permanences">
                                                         </form>
                                                     </c:otherwise>
