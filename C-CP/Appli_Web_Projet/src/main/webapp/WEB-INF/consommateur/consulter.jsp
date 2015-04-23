@@ -17,19 +17,16 @@
         <header>
             <h1>Cooperative L.J.P.D.</h1>
             <div>${self.nom} ${self.prenom}</div>
-            <div class="btn-group" role="group" aria-label="...">
-                <form action="consommateur" method="GET">
-                    <input type="hidden" name="action" id="action" value="logout">
-                    <button type="submit" class="btn btn-default">Déconnexion</button>
-                </form>
-            </div>
+            <jsp:include page="../deconnection.jspf">
+                <jsp:param name="action" value="consommateur"/>
+            </jsp:include>
         </header>
         <!-- Liste des produits -->
         <section class="col-lg-12">
                 <c:forEach items="${produits}" var="produit">
                     <div class="col-lg-3">
                         <h2 >${produit.nom}</h2>
-                        <span >Quantité : ${produit.quantite} semaines</span>
+                        <span >Quantité : ${produit.quantite} ${produit.unite}</span>
                         <span >Durée du contrat : ${produit.duree} semaines</span>
                         <span >Producteur : ${produit.getProducteur().getNom()} ${produit.getProducteur().getPrenom()}</span>
                         <c:if test="${self.getContrats().get(produit.getId()) != null}">
@@ -43,6 +40,12 @@
                                         </c:when>
                                         <c:when test="${contrat.getValide() == 1}">
                                             <span>Contrat validé</span>
+                                            <c:if test="${disponibilites.get(contrat.getId()) == null}">
+                                                <jsp:include page="renseigner_disponibilite.jspf">
+                                                    <jsp:param name="produit" value="${produit}"/>
+                                                    <jsp:param name="contrat" value="${contrat}"/>
+                                                </jsp:include>
+                                            </c:if>
                                         </c:when>
                                         <c:when test="${contrat.getValide() == 0}">
                                             <span>Contrat refusé</span>
@@ -55,16 +58,9 @@
                             </c:forEach>
                         </div>
                         </c:if>
-                        <form class="form-inline" action="consommateur" method="get" id="signer_contrat_form">
-                            <label class="sr-only" for="type" id="type">Signer un contrat</label>
-                            <div class="form-group">
-                                <label class="sr-only" for="quantite_contrat" id="type">Quantité</label>
-                                <input type="number" id="quantite_contrat" name="quantite_contrat" required>
-                                <input type="hidden" name="action" value="signer_contrat">
-                                <input type="hidden" name="produit_id" value="${produit.getId()}">
-                            </div>
-                            <button type="submit" class="btn btn-default">Signer</button>
-                        </form>
+                        <jsp:include page="signer_contrat.jspf">
+                            <jsp:param name="produit" value="${produit}"/>
+                        </jsp:include>
                     </div>
                 </c:forEach>
         </section>

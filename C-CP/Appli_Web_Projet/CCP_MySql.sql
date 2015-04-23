@@ -1,3 +1,79 @@
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS Disponibilite CASCADE;
+DROP TABLE IF EXISTS Mois CASCADE;
+DROP TABLE IF EXISTS Consommateur CASCADE;
+DROP TABLE IF EXISTS Contrat CASCADE;
+DROP TABLE IF EXISTS Semaine CASCADE;
+DROP TABLE IF EXISTS Produit CASCADE;
+DROP TABLE IF EXISTS Producteur CASCADE;
+DROP TABLE IF EXISTS Utilisateur CASCADE;
+SET FOREIGN_KEY_CHECKS = 1;
+CREATE TABLE Utilisateur (
+  id             int NOT NULL AUTO_INCREMENT, 
+  nom            varchar(30) NOT NULL, 
+  prenom         varchar(30) NOT NULL, 
+  email          varchar(40) NOT NULL, 
+  adresse        varchar(100) NOT NULL,
+  PRIMARY KEY (id));
+CREATE TABLE Consommateur (
+  id int NOT NULL, 
+  PRIMARY KEY (id));
+CREATE TABLE Producteur (
+  id int NOT NULL, 
+  PRIMARY KEY (id));
+CREATE TABLE Mois (
+  annee        varchar(10) NOT NULL, 
+  nom          varchar(10) NOT NULL, 
+  semaine_1_id int, 
+  semaine_2_id int, 
+  semaine_3_id int, 
+  Semaine_4_id int, 
+  PRIMARY KEY (annee, 
+  nom));
+CREATE TABLE Semaine (
+  id     int NOT NULL AUTO_INCREMENT, 
+  numero INT NOT NULL,
+  consommateur_1_id int,
+  consommateur_2_id int,
+  PRIMARY KEY (id));
+CREATE TABLE Contrat (
+  id               int NOT NULL AUTO_INCREMENT, 
+  quantite         INT NOT NULL, 
+  valide           INT DEFAULT '0' NOT NULL, 
+  produit_id       int NOT NULL, 
+  debut_semaine_id int, 
+  consommateur_id  int NOT NULL, 
+  PRIMARY KEY (id));
+CREATE TABLE Produit (
+  id            int NOT NULL AUTO_INCREMENT, 
+  nom           varchar(100) NOT NULL, 
+  unite         varchar(10) NOT NULL, 
+  quantite      INT NOT NULL, 
+  duree         INT NOT NULL, 
+  producteur_id int NOT NULL, 
+  PRIMARY KEY (id));
+CREATE TABLE Disponibilite (
+  id             int NOT NULL AUTO_INCREMENT, 
+  consommateur_id int NOT NULL, 
+  contrat_id      int NOT NULL, 
+  numero_semaine INT NOT NULL, 
+  PRIMARY KEY (id));
+ALTER TABLE Contrat ADD CONSTRAINT FKContrat962754 FOREIGN KEY (produit_id) REFERENCES Produit (id);
+ALTER TABLE Contrat ADD CONSTRAINT FKContrat641569 FOREIGN KEY (consommateur_id) REFERENCES Utilisateur (id);
+ALTER TABLE Contrat ADD CONSTRAINT FKContrat922840 FOREIGN KEY (debut_semaine_id) REFERENCES Semaine (id);
+ALTER TABLE Produit ADD CONSTRAINT FKProduit65084 FOREIGN KEY (producteur_id) REFERENCES Utilisateur (id);
+ALTER TABLE Producteur ADD CONSTRAINT FKProducteur640769 FOREIGN KEY (id) REFERENCES Utilisateur (id);
+ALTER TABLE Consommateur ADD CONSTRAINT FKConsommate65397 FOREIGN KEY (id) REFERENCES Utilisateur (id);
+ALTER TABLE Mois ADD CONSTRAINT FKMois77181 FOREIGN KEY (semaine_1_id) REFERENCES Semaine (id);
+ALTER TABLE Mois ADD CONSTRAINT FKMois106972 FOREIGN KEY (semaine_2_id) REFERENCES Semaine (id);
+ALTER TABLE Mois ADD CONSTRAINT FKMois136763 FOREIGN KEY (semaine_3_id) REFERENCES Semaine (id);
+ALTER TABLE Mois ADD CONSTRAINT FKMois487006 FOREIGN KEY (Semaine_4_id) REFERENCES Semaine (id);
+ALTER TABLE Semaine ADD CONSTRAINT permanant1 FOREIGN KEY (consommateur_1_id) REFERENCES Consommateur (id);
+ALTER TABLE Semaine ADD CONSTRAINT permanant2 FOREIGN KEY (consommateur_2_id) REFERENCES Consommateur (id);
+ALTER TABLE Disponibilite ADD CONSTRAINT FKDisponibil914684 FOREIGN KEY (consommateur_id) REFERENCES Consommateur (id);
+ALTER TABLE Disponibilite ADD CONSTRAINT FKDisponibil514441 FOREIGN KEY (contrat_id) REFERENCES Contrat (id);
+
+
 
 -- Peuplement de la base Utilisateur/Consomateur/Producteur 
 

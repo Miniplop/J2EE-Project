@@ -20,7 +20,14 @@
             <input type="hidden" name="action" id="action" value="logout">
             <button type="submit" class="btn btn-default">déconnexion</button>
         </form>
-
+        
+        <form action="responsable" method="GET">            
+            <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-signal" aria-hidden="true">   
+                </span>Statistique
+            </button> 
+            <input type="hidden" name="action" id="action" value="statistique_permanences"> 
+        </form>
         <form action="responsable" method="GET">
             <h1>Ajouter un mois</h1>
             <div class="btn-group">
@@ -75,48 +82,53 @@
                                             <c:forEach items="${mois.semaines}" var="semaine">
                                                 <li class="list-group-item">
                                                     Semaine n°${semaine.numero}
-                                                <c:choose>
-                                                    <c:when test="${semaine.permanent1 != null}">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                                                ${semaine.permanent2.nom} ${semaine.permanent2.prenom} 
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Modifier</a></li>
-                                                            </ul>
-                                                        </div><a></a>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <form action = "responsable" methode = "GET">
-                                                            <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 1">
-                                                            <input type="hidden" name="num_perm"  value="1">
-                                                            <input type="hidden" name="semaine"  value="${semaine}">
-                                                            <input type="hidden" name="action" id="action3" value="affecter_permanences">
-                                                        </form>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <c:choose>
-                                                    <c:when test="${semaine.permanent2 != null}">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                                                ${semaine.permanent2.nom} ${semaine.permanent2.prenom} 
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Modifier</a></li>
-                                                            </ul>
-                                                        </div><a></a>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <form action = "responsable" methode = "GET">
-                                                            <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 2">
-                                                            <input type="hidden" name="num_perm"  value="2">
-                                                            <input type="hidden" name="semaine"  value="${semaine}">
-                                                            <input type="hidden" name="action" id="action2" value="affecter_permanences">
-                                                        </form>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                    <c:choose>
+                                                        <c:when test="${semaine.permanent1 != null}">
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                                                    ${semaine.permanent2.nom} ${semaine.permanent2.prenom} 
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Modifier</a></li>
+                                                                </ul>
+                                                            </div><a></a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <form action = "responsable" methode = "GET">
+                                                                <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 1">
+                                                                <input type="hidden" name="num_perm"  value="1">
+                                                                <input type="hidden" name="semaine"  value="${semaine}">
+                                                                <input type="hidden" name="action" id="action3" value="affecter_permanences">
+                                                            </form>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <c:choose>
+                                                        <c:when test="${semaine.permanent2 != null}">
+                                                            
+                                                                <div class="dropdown">
+                                                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                                                        ${semaine.permanent2.nom} ${semaine.permanent2.prenom} 
+                                                                        <span class="caret"></span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                                                        <form action = "responsable" methode = "GET">
+                                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Modifier</a></li>
+                                                                            <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 2">
+                                                                            <input type="hidden" name="action" id="action2" value="affecter_permanences">
+                                                                        </form>
+                                                                    </ul>
+                                                                </div>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <form action = "responsable" methode = "GET">
+                                                                <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 2">
+                                                                <input type="hidden" name="num_perm"  value="2">
+                                                                <input type="hidden" name="semaine"  value="${semaine}">
+                                                                <input type="hidden" name="action" id="action2" value="affecter_permanences">
+                                                            </form>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </li>                              
                                             </c:forEach>        
                                         </ul>

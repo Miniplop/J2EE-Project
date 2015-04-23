@@ -13,12 +13,12 @@ public class Disponibilite {
     
     private final int id;
     private final Consommateur consommateur;
-    private final Semaine semaine;
+    private final Contrat contrat;
 
-    public Disponibilite(int id, Consommateur consommateur, Semaine semaine) {
+    public Disponibilite(int id, Consommateur consommateur, Contrat contrat) {
         this.id = id;
         this.consommateur = consommateur;
-        this.semaine = semaine;
+        this.contrat = contrat;
     }
 
     public int getId() {
@@ -29,7 +29,7 @@ public class Disponibilite {
         return consommateur;
     }
 
-    public Semaine getSemaine() {
-        return semaine;
+    public Contrat getContrat() {
+        return contrat;
     }
 }
