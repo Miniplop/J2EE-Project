@@ -55,9 +55,7 @@ public class ResponsablePlanningController extends UtilisateurController {
     public void demarrerMois(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
 
         String annee = request.getParameter("annee");
-        String month = request.getParameter("mois");
-        int quantite = Integer.parseInt(request.getParameter("quantite"));
-        int duree = Integer.parseInt(request.getParameter("duree"));
+        String month = request.getParameter("nom_mois");
         
         MoisDAO MoisDAO = new MoisDAO (super.ds);
         Mois mois = MoisDAO.addMois(annee,month);

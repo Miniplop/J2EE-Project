@@ -25,35 +25,35 @@
             <h1>Ajouter un mois</h1>
             <div class="btn-group">
                 <div class="form-group">
-                <label class="sr-only" for="nom_mois" id="mois">Mois :</label>
-                <select name="nom_mois" id="nom_mois" class="form-control">
-                    <option>Janvier</option>
-                    <option>Février</option>
-                    <option>Mars</option>
-                    <option>Avril</option>
-                    <option>Mai</option>
-                    <option>Juin</option>
-                    <option>Juillet</option>
-                    <option>Aout</option>
-                    <option>Septembre</option>
-                    <option>Octobre</option>
-                    <option>Novembre</option>
-                    <option>Décembre</option>
-                </select> 
-            <div class="btn-group">
-                <label class="sr-only" for="annee" id="annee">Année :</label>
-                <select name="annee" id="annee" class="form-control">
-                    <option>2015</option>
-                    <option>2016</option>
-                    <option>2017</option>
-                </select>
+                    <label class="sr-only" for="nom_mois" id="mois">Mois :</label>
+                    <select name="nom_mois" id="nom_mois" class="form-control">
+                        <option>Janvier</option>
+                        <option>Février</option>
+                        <option>Mars</option>
+                        <option>Avril</option>
+                        <option>Mai</option>
+                        <option>Juin</option>
+                        <option>Juillet</option>
+                        <option>Aout</option>
+                        <option>Septembre</option>
+                        <option>Octobre</option>
+                        <option>Novembre</option>
+                        <option>Décembre</option>
+                    </select> 
+                    <div class="btn-group">
+                        <label class="sr-only" for="annee" id="annee">Année :</label>
+                        <select name="annee" id="annee" class="form-control">
+                            <option>2015</option>
+                            <option>2016</option>
+                            <option>2017</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="action" id="action" value="demarrer_mois">
+                    <button type="submit" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter mois
+                    </button>
+
                 </div>
-                <input type="hidden" name="action" id="action" value="demarrer_mois">
-                <button type="submit" class="btn btn-default btn-lg">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter mois
-                </button>
-            
-            </div>
         </form>
 
 
@@ -75,6 +75,19 @@
                                             <c:forEach items="${mois.semaines}" var="semaine">
                                                 <li class="list-group-item">
                                                     Semaine n°${semaine.numero}
+                                                    <c:choose>
+                                                        <c:when test="${semaine.consommateur_1_id != 0}"><a>${semaine.consommateur_1_id}</a></c:when>
+                                                        <c:otherwise><a>Permanent Non attribué</a>
+                                                            <input type="hidden" name="action" id="action" value="affecter_permanences">
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <c:choose>
+                                                        <c:when test="${semaine.consommateur_2_id != 0}"><a>${semaine.consommateur_2_id}</a></c:when>
+                                                        <c:otherwise><a>Pemanent Non attribué</a>
+                                                            <input type="hidden" name="action" id="action" value="affecter_permanences">
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                                                 </li>                              
                                             </c:forEach>
                                         </ul>

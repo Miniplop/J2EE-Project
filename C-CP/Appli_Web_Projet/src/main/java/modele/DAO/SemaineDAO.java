@@ -14,7 +14,7 @@ import modele.Consommateur;
 import modele.Mois;
 
 public class SemaineDAO extends AbstractDAO {
-	private static final String INSERT_SEMAINE="INSERT INTO Semaine(numero,consommateur_1_id,consommateur_2_id) VALUES (?,?,?)";
+	private static final String INSERT_SEMAINE="INSERT INTO Semaine(numero,consommateur_1_id,consommateur_2_id) VALUES (?,NULL,NULL)";
         private static final String SELECT_SEMAINES="SELECT * FROM semaine ";
 	private static final String UPDATE_SEMAINE="";
 	private static final String SELECT_SEMAINE="SELECT * FROM semaine WHERE id = ? ";
@@ -29,8 +29,6 @@ public class SemaineDAO extends AbstractDAO {
             public void set(PreparedStatement statement) throws DAOException {
                 try {
                     statement.setInt(1,numero);
-                    statement.setNull(2, java.sql.Types.INTEGER);
-                    statement.setNull(3,java.sql.Types.INTEGER);
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
                 }
