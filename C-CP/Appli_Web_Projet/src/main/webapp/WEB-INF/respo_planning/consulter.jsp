@@ -25,8 +25,8 @@
             <h1>Ajouter un mois</h1>
             <div class="btn-group">
                 <div class="form-group">
-                <label class="sr-only" for="mois" id="mois">Mois :</label>
-                <select name="type" id="mois" class="form-control">
+                <label class="sr-only" for="nom_mois" id="mois">Mois :</label>
+                <select name="nom_mois" id="nom_mois" class="form-control">
                     <option>Janvier</option>
                     <option>Février</option>
                     <option>Mars</option>
@@ -42,7 +42,7 @@
                 </select> 
             <div class="btn-group">
                 <label class="sr-only" for="annee" id="annee">Année :</label>
-                <select name="type" id="annee" class="form-control">
+                <select name="annee" id="annee" class="form-control">
                     <option>2015</option>
                     <option>2016</option>
                     <option>2017</option>
