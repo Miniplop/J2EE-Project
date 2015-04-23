@@ -63,7 +63,7 @@ public class ContratDAO extends AbstractDAO<Contrat> {
                 statement.setInt(3, contrat.getId());
             }
         };
-        this.modify(setter);
+        this.modify(setter, UPDATE_CONTRAT);
     }
 
     public List<Contrat> getContrats() throws DAOException {

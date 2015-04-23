@@ -15,12 +15,11 @@ import modele.Mois;
 
 public class SemaineDAO extends AbstractDAO<Semaine> {
 	private static final String INSERT_SEMAINE="INSERT INTO Semaine(numero,consommateur_1_id,consommateur_2_id) VALUES (?,NULL,NULL)";
-        private static final String SELECT_SEMAINES="SELECT * FROM semaine ";
-	private static final String UPDATE_SEMAINE="";
-	private static final String SELECT_SEMAINE="SELECT * FROM semaine WHERE id = ? ";
+        private static final String SELECT_SEMAINES="SELECT * FROM Semaine ";
+	private static final String SELECT_SEMAINE="SELECT * FROM Semaine WHERE id = ? ";
 
     public SemaineDAO(DataSource ds) {
-        super(ds, INSERT_SEMAINE, SELECT_SEMAINES, UPDATE_SEMAINE);
+        super(ds, INSERT_SEMAINE, SELECT_SEMAINES, null);
     }
 
     public Semaine addSemaine(final int numero) throws DAOException {
@@ -35,8 +34,17 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
         return getSemaine(id);
     }
 
-    public void modifySemaine(Semaine semaine, int numero, Consommateur permanent1, Consommateur permanent2) {
-            throw new UnsupportedOperationException();
+    public void modifySemaine(Semaine semaine, Consommateur permanent, int numero) throws DAOException {
+        String UPDATE_SEMAINE = "UPDATE Semaine SET consommateur_"+numero+"_id == "+permanent.getId()+" WHERE ";
+        this.modify(null, UPDATE_SEMAINE);
+    }
+
+    public void modifySemainePermanent1(Semaine semaine, Consommateur permanent1) throws DAOException {
+        modifySemaine(semaine, permanent1, 1);
+    }
+
+    public void modifySemainePermanent2(Semaine semaine, Consommateur permanent2) throws DAOException { 
+        modifySemaine(semaine, permanent2, 2);
     }
 
     public Semaine getSemaine(final Mois mois, final int id) throws DAOException {

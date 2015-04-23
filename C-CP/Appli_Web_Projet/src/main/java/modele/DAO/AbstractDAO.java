@@ -112,11 +112,8 @@ public abstract class AbstractDAO<T> {
         updateQuery(setter, INSERT_QUERY);
     }
     
-    protected void modify(DAOQueryParameter setter) throws DAOException {
-        if(UPDATE_QUERY == null)
-            throw new UnsupportedOperationException();
-
-        updateQuery(setter, UPDATE_QUERY);
+    protected void modify(DAOQueryParameter setter, String QUERY) throws DAOException {
+        updateQuery(setter, QUERY);
     }
 
     protected List<T> gets(DAOModeleBuilder<T> builder) throws DAOException {
