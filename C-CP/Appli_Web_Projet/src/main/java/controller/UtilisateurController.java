@@ -67,6 +67,7 @@ public class UtilisateurController extends Controller {
                 userController = new ConsommateurController();
             }
             userController.init(this.getServletConfig());
+            userController.ds = ds;
             userController.consulter(request, response);
         } else {
             ProduitDAO produitDAO = new ProduitDAO(super.ds);

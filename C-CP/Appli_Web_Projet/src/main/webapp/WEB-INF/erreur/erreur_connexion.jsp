@@ -9,9 +9,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <meta http-equiv="Refresh" content="3;url=utilisateur">
+        <title>Redirection...</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Impossible d'accéder cette page.</h1>
+        <h2>Redirection en cours...</h2>
     </body>
 </html>

@@ -6,6 +6,7 @@
 package modele.DAO;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -13,5 +14,5 @@ import java.sql.ResultSet;
  * @param <T>
  */
 public interface DAOModeleBuilder<T> {
-    public T build(ResultSet rs) throws DAOException;
+    public T build(ResultSet rs) throws SQLException, DAOException;
 }

@@ -25,8 +25,16 @@ public class ConsommateurDAO extends UtilisateurDAO {
             throw new UnsupportedOperationException();
     }
 
-    public List<Consommateur> getConsommateurs() {
-            throw new UnsupportedOperationException();
+    public List<Consommateur> getConsommateurs() throws DAOException {
+        final UtilisateurDAO utilisateurDAO = this;
+        DAOModeleBuilder<Consommateur> builder = new DAOModeleBuilder<Consommateur>() {
+            @Override
+            public Consommateur build(ResultSet rs) throws DAOException,SQLException {
+                Utilisateur utilisateur = utilisateurDAO.getUtilisateur(rs.getInt("id"));
+                return new Consommateur(rs.getShort("id"),utilisateur.getNom(), utilisateur.getPrenom(), utilisateur.getEmail(), utilisateur.getAdresse(), null);
+            }
+        };
+        return super.gets(builder);
     }
 
     public Consommateur getConsommateur(final int id) throws DAOException {
@@ -49,12 +57,8 @@ public class ConsommateurDAO extends UtilisateurDAO {
         };
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
-            public void set(PreparedStatement statement) throws DAOException {
-                try {
-                    statement.setInt(1, id);
-                } catch (SQLException ex) {
-                    throw new DAOException(ex.getMessage(), ex);
-                }
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, id);
             }
         };
         

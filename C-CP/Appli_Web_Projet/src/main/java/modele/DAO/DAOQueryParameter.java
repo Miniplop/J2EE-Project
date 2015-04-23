@@ -1,6 +1,7 @@
 package modele.DAO;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -9,5 +10,5 @@ import java.sql.PreparedStatement;
 
 public interface DAOQueryParameter {
 
-	public void set(PreparedStatement statement) throws DAOException;
+	public void set(PreparedStatement statement) throws SQLException;
 }
