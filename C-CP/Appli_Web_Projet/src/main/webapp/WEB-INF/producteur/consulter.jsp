@@ -19,12 +19,9 @@
             <h1>Cooperative L.J.P.D.</h1>
             <div id ="nom_user">${self.nom} </div>
             <div id ="prenom_user">${self.prenom} </div>
-            <div class="btn-group" role="group" aria-label="...">
-                <form action="producteur" method="GET">
-                    <input type="hidden" name="action" id="action" value="logout">
-                    <button type="submit" class="btn btn-default">déconnexion</button>
-                </form>
-            </div>
+            <jsp:include page="deconnection.jspf">
+                <jsp:param name="action" value="producteur"/>
+            </jsp:include>
         </header>
         <!-- Liste des produits -->
         <section class="col-lg-6 col-lg-offset-3">
