@@ -19,7 +19,7 @@ public class ProducteurDAO extends UtilisateurDAO {
 
     public List<Producteur> getProducteurs() throws DAOException {
         final ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
-        final UtilisateurDAO utilisateurDAO = new UtilisateurDAO(super.dataSource);
+        final UtilisateurDAO utilisateurDAO = this;
         
         DAOModeleBuilder<Producteur> builder = new DAOModeleBuilder<Producteur>() {
             @Override

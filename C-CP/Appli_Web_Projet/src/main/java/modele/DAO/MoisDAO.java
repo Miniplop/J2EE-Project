@@ -1,17 +1,15 @@
 package modele.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Mois;
 import modele.Semaine;
 
 
-public class MoisDAO extends AbstractDAO {
+public class MoisDAO extends AbstractDAO<Mois> {
 	private static final String INSERT_MOIS="INSERT INTO Mois (annee, nom, semaine_1_id, semaine_2_id, semaine_3_id, semaine_4_id) VALUES (?,?,?,?,?,?)";
 	private static final String SELECT_MOIS="SELECT * FROM mois ";
 	private static final String SELECT_MOIS_BY_ID="SELECT * FROM mois WHERE id = ? ";
@@ -81,7 +79,7 @@ public class MoisDAO extends AbstractDAO {
                 }
             };
         
-        return (Mois) super.getSingle(builder, setter, MoisDAO.SELECT_MOIS_BY_SEMAINE_ID);
+        return super.getSingle(builder, setter, MoisDAO.SELECT_MOIS_BY_SEMAINE_ID);
     }
 
     public Mois getLastMois() throws DAOException {

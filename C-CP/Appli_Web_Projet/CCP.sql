@@ -5,14 +5,17 @@ DROP TABLE Mois CASCADE CONSTRAINTS;
 DROP TABLE Semaine CASCADE CONSTRAINTS;
 DROP TABLE Contrat CASCADE CONSTRAINTS;
 DROP TABLE Produit CASCADE CONSTRAINTS;
+DROP TABLE Disponibilite CASCADE CONSTRAINTS;
 DROP SEQUENCE seq_utilisateur;
 DROP SEQUENCE seq_contrat;
 DROP SEQUENCE seq_produit;
 DROP SEQUENCE seq_semaine;
+DROP SEQUENCE seq_disponibilite;
 CREATE SEQUENCE seq_utilisateur;
 CREATE SEQUENCE seq_contrat;
 CREATE SEQUENCE seq_produit;
 CREATE SEQUENCE seq_semaine;
+CREATE SEQUENCE seq_disponibilite;
 CREATE TABLE Utilisateur (
   id      number(5) DEFAULT seq_utilisateur.nextval NOT NULL, 
   nom     varchar2(30) NOT NULL, 
@@ -41,6 +44,11 @@ CREATE TABLE Semaine (
   consommateur_1_id number(5), 
   consommateur_2_id number(5), 
   PRIMARY KEY (id));
+CREATE TABLE Disponibilite (
+  id                number(5) DEFAULT seq_disponibilite.nextval NOT NULL, 
+  consommateur_id number(5) NOT NULL, 
+  semaine_id number(5) NOT NULL, 
+  PRIMARY KEY (id));
 CREATE TABLE Contrat (
   id               number(10) DEFAULT seq_contrat.nextval NOT NULL, 
   quantite         number(10) NOT NULL, 
@@ -54,7 +62,7 @@ CREATE TABLE Produit (
   nom           varchar2(100) NOT NULL, 
   unite         varchar2(10) NOT NULL, 
   quantite      number(10) NOT NULL, 
-  duree         number(10) NOT NULL, 
+  duree         number(10) NOT NULL,
   producteur_id number(5) NOT NULL, 
   PRIMARY KEY (id));
 ALTER TABLE Consommateur ADD CONSTRAINT FKConsommate65397 FOREIGN KEY (id) REFERENCES Utilisateur (id);
@@ -69,3 +77,5 @@ ALTER TABLE Contrat ADD CONSTRAINT FKContrat922840 FOREIGN KEY (debut_semaine_id
 ALTER TABLE Produit ADD CONSTRAINT FKProduit675306 FOREIGN KEY (producteur_id) REFERENCES Producteur (id);
 ALTER TABLE Semaine ADD CONSTRAINT permanant1 FOREIGN KEY (consommateur_1_id) REFERENCES Consommateur (id);
 ALTER TABLE Semaine ADD CONSTRAINT permanant2 FOREIGN KEY (consommateur_2_id) REFERENCES Consommateur (id);
+ALTER TABLE Disponibilite ADD CONSTRAINT FKconsommateurid FOREIGN KEY (consommateur_id) REFERENCES Consommateur (id);
+ALTER TABLE Disponibilite ADD CONSTRAINT FKsemaineid FOREIGN KEY (semaine_id) REFERENCES Semaine (id);

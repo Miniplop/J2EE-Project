@@ -5,20 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import modele.Contrat;
 import modele.Produit;
 import modele.Consommateur;
 import modele.Semaine;
 
-public class ContratDAO extends AbstractDAO {
+public class ContratDAO extends AbstractDAO<Contrat> {
 	private static final String INSERT_CONTRAT ="INSERT INTO Contrat (quantite, produit_id, consommateur_id) VALUES (?,?,?)";
 	private static final String SELECT_CONTRATS = "SELECT * FROM Contrat";
 	private static final String UPDATE_CONTRAT = "UPDATE Contrat SET valide=?, debut_semaine_id=? WHERE id=?";
