@@ -3,6 +3,8 @@ package modele.DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Collections;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Mois;
@@ -53,7 +55,9 @@ public class MoisDAO extends AbstractDAO<Mois> {
                 return mois;
             }
         };
-        return super.gets(builder);
+        List<Mois> res = super.gets(builder);
+        Collections.sort(res);
+        return res;
     }
 
     Mois getMoisBySemaineId(final int semaine_id) throws DAOException {
