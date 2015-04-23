@@ -10,12 +10,7 @@ import modele.Semaine;
 
 
 public class MoisDAO extends AbstractDAO {
-	private static final String INSERT_MOIS="INSERT INTO Mois (annee, nom, semaine_1_id, semaine_2_id, semaine_3_id, semaine_4_id) VALUES\n" +
-"('?','?'," +
-"(SELECT id FROM Semaine WHERE id = ?)," +
-"(SELECT id FROM Semaine WHERE id = ?)," +
-"(SELECT id FROM Semaine WHERE id = ?)," +
-"(SELECT id FROM Semaine WHERE id = ?))";
+	private static final String INSERT_MOIS="INSERT INTO Mois (annee, nom, semaine_1_id, semaine_2_id, semaine_3_id, semaine_4_id) VALUES (?,?,?,?,?,?)";
 	private static final String SELECT_MOIS="SELECT * FROM mois ";
 	private static final String UPDATE_MOIS="UPDATE Mois SET";
 	private static final String SELECT_MOIS_BY_ID="SELECT * FROM mois WHERE id = ? ";

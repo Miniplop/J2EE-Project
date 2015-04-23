@@ -45,7 +45,15 @@
                             <p>
                                 Quantité commandée : <span>${contrat.getQuantite()}</span>
                             </p>
-                            <button type="button" class="btn btn-success" id="valider" data-id="${contrat.getId()}">Valider le contrat</button>
+                            <form action="producteur" method="get">
+                                <option>
+                                    <c:forEach items="${semaines}" var="semaine">
+                                    <select>semaine ${semaine.getNumero()} ${semaine.getMois().getNom()} ${semaine.getMois().getAnnee()}</select>
+                                    </c:forEach>
+                                </option>
+                                <input type="hidden" name="action" value="valider_contrat">
+                                <button type="submit" class="btn btn-success">Valider le contrat</button>
+                            </form>
                         </div>
                         </c:forEach>
                     </div>
@@ -111,18 +119,6 @@
                             
                     });
                     return false;
-                });
-                
-                $("#valider").click(function(e) {
-                    var button = this;
-                    var contrat_id = $(button).data("id");
-                    $.get('producteur',{contrat_id:contrat_id, action:"valider_contrat"},function(responseText) {
-                        if(responseText === "ok") {
-                            $(button).css('display', 'none');
-                        } else {
-                            
-                        }
-                    }
                 });
             });
         </script>
