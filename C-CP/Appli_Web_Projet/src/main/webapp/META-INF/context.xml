@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/Appli_Web_Projet">
-  <Resource auth="Container" 
-            driverClassName="com.mysql.jdbc.Driver" 
-            maxActive="10" 
-            maxIdle="3" 
-            maxWait="10000" 
-            name="jdbc/cooperative" 
-            password="" 
-            type="javax.sql.DataSource" 
-            url="jdbc:mysql://localhost:3306/ccp" 
-            username="root"/>
+  <Resource auth="Container" driverClassName="oracle.jdbc.OracleDriver" maxActive="10" maxIdle="3" maxWait="10000" name="jdbc/cooperative" password="jeanke" type="javax.sql.DataSource" url="jdbc:oracle:thin:@ensioracle1.imag.fr:1521:ensioracle1" username="jeanke"/>
 </Context>

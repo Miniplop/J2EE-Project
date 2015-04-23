@@ -31,7 +31,7 @@ public class Mois implements Comparable {
         }
     
     private enum MoisEnum {
-        JANVIER, FEVRIER, MARS, AVRIL, MAI, JUIN, JUILLET, AOUT, SEPTEMBRE, OCTOBRE, NOVEMBRE, DECEMBRE;
+        Janvier, Février, Mars, Avril, Mai, Juin, Juillet, Aout, Septembre, Octobre, Novembre, Décembre;
     }
 
     @Override
