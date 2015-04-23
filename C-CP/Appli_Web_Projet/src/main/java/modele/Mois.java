@@ -1,20 +1,19 @@
 package modele;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Mois {
 	private final String annee;
 	private final String nom;
-	private final ArrayList<Semaine> semaines = new ArrayList<Semaine>();
+	private final ArrayList<Semaine> semaines = new ArrayList<>();
 
 	public Mois(String annee, String nom) {
 		this.annee = annee;
                 this.nom = nom;
 	}
         
-        public void addSemaines( Semaine ... semaines ){
-            this.semaines.addAll(Arrays.asList(semaines));
+        public void addSemaine(Semaine semaine){
+            this.semaines.add(semaine);
         }
 
 	public String getAnnee() {

@@ -40,13 +40,23 @@ public abstract class AbstractDAO<T> {
     protected void add(DAOQueryParameter setter) throws DAOException {
         if(INSERT_QUERY == null)
             throw new UnsupportedOperationException();
- 
+        updateQuery(setter, INSERT_QUERY);
+    }
+    
+    protected void modify(DAOQueryParameter setter) throws DAOException {
+        if(UPDATE_QUERY == null)
+            throw new UnsupportedOperationException();
+
+        updateQuery(setter, UPDATE_QUERY);
+    }
+    
+    private void updateQuery(DAOQueryParameter setter, String QUERY) throws DAOException {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
             conn = getConnection();
             
-            stmt = conn.prepareStatement(INSERT_QUERY);
+            stmt = conn.prepareStatement(QUERY);
             setter.set(stmt);
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
@@ -57,14 +67,6 @@ public abstract class AbstractDAO<T> {
         } finally {
             closeConnection(conn);
         }
-            
-    }
-    
-    protected void modify(DAOQueryParameter setter) {
-        if(UPDATE_QUERY == null)
-            throw new UnsupportedOperationException();
-
-        throw new UnsupportedOperationException();
     }
 
     protected List<T> gets(DAOModeleBuilder<T> builder) throws DAOException {
