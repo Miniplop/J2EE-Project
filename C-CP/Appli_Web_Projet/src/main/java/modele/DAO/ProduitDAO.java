@@ -22,8 +22,6 @@ public class ProduitDAO extends AbstractDAO {
         super(ds, INSERT_PRODUIT, null, UPDATE_PRODUIT);
     }
 
-    // Suppr duree !
-    //public Produit addProduit(final String nom, final String unite, final int quantite, final Producteur producteur) throws DAOException {
     public Produit addProduit(final String nom, final String unite, final int quantite, final int duree, final Producteur producteur) throws DAOException {
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override

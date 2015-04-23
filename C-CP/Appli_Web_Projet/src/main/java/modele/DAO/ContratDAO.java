@@ -26,8 +26,6 @@ public class ContratDAO extends AbstractDAO {
         super(ds, INSERT_CONTRAT, SELECT_CONTRATS, UPDATE_CONTRAT);
     }
 
-    // Ajouter la durée
-    //public Contrat addContrat(final int quantite, final Produit produit, final Consommateur consommateur, final int duree) throws DAOException {
     public Contrat addContrat(final int quantite, final Produit produit, final Consommateur consommateur) throws DAOException {
         DAOQueryParameter setter = new DAOQueryParameter() {
 
@@ -37,7 +35,6 @@ public class ContratDAO extends AbstractDAO {
                     statement.setInt(1, quantite);
                     statement.setInt(2, produit.getId());
                     statement.setInt(3, consommateur.getId());
-                    //statement.setInt(4, duree);
                 } catch (SQLException ex) {
                         throw new DAOException(ex.getMessage(), ex);
                 }
