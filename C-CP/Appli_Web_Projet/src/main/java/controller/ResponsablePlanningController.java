@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import modele.DAO.ConsommateurDAO;
 import modele.DAO.DAOException;
 import modele.DAO.MoisDAO;
 import modele.DAO.ProduitDAO;
@@ -55,26 +56,18 @@ public class ResponsablePlanningController extends UtilisateurController {
     public void demarrerMois(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
 
         String annee = request.getParameter("annee");
-        String month = request.getParameter("mois");
-        int quantite = Integer.parseInt(request.getParameter("quantite"));
-        int duree = Integer.parseInt(request.getParameter("duree"));
+        String month = request.getParameter("nom_mois");
         
         MoisDAO MoisDAO = new MoisDAO (super.ds);
         Mois mois = MoisDAO.addMois(annee,month);
-        /*
-        response.setContentType("text/plain");  
-        response.setCharacterEncoding("UTF-8"); 
-        if(produit == null) {
-            response.getWriter().write("erreur");
-        } else {
-            response.getWriter().write(Integer.toString(produit.getId()));
-        }*/
-        request.removeAttribute("action");
-        getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/consulter.jsp").forward(request, response);
+        this.consulter(request,response);
     }
 
     public void affecterPermanences(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-            throw new UnsupportedOperationException();
+            ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.ds);
+            request.setAttribute("consommateur", consommateurDAO.getConsommateurs());
+            request.setAttribute("num_perm", request.getAttribute("um_perm"));
+            getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/choisir_user.jsp").forward(request, response);
     }
 
     public void modifierPermanence(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {

@@ -41,4 +41,5 @@ public class Semaine {
 	public Consommateur getPermanent2() {
 		return this.permanent2;
 	}
+
 }

@@ -29,6 +29,7 @@ INSERT INTO Consommateur (id) VALUES ('10');
 
 -- Création des produits 
 
+<<<<<<< HEAD
 INSERT INTO Produit (nom,unite,quantite,duree,producteur_id) VALUES ('Carotte', 'kg', '20', '2', '1');
 INSERT INTO Produit (nom,unite,quantite,duree,producteur_id) VALUES ('Tomate', 'kg', '10', '3', '1');
 INSERT INTO Produit (nom,unite,quantite,duree,producteur_id) VALUES ('Poireaux', 'piece(s)', '15', '2', '1');
