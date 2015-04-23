@@ -55,8 +55,9 @@ public class MoisDAO extends AbstractDAO<Mois> {
                 return mois;
             }
         };
-        Collections.sort(super.gets(builder));
-        return super.gets(builder);
+        List<Mois> res = super.gets(builder);
+        Collections.sort(res);
+        return res;
     }
 
     Mois getMoisBySemaineId(final int semaine_id) throws DAOException {
