@@ -76,7 +76,17 @@ public class ConsommateurController extends UtilisateurController {
     }
 
     public void renseignerDisponibilites(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
-        
+        HttpSession session = request.getSession();
+        Consommateur self = (Consommateur) session.getAttribute("utilisateur");
+        ContratDAO contratDAO = new ContratDAO(ds);
+        DisponibiliteDAO disponibiliteDAO = new DisponibiliteDAO(ds);
+        int contrat_id = Integer.parseInt(request.getParameter("contrat_id"));
+        Contrat contrat = contratDAO.getContrat(contrat_id);
+        int duree = contrat.getProduit().getDuree();
+        for(int i = 1; i <= duree; i++) {
+            System.out.println(request.getParameter("semaine"+i));
+        }
+            
     }
 
     public void consulterPermanence(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {

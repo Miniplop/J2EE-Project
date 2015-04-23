@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <form action="consommateur" method="get">
+    <h4>Disponibilités</h4>
     <c:forEach begin="1" end="${produit.getDuree()}" var="val">
-        <h4>Disponibilités</h4>
         <label class="sr-only" for="semaine_${val}" id="type">Semaine ${val}</label>
         <input type="checkbox" name="semaine_${val}" id="semaine_${val}">
     </c:forEach>
