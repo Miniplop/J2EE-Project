@@ -13,7 +13,7 @@ import modele.Semaine;
 import modele.Consommateur;
 import modele.Mois;
 
-public class SemaineDAO extends AbstractDAO {
+public class SemaineDAO extends AbstractDAO<Semaine> {
 	private static final String INSERT_SEMAINE="INSERT INTO Semaine(numero,consommateur_1_id,consommateur_2_id) VALUES (?,NULL,NULL)";
         private static final String SELECT_SEMAINES="SELECT * FROM semaine ";
 	private static final String UPDATE_SEMAINE="";

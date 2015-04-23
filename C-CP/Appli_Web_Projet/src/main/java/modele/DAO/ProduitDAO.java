@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 import modele.Produit;
 import modele.Producteur;
 
-public class ProduitDAO extends AbstractDAO {
+public class ProduitDAO extends AbstractDAO<Produit> {
 	private static final String INSERT_PRODUIT = "INSERT INTO Produit (nom,unite,quantite,duree,producteur_id) VALUES (?, ?, ?, ?, ?)";
 	private static final String SELECT_PRODUIT = "SELECT * FROM Produit WHERE id = ?";
 
@@ -77,6 +77,6 @@ public class ProduitDAO extends AbstractDAO {
                 }
             };
         
-        return (Produit) super.getSingle(builder, setter, ProduitDAO.SELECT_PRODUIT);
+        return super.getSingle(builder, setter, ProduitDAO.SELECT_PRODUIT);
     }
 }
