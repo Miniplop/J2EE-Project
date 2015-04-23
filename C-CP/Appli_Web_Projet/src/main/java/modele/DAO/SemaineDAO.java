@@ -1,6 +1,5 @@
 package modele.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,9 +33,15 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
         return getSemaine(id);
     }
 
-    public void modifySemaine(Semaine semaine, Consommateur permanent, int numero) throws DAOException {
-        String UPDATE_SEMAINE = "UPDATE Semaine SET consommateur_"+numero+"_id == "+permanent.getId()+" WHERE ";
-        this.modify(null, UPDATE_SEMAINE);
+    public void modifySemaine(final Semaine semaine, final Consommateur permanent, int numero) throws DAOException {
+        DAOQueryParameter setter = new DAOQueryParameter() {
+            @Override
+            public void set(PreparedStatement statement) throws SQLException {
+                statement.setInt(1, permanent.getId());
+                statement.setInt(2, semaine.getId());
+            }
+        };
+        this.modify(setter, "UPDATE Semaine SET consommateur_"+numero+"_id = ? WHERE id = ?");
     }
 
     public void modifySemainePermanent1(Semaine semaine, Consommateur permanent1) throws DAOException {
@@ -65,7 +70,13 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
         };
         return (Semaine) super.getSingle(builder, setter, SemaineDAO.SELECT_SEMAINE);
     }
-
+    
+    
+    public int getNombre(final int id ){
+        return (Int) super.getCount(id);
+    }
+    
+    
     public Semaine getSemaine(final int id) throws DAOException {
         final MoisDAO moisDAO = new MoisDAO(dataSource);
         final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
