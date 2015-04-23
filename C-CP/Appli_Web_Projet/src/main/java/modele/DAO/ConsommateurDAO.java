@@ -32,7 +32,7 @@ public class ConsommateurDAO extends UtilisateurDAO {
             public Consommateur build(ResultSet rs) throws DAOException {
                 Consommateur consommateur = null;
                 try {
-                    consommateur = new Consommateur(rs.getShort("id"),rs.getString("nom"), rs.getString("prenom"),rs.getString("mail"), rs.getString("adresse"), null);
+                    consommateur = new Consommateur(rs.getShort("id"),rs.getString("nom"), rs.getString("prenom"),rs.getString("email"), rs.getString("adresse"), null);
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
                 }
