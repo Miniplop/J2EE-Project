@@ -34,9 +34,8 @@ public class ConsommateurController extends UtilisateurController {
         ConsommateurDAO consommateurDAO = new ConsommateurDAO(ds);
         try {
             self = consommateurDAO.getConsommateur((int)session.getAttribute("utilisateur_id"));
-        } catch (DAOException e) {
-            request.setAttribute("erreurMessage", e.getMessage());
-            getServletContext().getRequestDispatcher("/WEB-INF/erreur/bdErreur.jsp").forward(request, response);
+        } catch (Exception e) {
+            getServletContext().getRequestDispatcher("/WEB-INF/erreur/erreur_connexion.jsp").forward(request, response);
         }
         if(self == null) {
             getServletContext().getRequestDispatcher("/WEB-INF/erreur/erreur_connexion.jsp").forward(request, response);

@@ -47,6 +47,7 @@ public class UtilisateurController extends Controller {
         
         if(utilisateur == null) {
             if (request.getParameter("email").equalsIgnoreCase(UtilisateurController.EMAIl_RESPO)) {
+                session.setAttribute("responsable", true);           
                 response.getWriter().write("responsable");
             } else {
                 response.getWriter().write("erreur");
@@ -64,32 +65,44 @@ public class UtilisateurController extends Controller {
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         HttpSession session = request.getSession();
         Utilisateur user = null;
-        
         UtilisateurController userController = null;
-        if((user = (Utilisateur) session.getAttribute("utilisateur")) != null) {
-            if(user instanceof Producteur) {
-                userController = new ProducteurController();
-            }else {
-                userController = new ConsommateurController();
-            }
+        if(session.getAttribute("responsable") != null)
+        {
+            userController = new ResponsablePlanningController();
             userController.ds = ds;
             userController.init(this.getServletConfig());
             userController.consulter(request, response);
-        } else {
-            ProduitDAO produitDAO = new ProduitDAO(super.ds);
-            List<Produit> produits = produitDAO.getProduits();
-            ProducteurDAO producteurDAO = new ProducteurDAO(super.ds);
-            for(Produit produit : produits)
-                produit.setProducteur(producteurDAO.getProducteurOfProduit(produit));
-            request.setAttribute("produits", produits);
-            getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
+            
+        }else {
+            if((user = (Utilisateur) session.getAttribute("utilisateur")) != null) {
+                if(user instanceof Producteur) {
+                    userController = new ProducteurController();
+                }else {
+                    userController = new ConsommateurController();
+                }
+                userController.ds = ds;
+                userController.init(this.getServletConfig());
+                userController.consulter(request, response);
+            } else {
+                ProduitDAO produitDAO = new ProduitDAO(super.ds);
+                List<Produit> produits = produitDAO.getProduits();
+                ProducteurDAO producteurDAO = new ProducteurDAO(super.ds);
+                for(Produit produit : produits)
+                    produit.setProducteur(producteurDAO.getProducteurOfProduit(produit));
+                request.setAttribute("produits", produits);
+                getServletContext().getRequestDispatcher("/WEB-INF/utilisateur/consulter.jsp").forward(request, response);
+            }
         }
     }
     
     // Impossible techniquement  car il n'y a pas de bouton de déconexion dans la partie utilisateur ...
     public void deconnexion(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException  {
         HttpSession session = request.getSession();
-        session.removeAttribute("utilisateur_id");
+        if(session.getAttribute("utilisateur_id") instanceof Utilisateur)
+            session.removeAttribute("utilisateur_id");
+        
+        if(session.getAttribute("responsable") != null && (boolean)session.getAttribute("responsable") == true)
+            session.removeAttribute("responsable");
         ProduitDAO produitDAO = new ProduitDAO(super.ds);
         List<Produit> produits = produitDAO.getProduits();
         ProducteurDAO producteurDAO = new ProducteurDAO(super.ds);
