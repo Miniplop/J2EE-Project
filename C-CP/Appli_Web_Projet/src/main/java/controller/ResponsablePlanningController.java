@@ -16,7 +16,6 @@ import modele.DAO.DAOException;
 import modele.DAO.MoisDAO;
 import modele.DAO.SemaineDAO;
 import modele.DAO.ContratDAO;
-import modele.Mois;
 import modele.Semaine;
 
 
@@ -73,9 +72,20 @@ public class ResponsablePlanningController extends UtilisateurController {
 
         String annee = request.getParameter("annee");
         String month = request.getParameter("nom_mois");
+                System.err.println(annee);
+                System.err.println(month);
         MoisDAO moisDAO = new MoisDAO (super.ds);
         SemaineDAO semaineDAO = new SemaineDAO (super.ds);
-        moisDAO.addMois(annee,month, semaineDAO.addSemaine(1), semaineDAO.addSemaine(2), semaineDAO.addSemaine(3), semaineDAO.addSemaine(4));
+        Semaine semaine1 = semaineDAO.addSemaine(1);
+                System.err.println(semaine1);
+        Semaine semaine2 = semaineDAO.addSemaine(2);
+                System.err.println(semaine2);
+        Semaine semaine3 = semaineDAO.addSemaine(3);
+                System.err.println(semaine3);
+        Semaine semaine4 = semaineDAO.addSemaine(4);
+                System.err.println(semaine4);
+        moisDAO.addMois(annee,month, semaine1, semaine2, semaine3, semaine4);
+                System.err.println("end");
         this.consulter(request,response);
     }
 
@@ -85,6 +95,7 @@ public class ResponsablePlanningController extends UtilisateurController {
             Semaine semaine = semaineDAO.getSemaine(Integer.parseInt(request.getParameter("semaine_id")));
             request.setAttribute("consommateur", consommateurDAO.getConsommateurs());
             request.setAttribute("num_perm", request.getParameter("num_perm"));
+            request.setAttribute("permanentId", request.getParameter("permanentId"));
             request.setAttribute("semaine", semaine);
             request.setAttribute("consommateurs_dispo", consommateurDAO.getConsommateursDisponible(semaine));
             getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/choisir_user.jsp").forward(request, response);

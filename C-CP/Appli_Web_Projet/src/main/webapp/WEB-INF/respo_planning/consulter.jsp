@@ -116,6 +116,9 @@
                                                                     <form action = "responsable" methode = "GET">
                                                                         <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
                                                                         <input type="hidden" name="num_perm"  value="1">
+                                                                        <c:if test="${semaine.permanent2Id != 0}">
+                                                                            <input type="hidden" name="permanentId"  value="${semaine.permanent2Id}">
+                                                                        </c:if>
                                                                         <input type="submit" class="btn btn-default" id="num_permanent" value="Modifier">
                                                                         <input type="hidden" name="action" id="action2" value="affecter_permanences">
                                                                     </form>
@@ -127,6 +130,9 @@
                                                                 <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 1">
                                                                 <input type="hidden" name="num_perm"  value="1">
                                                                 <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
+                                                                <c:if test="${semaine.permanent2Id != 0}">
+                                                                    <input type="hidden" name="permanentId"  value="${semaine.permanent2Id}">
+                                                                </c:if>
                                                                 <input type="hidden" name="action" id="action3" value="affecter_permanences">
                                                             </form>
                                                         </c:when>
@@ -144,6 +150,9 @@
                                                                         <input type="hidden" name="num_perm"  value="2">
                                                                         <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
                                                                         <input type="submit" class="btn btn-default" id="num_permanent" value="Modifier">
+                                                                        <c:if test="${semaine.permanent1Id != 0}">
+                                                                            <input type="hidden" name="permanentId"  value="${semaine.permanent1Id}">
+                                                                        </c:if>
                                                                         <input type="hidden" name="action" id="action2" value="affecter_permanences">
                                                                     </form>
                                                                 </ul>
@@ -154,6 +163,9 @@
                                                                 <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 2">
                                                                 <input type="hidden" name="num_perm"  value="2">
                                                                 <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
+                                                                <c:if test="${semaine.permanent1Id != 0}">
+                                                                    <input type="hidden" name="permanentId"  value="${semaine.permanent1Id}">
+                                                                </c:if>
                                                                 <input type="hidden" name="action" id="action" value="affecter_permanences">
                                                             </form>
                                                         </c:otherwise>

@@ -25,6 +25,7 @@
                         <thead><tr><th>Nom</th><th>Prénom</th></thead>
                         <tbody>
                             <c:forEach items="${consommateurs_dispo}" var="consommateur">
+                                <c:if test="${consommateur.getId() != permanentId}">
                                 <tr>
                                     <td>${consommateur.nom}</td>
                                     <td>${consommateur.prenom}</td>
@@ -35,8 +36,11 @@
                                             <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
                                             <input type="hidden" name="num_perm"  value="${num_perm}">  
                                             <input type="hidden" name="action" id="action2" value="update_permanence">
-                                        </form></td></tr>
-                                    </c:forEach>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </c:if>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </td>
@@ -45,6 +49,7 @@
                         <thead><tr><th>Nom</th><th>Prénom</th></thead>
                         <tbody>
                             <c:forEach items="${consommateur}" var="consommateur">
+                                <c:if test="${consommateur.getId() != permanentId}">
                                 <tr>
                                     <td>${consommateur.nom}</td>
                                     <td>${consommateur.prenom}</td>
@@ -55,8 +60,11 @@
                                             <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
                                             <input type="hidden" name="num_perm"  value="${num_perm}">  
                                             <input type="hidden" name="action" id="action2" value="update_permanence">
-                                        </form></td></tr>
-                                    </c:forEach>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </c:if>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </td>

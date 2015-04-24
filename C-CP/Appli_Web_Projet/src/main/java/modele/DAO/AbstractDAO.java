@@ -87,12 +87,12 @@ public abstract class AbstractDAO<T> {
     }
     
     protected int getLastId(String table_name) throws DAOException {
-        
         Statement statement = null;
         ResultSet generatedKeys = null;
+        Connection conn = null;
         int id = 0;
         try {
-            Connection conn = getConnection();
+            conn = getConnection();
             statement = conn.createStatement();
             generatedKeys = statement.executeQuery("SELECT max(id) FROM "+table_name);
             if (generatedKeys.next()) {
@@ -102,15 +102,18 @@ public abstract class AbstractDAO<T> {
             }
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage(), ex);
+        } finally {
+            closeConnection(conn);
         }
         return id;
     }
 
     protected int getCount(DAOQueryParameter setter,String sql_query) throws DAOException {
         ResultSet generatedKeys = null;
+        Connection conn = null;
         int id;
         try {
-            Connection conn = getConnection();
+            conn = getConnection();
             PreparedStatement st = conn.prepareStatement(sql_query);
             if(setter != null)
                 setter.set(st);
@@ -122,6 +125,8 @@ public abstract class AbstractDAO<T> {
             }
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage(), ex);
+        } finally {
+            closeConnection(conn);
         }
         return id;
     }
