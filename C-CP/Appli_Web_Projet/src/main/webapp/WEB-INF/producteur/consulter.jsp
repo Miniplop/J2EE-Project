@@ -32,10 +32,13 @@
                     <div class="navbar-text" id ="nom_user">${self.nom} </div>
                     <div class="navbar-text" id ="prenom_user">${self.prenom} </div>
                     <div class="btn-group" role="group" aria-label="...">
-                        <form class="navbar-form navbar-right" action="producteur" method="GET">
+                        <jsp:include page="../deconnection.jspf">
+                            <jsp:param name="action" value="producteur"/>
+                        </jsp:include>
+<!--                        <form class="navbar-form navbar-right" action="producteur" method="GET">
                             <input type="hidden" name="action" id="action" value="logout">
                             <button type="submit" class="btn btn-default">déconnexion</button>
-                        </form>
+                        </form>-->
                     </div>
                 </ul>
               </div><!-- /.navbar-collapse -->
