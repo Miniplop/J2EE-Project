@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.Consommateur;
 import modele.DAO.*;
+import modele.Mois;
 import modele.Producteur;
 import modele.Produit;
 import modele.Utilisateur;
@@ -42,6 +43,8 @@ public class UtilisateurController extends Controller {
         Utilisateur utilisateur = utilisateurDAO.getUtilisateur(request.getParameter("email"), request.getParameter("nom"), request.getParameter("type"));
         response.setContentType("text/plain");  
         response.setCharacterEncoding("UTF-8"); 
+        
+        
         if(utilisateur == null) {
             if (request.getParameter("email").equalsIgnoreCase(UtilisateurController.EMAIl_RESPO)) {
                 response.getWriter().write("responsable");
@@ -61,6 +64,7 @@ public class UtilisateurController extends Controller {
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         HttpSession session = request.getSession();
         Utilisateur user = null;
+        
         UtilisateurController userController = null;
         if((user = (Utilisateur) session.getAttribute("utilisateur")) != null) {
             if(user instanceof Producteur) {

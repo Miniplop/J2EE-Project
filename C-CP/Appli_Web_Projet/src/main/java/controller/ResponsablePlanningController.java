@@ -76,9 +76,11 @@ public class ResponsablePlanningController extends UtilisateurController {
     public void affecterPermanences(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
             ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.ds);
             SemaineDAO semaineDAO = new SemaineDAO(super.ds);
+            Semaine semaine = semaineDAO.getSemaine(Integer.parseInt(request.getParameter("semaine_id")));
             request.setAttribute("consommateur", consommateurDAO.getConsommateurs());
             request.setAttribute("num_perm", request.getParameter("num_perm"));
-            request.setAttribute("semaine", semaineDAO.getSemaine(Integer.parseInt(request.getParameter("semaine_id"))));
+            request.setAttribute("semaine", semaine);
+            request.setAttribute("consommateur_dispo", consommateurDAO.getConsommateursDisponible(semaine));
             getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/choisir_user.jsp").forward(request, response);
     }
 
