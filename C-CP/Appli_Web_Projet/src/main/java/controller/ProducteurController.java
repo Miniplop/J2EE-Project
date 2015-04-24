@@ -34,8 +34,7 @@ public class ProducteurController extends UtilisateurController {
         try {
             this.self = producteurDAO.getProducteur((int)session.getAttribute("utilisateur_id"));
         } catch (DAOException e) {
-                request.setAttribute("erreurMessage", e.getMessage());
-                getServletContext().getRequestDispatcher("/WEB-INF/erreur/bdErreur.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/WEB-INF/erreur/erreur_connexion.jsp").forward(request, response);
         }
         if(this.self == null) {
             getServletContext().getRequestDispatcher("/WEB-INF/erreur/erreur_connexion.jsp").forward(request, response);

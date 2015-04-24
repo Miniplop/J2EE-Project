@@ -17,24 +17,52 @@
     </head>
     <body>
         <h1>Sélection d'un permament </h1>
-        <table class="table table-striped">
-            <thead><tr><th>Nom</th><th>Prénom</th></thead>
+        <table class="table col-lg-12">
+            <thead><tr><th>Consommateur disponible</th><th>Tous les consommateurs</th></thead>
             <tbody>
-                <c:forEach items="${consommateur}" var="consommateur">
-                    <tr>
-                        <td>${consommateur.nom}</td>
-                        <td>${consommateur.prenom}</td>
-                        <td>
-                            <form action = "responsable" methode = "GET">
-                                <input type="submit" class="btn btn-default" id="num_permanent" value="Choisir">
-                                <input type="hidden" name="permanent_choisi"  value="${consommateur.getId()}">
-                                <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
-                                <input type="hidden" name="num_perm"  value="${num_perm}">  
-                                <input type="hidden" name="action" id="action2" value="update_permanence">
-                            </form></td></tr>
-                        </c:forEach>
+                <td class="col-lg-6">
+                    <table class="table table-striped">
+                        <thead><tr><th>Nom</th><th>Prénom</th></thead>
+                        <tbody>
+                            <c:forEach items="${consommateurs_dispo}" var="consommateur">
+                                <tr>
+                                    <td>${consommateur.nom}</td>
+                                    <td>${consommateur.prenom}</td>
+                                    <td>
+                                        <form action = "responsable" methode = "GET">
+                                            <input type="submit" class="btn btn-default" id="num_permanent" value="Choisir">
+                                            <input type="hidden" name="permanent_choisi"  value="${consommateur.getId()}">
+                                            <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
+                                            <input type="hidden" name="num_perm"  value="${num_perm}">  
+                                            <input type="hidden" name="action" id="action2" value="update_permanence">
+                                        </form></td></tr>
+                                    </c:forEach>
+                        </tbody>
+                    </table>
+                </td>
+                <td class="col-lg-6">
+                    <table class="table table-striped">
+                        <thead><tr><th>Nom</th><th>Prénom</th></thead>
+                        <tbody>
+                            <c:forEach items="${consommateur}" var="consommateur">
+                                <tr>
+                                    <td>${consommateur.nom}</td>
+                                    <td>${consommateur.prenom}</td>
+                                    <td>
+                                        <form action = "responsable" methode = "GET">
+                                            <input type="submit" class="btn btn-default" id="num_permanent" value="Choisir">
+                                            <input type="hidden" name="permanent_choisi"  value="${consommateur.getId()}">
+                                            <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
+                                            <input type="hidden" name="num_perm"  value="${num_perm}">  
+                                            <input type="hidden" name="action" id="action2" value="update_permanence">
+                                        </form></td></tr>
+                                    </c:forEach>
+                        </tbody>
+                    </table>
+                </td>
             </tbody>
         </table>
+        
 
     </body>
 </html>

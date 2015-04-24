@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modele.Consommateur;
 import modele.DAO.ConsommateurDAO;
 import modele.DAO.DAOException;
@@ -25,8 +26,13 @@ public class ResponsablePlanningController extends UtilisateurController {
     
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        try {
+            boolean test = (boolean)session.getAttribute("responsable") ;
+        } catch (Exception e) {
+            getServletContext().getRequestDispatcher("/WEB-INF/erreur/erreur_connexion.jsp").forward(request, response);
+        }
         super.doGet(request, response);
-        
         String action = request.getParameter("action");
         try {
             if (action != null) {
