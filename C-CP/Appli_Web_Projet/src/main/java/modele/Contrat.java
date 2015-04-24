@@ -62,6 +62,7 @@ public class Contrat {
         this.quantite = quantite;
         this.consommateur = consommateur;
         this.produit_id = produit_id;
+        this.semaine_debut_id = semaine_debut_id;
     }
 
     public Contrat(int id, int quantite, Consommateur consommateur, Produit produit, Integer semaine_debut_id) {
@@ -89,7 +90,7 @@ public class Contrat {
     }
 
     public Semaine getDebutSemaine() {
-        return debut_semaine;
+        return this.debut_semaine;
     }
 
     public void setDebut_semaine(Semaine debut_semaine) {

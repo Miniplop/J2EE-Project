@@ -38,10 +38,10 @@
                                         <h3>${contrat.getQuantite()} ${contrat.getProduit().getUnite()}</h3>
                                         <c:choose>
                                             <c:when test="${contrat.getValide() == 2}">
-                                                <span>Contrat en attente de validation</span>
+                                                <span class="text-warning">Contrat en attente de validation</span>
                                             </c:when>
                                             <c:when test="${contrat.getValide() == 1}">
-                                                <span>Contrat validé</span>
+                                                <span class="text-success">Contrat validé</span>
                                                 <c:if test="${contrat.getDebutSemaine() != null}">
                                                     <p>Début : 
                                                         <span>${contrat.getDebutSemaine().getNumero()} ${contrat.getDebutSemaine().getMois().getNom()} ${contrat.getDebutSemaine().getMois().getAnnee()}</span>
@@ -69,7 +69,7 @@
                                                 </form>
                                             </c:when>
                                             <c:when test="${contrat.getValide() == 0}">
-                                                <span>Contrat refusé</span>
+                                                <span class="text-danger">Contrat refusé</span>
                                             </c:when>
                                         </c:choose>
                                     </div>

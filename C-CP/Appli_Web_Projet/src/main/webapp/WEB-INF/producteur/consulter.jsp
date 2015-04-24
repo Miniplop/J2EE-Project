@@ -32,28 +32,15 @@
                     <div class="navbar-text" id ="nom_user">${self.nom} </div>
                     <div class="navbar-text" id ="prenom_user">${self.prenom} </div>
                     <div class="btn-group" role="group" aria-label="...">
-                        <jsp:include page="../deconnection.jspf">
+                        <jsp:include page="../deconnection.jsp">
                             <jsp:param name="action" value="producteur"/>
                         </jsp:include>
-<!--                        <form class="navbar-form navbar-right" action="producteur" method="GET">
-                            <input type="hidden" name="action" id="action" value="logout">
-                            <button type="submit" class="btn btn-default">déconnexion</button>
-                        </form>-->
                     </div>
                 </ul>
               </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
          </nav>
          </header>
-        <!-- Nom du site + connection -->
-        <header>
-            <h1>Cooperative L.J.P.D.</h1>
-            <div id ="nom_user">${self.nom} </div>
-            <div id ="prenom_user">${self.prenom} </div>
-            <jsp:include page="../deconnection.jsp">
-                <jsp:param name="action" value="producteur"/>
-            </jsp:include>
-        </header>
         <!-- Liste des produits -->
         <section class="col-lg-6 col-lg-offset-3">
             <div id="list_produit">

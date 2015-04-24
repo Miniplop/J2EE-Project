@@ -8,11 +8,6 @@ public class Semaine implements Comparable {
     private Mois mois;
     private final int permanent2Id;
     private final int permanent1Id;
-
-    public void setMois(Mois mois) {
-        this.mois.addSemaine(this);
-        this.mois = mois;
-    }
     public Semaine(short id, int numero, int permanent1Id, int permanent2Id) {
             this.numero = numero;
             this.id = id;
@@ -30,6 +25,12 @@ public class Semaine implements Comparable {
 
     public int getNumero() {
             return this.numero;
+    }
+
+    public void setMois(Mois mois) {
+        this.mois = mois;
+        if(this.mois != null)
+            this.mois.addSemaine(this);
     }
 
     public Mois getMois() {

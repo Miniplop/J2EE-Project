@@ -27,6 +27,7 @@ import modele.Semaine;
 public class ConsommateurController extends UtilisateurController {
     
     private Consommateur self;
+    
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
@@ -107,8 +108,12 @@ public class ConsommateurController extends UtilisateurController {
         for(Contrat contrat : contrats) {
             contrat.setProduit(produitDAO.getProduit(contrat.getProduit_id()));
             self.addContrat(contrat.getProduit_id(), contrat);
-            if(contrat.getSemaine_Debut_id() != null)
+            if(contrat.getSemaine_Debut_id() != null) {
                 contrat.setDebut_semaine(semaineDAO.getSemaine(contrat.getSemaine_Debut_id()));
+                Mois moisSemDebut = moisDAO.getMoisBySemaineId(contrat.getSemaine_Debut_id());
+                if(contrat.getDebutSemaine() != null)
+                    contrat.getDebutSemaine().setMois(moisSemDebut);
+            }
         }
         
         List<Produit> produits = produitDAO.getProduits();

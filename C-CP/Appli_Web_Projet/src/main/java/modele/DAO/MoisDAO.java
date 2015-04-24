@@ -59,7 +59,7 @@ public class MoisDAO extends AbstractDAO<Mois> {
         return mois;
     }
 
-    Mois getMoisBySemaineId(final int semaine_id) throws DAOException {
+    public Mois getMoisBySemaineId(final int semaine_id) throws DAOException {
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws SQLException {

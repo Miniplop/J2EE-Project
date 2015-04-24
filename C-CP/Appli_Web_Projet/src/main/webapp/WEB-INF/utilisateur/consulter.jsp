@@ -116,9 +116,9 @@
                     var nom = $("#nom").val();
                     var type= $("#user-type").val();
                     $.get('utilisateur',{nom:nom, email:email, type:type, action:"login"},function(responseText) {
-                        if(responseText === "erreur")
-                            $('#erreur').text("Utilisateur inconnu");
-                        else if(responseText === "consommateur" || responseText === "producteur" || responseText === "responsable")
+                        if(responseText === "erreur") {
+                            $("#form-connexion .form-group").addClass("has-error");
+                        } else if(responseText === "consommateur" || responseText === "producteur" || responseText === "responsable")
                             document.location.replace("${pageContext.request.contextPath}/"+responseText);
                         else
                             document.write(responseText);
