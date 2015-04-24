@@ -83,22 +83,23 @@
                                                 <li class="list-group-item">
                                                     Semaine n°${semaine.numero}
                                                     <c:choose>
-                                                        <c:when test="${semaine.permanent1 != 0}">
+                                                        <c:when test="${semaine.permanent1Id != 0}">
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                                                    ${consommateur_map[semaine.permanent]} ${semaine.permanent1.prenom} 
+                                                                    ${consommateur_map[semaine.permanent1Id].nom} ${consommateur_map[semaine.permanent1Id].prenom} 
                                                                     <span class="caret"></span>
                                                                 </button>
                                                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                                                         <form action = "responsable" methode = "GET">
                                                                             <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
+                                                                            <input type="hidden" name="num_perm"  value="1">
                                                                             <input type="submit" class="btn btn-default" id="num_permanent" value="Modifier">
                                                                             <input type="hidden" name="action" id="action2" value="affecter_permanences">
                                                                         </form>
                                                                     </ul>
                                                             </div><a></a>
                                                         </c:when>
-                                                        <c:when test="${semaine.permanent1 == 0}" >
+                                                        <c:when test="${semaine.permanent1Id == 0}" >
                                                             <form action = "responsable" methode = "GET">
                                                                 <input type="submit" class="btn btn-default" id="num_permanent" value="Affecter Permanent 1">
                                                                 <input type="hidden" name="num_perm"  value="1">
@@ -108,15 +109,16 @@
                                                         </c:when>
                                                     </c:choose>
                                                     <c:choose>
-                                                        <c:when test="${semaine.permanent2 != 0}">
+                                                        <c:when test="${semaine.permanent2Id != 0}">
                                                             
                                                                 <div class="dropdown">
                                                                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                                                        ${semaine.permanent2.nom} ${semaine.permanent2.prenom} 
+                                                                       ${consommateur_map[semaine.permanent2Id].nom} ${consommateur_map[semaine.permanent2Id].prenom}  
                                                                         <span class="caret"></span>
                                                                     </button>
                                                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                                                         <form action = "responsable" methode = "GET">
+                                                                            <input type="hidden" name="num_perm"  value="2">
                                                                             <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
                                                                             <input type="submit" class="btn btn-default" id="num_permanent" value="Modifier">
                                                                             <input type="hidden" name="action" id="action2" value="affecter_permanences">
