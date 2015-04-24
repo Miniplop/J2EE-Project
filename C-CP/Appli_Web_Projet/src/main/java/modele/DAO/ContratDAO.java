@@ -15,7 +15,8 @@ public class ContratDAO extends AbstractDAO<Contrat> {
 	private static final String SELECT_CONTRATS = "SELECT * FROM Contrat";
 	private static final String UPDATE_CONTRAT = "UPDATE Contrat SET valide=?, debut_semaine_id=? WHERE id=?";
 	private static final String SELECT_CONTRAT = "SELECT * FROM Contrat WHERE id = ?";
-        private final String SELECT_COUNT ="SELECT COUNT (id) FROM (SELECT * FROM Contrat WHERE consommateur_id = ? ) ";
+        private static final String SELECT_COUNT ="SELECT COUNT (id) FROM (SELECT * FROM Contrat WHERE consommateur_id = ? ) ";
+        
     public ContratDAO(DataSource ds) {
         super(ds, INSERT_CONTRAT, SELECT_CONTRATS, UPDATE_CONTRAT);
     }
@@ -40,7 +41,6 @@ public class ContratDAO extends AbstractDAO<Contrat> {
                 statement.setInt(1, user_id);
             }
         };
-        
         return  super.getCount(setter,SELECT_COUNT);
     }
     public void modifyContrat(final Contrat contrat, final int valide, final Semaine semaineDebut) throws DAOException {

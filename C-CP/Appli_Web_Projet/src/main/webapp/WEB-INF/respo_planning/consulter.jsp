@@ -16,18 +16,41 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="responsable" method="GET">
-            <input type="hidden" name="action" id="action" value="logout">
-            <button type="submit" class="btn btn-default">déconnexion</button>
-        </form>
-        
-        <form action="responsable" method="GET">            
-            <button type="submit" class="btn btn-default">
-                <span class="glyphicon glyphicon-signal" aria-hidden="true">   
-                </span>Statistique
-            </button> 
-            <input type="hidden" name="action" id="action" value="statistique_permanences"> 
-        </form>
+        <header>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Coopérative L.J.P.D.</a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <p class="navbar-text" id="erreur"></p>
+                        <form action="responsable" method="GET">
+                            <input type="hidden" name="action" id="action" value="logout">
+                            <button type="submit" class="btn btn-default">déconnexion</button>
+                        </form>
+
+                        <form action="responsable" method="GET">            
+                            <button type="submit" class="btn btn-default">
+                                <span class="glyphicon glyphicon-signal" aria-hidden="true">   
+                                </span>Statistique
+                            </button> 
+                            <input type="hidden" name="action" id="action" value="statistique_permanences"> 
+                        </form>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </header>
+
+
+
         <form action="responsable" method="GET">
             <h1>Ajouter un mois</h1>
             <div class="btn-group">
@@ -60,7 +83,7 @@
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter mois
                     </button>
                 </div>
-               </div>
+            </div>
         </form>
 
 
@@ -90,13 +113,13 @@
                                                                     <span class="caret"></span>
                                                                 </button>
                                                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                                                        <form action = "responsable" methode = "GET">
-                                                                            <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
-                                                                            <input type="hidden" name="num_perm"  value="1">
-                                                                            <input type="submit" class="btn btn-default" id="num_permanent" value="Modifier">
-                                                                            <input type="hidden" name="action" id="action2" value="affecter_permanences">
-                                                                        </form>
-                                                                    </ul>
+                                                                    <form action = "responsable" methode = "GET">
+                                                                        <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
+                                                                        <input type="hidden" name="num_perm"  value="1">
+                                                                        <input type="submit" class="btn btn-default" id="num_permanent" value="Modifier">
+                                                                        <input type="hidden" name="action" id="action2" value="affecter_permanences">
+                                                                    </form>
+                                                                </ul>
                                                             </div><a></a>
                                                         </c:when>
                                                         <c:when test="${semaine.permanent1Id == 0}" >
@@ -110,21 +133,21 @@
                                                     </c:choose>
                                                     <c:choose>
                                                         <c:when test="${semaine.permanent2Id != 0}">
-                                                            
-                                                                <div class="dropdown">
-                                                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                                                       ${consommateur_map[semaine.permanent2Id].nom} ${consommateur_map[semaine.permanent2Id].prenom}  
-                                                                        <span class="caret"></span>
-                                                                    </button>
-                                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                                                        <form action = "responsable" methode = "GET">
-                                                                            <input type="hidden" name="num_perm"  value="2">
-                                                                            <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
-                                                                            <input type="submit" class="btn btn-default" id="num_permanent" value="Modifier">
-                                                                            <input type="hidden" name="action" id="action2" value="affecter_permanences">
-                                                                        </form>
-                                                                    </ul>
-                                                                </div>
+
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                                                    ${consommateur_map[semaine.permanent2Id].nom} ${consommateur_map[semaine.permanent2Id].prenom}  
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                                                    <form action = "responsable" methode = "GET">
+                                                                        <input type="hidden" name="num_perm"  value="2">
+                                                                        <input type="hidden" name="semaine_id"  value="${semaine.getId()}">
+                                                                        <input type="submit" class="btn btn-default" id="num_permanent" value="Modifier">
+                                                                        <input type="hidden" name="action" id="action2" value="affecter_permanences">
+                                                                    </form>
+                                                                </ul>
+                                                            </div>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <form action = "responsable" methode = "GET">

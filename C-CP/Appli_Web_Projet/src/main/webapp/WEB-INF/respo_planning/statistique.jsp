@@ -29,5 +29,10 @@
                 </c:forEach>
             </tbody>
         </table>
+         <form action="responsable" method="GET">
+            <input type="hidden" name="action" id="action" value="retour">
+            <button type="submit" class="btn btn-default">Retour</button>
+        </form>
+        
     </body>
 </html>

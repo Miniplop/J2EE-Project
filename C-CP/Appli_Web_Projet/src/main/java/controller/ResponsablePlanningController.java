@@ -91,8 +91,8 @@ public class ResponsablePlanningController extends UtilisateurController {
         
         for(Consommateur c : list){
             Integer nmbr = semaineDAO.getNombreSemaineByConsommateur(c.getId());
-            Integer nmbr_contrat = contratDAO.getCountContrat(c.getId());
-            ArrayList<Integer> list_stat = new ArrayList<Integer>();
+            Integer nmbr_contrat = contratDAO.getContratsByConsommateur(c).size();
+            ArrayList<Integer> list_stat = new ArrayList<>();
             list_stat.add(nmbr);
             list_stat.add(nmbr_contrat);
             map.put(c, list_stat);
