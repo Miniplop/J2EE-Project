@@ -87,7 +87,7 @@ public class ResponsablePlanningController extends UtilisateurController {
         ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.ds);
         Map<Consommateur,ArrayList<Integer>> map = new HashMap<Consommateur,ArrayList<Integer>>();
         List<Consommateur> list = consommateurDAO.getConsommateurs();
-        ContratDAO  contratDAO = new  ContratDAO(super.ds);
+        ContratDAO contratDAO = new  ContratDAO(super.ds);
         
         for(Consommateur c : list){
             Integer nmbr = semaineDAO.getNombreSemaineByConsommateur(c.getId());
@@ -98,7 +98,7 @@ public class ResponsablePlanningController extends UtilisateurController {
             map.put(c, list_stat);
         }
         request.setAttribute("stat_count", map);
-        request.setAttribute("Consommateur", list);
+        request.setAttribute("consommateurs", list);
         getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/statistique.jsp").forward(request, response);
     }
 

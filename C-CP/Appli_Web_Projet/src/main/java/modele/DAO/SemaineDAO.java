@@ -76,7 +76,7 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
             statement = conn.createStatement();
             generatedKeys = statement.executeQuery("SELECT COUNT (id) FROM (SELECT * FROM Semaine WHERE consommateur_1_id = "+id+" OR consommateur_2_id="+id+" ) ");
             if (generatedKeys.next()) {
-                id = generatedKeys.getInt(1);
+                id = generatedKeys.getInt("COUNT(ID)");
             } else {
                 throw new SQLException("Creating object failed, no generated key obtained.");
             }
