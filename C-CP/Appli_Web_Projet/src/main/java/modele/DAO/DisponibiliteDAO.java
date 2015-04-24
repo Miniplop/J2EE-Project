@@ -84,22 +84,21 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         return disponibilites;
     }
     
-    public List<Consommateur> getDisponibilitesBySemaine(final int id_semaine) throws DAOException {
-        final List<Consommateur> results = new ArrayList<Consommateur>();
+    public List<Disponibilite> getDisponibilitesBySemaine(final int numero_semaine) throws DAOException {
+        final List<Disponibilite> results = new ArrayList<>();
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws SQLException {
-                statement.setInt(1, id_semaine);
+                statement.setInt(1, numero_semaine);
             }
         };
         DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
             @Override
             public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
-                return new Disponibilite(rs.getInt("id"), rs.getInt("consommateur_id"), rs.getInt("contrat_id"),id_semaine);
+                return new Disponibilite(rs.getInt("id"), rs.getInt("consommateur_id"), rs.getInt("contrat_id"), numero_semaine);
             }
         };
-        this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_CONSOMMATEUR);
-        return results;
+        return this.getMultiple(builder, setter, SELECT_DISPONIBILITES_BY_CONSOMMATEUR);
     }
     
     public Disponibilite getDisponibilite(final int id) throws DAOException {
@@ -119,4 +118,15 @@ public class DisponibiliteDAO extends AbstractDAO<Disponibilite> {
         return this.getSingle(builder, setter, SELECT_DISPONIBILITE);
     }
     
+    
+    public List<Disponibilite> getDisponibilites() throws DAOException {
+        DAOModeleBuilder<Disponibilite> builder = new DAOModeleBuilder<Disponibilite>() {
+            @Override
+            public Disponibilite build(ResultSet rs) throws SQLException, DAOException {
+                return new Disponibilite(rs.getInt("id"), rs.getInt("numero_semaine"), rs.getInt("contrat_id"), rs.getInt("consommateur_id"));
+            }
+        };
+        
+        return this.gets(builder);
+    }
 }
