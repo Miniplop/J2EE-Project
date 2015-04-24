@@ -80,7 +80,7 @@ public class ResponsablePlanningController extends UtilisateurController {
             request.setAttribute("consommateur", consommateurDAO.getConsommateurs());
             request.setAttribute("num_perm", request.getParameter("num_perm"));
             request.setAttribute("semaine", semaine);
-            request.setAttribute("consommateur_dispo", consommateurDAO.getConsommateursDisponible(semaine));
+            request.setAttribute("consommateurs_dispo", consommateurDAO.getConsommateursDisponible(semaine));
             getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/choisir_user.jsp").forward(request, response);
     }
 

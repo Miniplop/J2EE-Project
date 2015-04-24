@@ -61,6 +61,7 @@ public class ConsommateurDAO extends UtilisateurDAO {
     public List<Consommateur> getConsommateursDisponible(Semaine semaine) throws DAOException {
        LinkedList<Mois> moisLinked = new LinkedList<>();
         MoisDAO moisDAO = new MoisDAO(dataSource);
+        int moi_index = 0;
         List<Mois> mois = moisDAO.getMois();
         for(Mois moi : mois)
             moisLinked.addLast(moi);
@@ -72,42 +73,55 @@ public class ConsommateurDAO extends UtilisateurDAO {
         Mois moisDeLaSemaine = moisDAO.getMoisBySemaineId(semaine.getId());
         List<Disponibilite> disponibilites = disponibiliteDAO.getDisponibilites();
         for(Disponibilite dispo : disponibilites) {
-            dispo.setContrat(contratDAO.getContrat(dispo.getContrat_id()));
-            dispo.setConsommateur(this.getConsommateur(dispo.getConsommateur_id()));
-            dispo.getContrat().setDebut_semaine(semaineDAO.getSemaine(dispo.getContrat().getSemaine_Debut_id()));
-            int numero_moi = 0;
-            int numero_semaine = 0;
-            for(Mois moi : moisLinked) {
-                if(moi.getSemaine_1_id() == dispo.getContrat().getSemaine_Debut_id() 
-                        || moi.getSemaine_2_id() == dispo.getContrat().getSemaine_Debut_id()
-                        || moi.getSemaine_2_id() == dispo.getContrat().getSemaine_Debut_id()
-                        || moi.getSemaine_4_id() == dispo.getContrat().getSemaine_Debut_id()) {
-                    
-                    numero_semaine = semaineDAO.getSemaine(dispo.getContrat().getSemaine_Debut_id()).getNumero();
-                    numero_moi = moisLinked.lastIndexOf(moi);
+            if(dispo.getNumero() != 0) {
+                dispo.setContrat(contratDAO.getContrat(dispo.getContrat_id()));
+                dispo.setConsommateur(this.getConsommateur(dispo.getConsommateur_id()));
+                dispo.getContrat().setDebut_semaine(semaineDAO.getSemaine(dispo.getContrat().getSemaine_Debut_id()));
+                int numero_moi = 0;
+                int numero_semaine = 0;
+                int i = 0;
+                for(Mois moi : moisLinked) {
+
+                    if(moi.getSemaine_1_id() == dispo.getContrat().getSemaine_Debut_id() 
+                            || moi.getSemaine_2_id() == dispo.getContrat().getSemaine_Debut_id()
+                            || moi.getSemaine_3_id() == dispo.getContrat().getSemaine_Debut_id()
+                            || moi.getSemaine_4_id() == dispo.getContrat().getSemaine_Debut_id()) {
+
+                        numero_semaine = semaineDAO.getSemaine(dispo.getContrat().getSemaine_Debut_id()).getNumero();
+                        numero_moi = i;
+                    }
+
+
+                    if(moi.getSemaine_1_id() == semaine.getId() 
+                            || moi.getSemaine_2_id() == semaine.getId()
+                            || moi.getSemaine_3_id() == semaine.getId()
+                            || moi.getSemaine_4_id() == semaine.getId())
+                        moi_index = i;
+                    i++;
+                }
+                int addMois = 0;
+                int semaineDispoContrat = numero_semaine + dispo.getNumero();
+                while(semaineDispoContrat > 4) {
+                    semaineDispoContrat = semaineDispoContrat % 4;
+                    addMois++;
+                }
+                numero_moi+=addMois;
+                numero_semaine = semaineDispoContrat;
+                if(numero_moi == moi_index) {
+                    Mois moiDispo = mois.get(numero_moi);
+                    if(numero_semaine == 1 && moiDispo.getSemaine_1_id() == semaine.getId())
+                        consommateurs.add(dispo.getConsommateur());
+                    else if(numero_semaine == 2 && moiDispo.getSemaine_2_id() == semaine.getId())
+                        consommateurs.add(dispo.getConsommateur());
+                    else if(numero_semaine == 3 && moiDispo.getSemaine_3_id() == semaine.getId())
+                        consommateurs.add(dispo.getConsommateur());
+                    else if(numero_semaine == 4 && moiDispo.getSemaine_4_id() == semaine.getId())
+                        consommateurs.add(dispo.getConsommateur());
                 }
             }
-            int addMois = 0;
-            int semaineDispoContrat = numero_semaine + dispo.getNumero();
-            System.err.println("debut contrat : "+numero_semaine+"mois  " + dispo.getContrat().getDebutSemaine().getNumero() + " semaine du mois " + numero_moi);
-            System.err.println("dispo la " + dispo.getNumero() + " eme semaine du contrat");
-            while(semaineDispoContrat > 4) {
-                semaineDispoContrat = semaineDispoContrat % 4;
-                addMois++;
-            }
-            numero_moi+=addMois;
-            numero_semaine = semaineDispoContrat;
-            System.err.println("dispo la " + numero_semaine + " semaine du mois numero : " + numero_moi);
-            Mois moiDispo = mois.get(numero_moi);
-            if(numero_semaine == 1 && moiDispo.getSemaine_1_id() == semaine.getId())
-                consommateurs.add(dispo.getConsommateur());
-            else if(numero_semaine == 2 && moiDispo.getSemaine_2_id() == semaine.getId())
-                consommateurs.add(dispo.getConsommateur());
-            else if(numero_semaine == 3 && moiDispo.getSemaine_3_id() == semaine.getId())
-                consommateurs.add(dispo.getConsommateur());
-            else if(numero_semaine == 4 && moiDispo.getSemaine_4_id() == semaine.getId())
-                consommateurs.add(dispo.getConsommateur());
         }
+        for(Consommateur conso : consommateurs)
+            this.getUtilisateur(conso);
         return consommateurs;
     }
 }
