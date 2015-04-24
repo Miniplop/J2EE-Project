@@ -73,14 +73,15 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${contrat.getValide() == 2}">
-                                    <form class="form-horizontal text-center" action="producteur" method="get">
+                                    <form class="form-horizontal" action="producteur" method="get">
+                                         Début du contrat
                                         <select name="semaine_id">
                                             <c:forEach items="${mois.getSemaines()}" var="semaine">
                                             <option value="${semaine.getId()}">semaine ${semaine.getNumero()} ${semaine.getMois().getNom()} ${semaine.getMois().getAnnee()}</option>
                                             </c:forEach>
-                                        </select>
+                                        </select>                                      
                                         <input type="hidden" name="action" value="valider_contrat">
-                                        <input type="hidden" name="contrat_id" value="${contrat.getId()}">
+                                        <input type="hidden" name="contrat_id" value="${contrat.getId()}"><br>
                                         <button type="submit" class="btn btn-success" name="accept">Valider le contrat</button>
                                         <button type="submit" class="btn btn-success" name="refus">Refuser le contrat</button>
                                     </form>
