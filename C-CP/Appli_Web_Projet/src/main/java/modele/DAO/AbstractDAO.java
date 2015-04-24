@@ -105,7 +105,28 @@ public abstract class AbstractDAO<T> {
         }
         return id;
     }
-    
+
+    protected int getCount(DAOQueryParameter setter,String sql_query) throws DAOException {
+        Statement statement = null;
+        ResultSet generatedKeys = null;
+        int id;
+        try {
+            Connection conn = getConnection();
+            PreparedStatement st = conn.prepareStatement(sql_query);
+            if(setter != null)
+                setter.set(st);
+            generatedKeys = st.executeQuery();
+            if (generatedKeys.next()) {
+                id = generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Creating object failed, no generated key obtained.");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
+        }
+        return id;
+    }
+
     protected void add(DAOQueryParameter setter) throws DAOException {
         if(INSERT_QUERY == null)
             throw new UnsupportedOperationException();

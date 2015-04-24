@@ -39,9 +39,8 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
                 statement.setInt(2, semaine.getId());
             }
         };
-        this.modify(setter, "UPDATE Semaine SET consommateur_"+numero+"_id = ? WHERE id = ?");
+        super.modify(setter, "UPDATE Semaine SET consommateur_"+numero+"_id = ? WHERE id = ?");
     }
-
     public void modifySemainePermanent1(Semaine semaine, Consommateur permanent1) throws DAOException {
         modifySemaine(semaine, permanent1, 1);
     }
@@ -68,7 +67,6 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
         return (Semaine) super.getSingle(builder, setter, SemaineDAO.SELECT_SEMAINE);
     }
     
-    
     protected int getCount(int id) throws DAOException {
         
         Statement statement = null;
@@ -76,7 +74,7 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
         try {
             Connection conn = getConnection();
             statement = conn.createStatement();
-            generatedKeys = statement.executeQuery("SELECT COUNT (id) FROM (SELECT * Semaine WHERE consommateur_1_id = "+id+" OR consommateur_2_id "+id+" ) ");
+            generatedKeys = statement.executeQuery("SELECT COUNT (id) FROM (SELECT * FROM Semaine WHERE consommateur_1_id = "+id+" OR consommateur_2_id="+id+" ) ");
             if (generatedKeys.next()) {
                 id = generatedKeys.getInt(1);
             } else {
@@ -91,7 +89,6 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
     public int getNombreSemaineByConsommateur(int id ) throws DAOException{
         return this.getCount(id);
     }
-    
     
     public Semaine getSemaine(final int id) throws DAOException {
         DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     

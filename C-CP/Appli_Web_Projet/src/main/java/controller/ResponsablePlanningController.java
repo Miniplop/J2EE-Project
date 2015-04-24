@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import modele.DAO.ConsommateurDAO;
 import modele.DAO.DAOException;
 import modele.DAO.MoisDAO;
 import modele.DAO.SemaineDAO;
+import modele.DAO.ContratDAO;
 import modele.Mois;
 import modele.Semaine;
 
@@ -49,7 +51,14 @@ public class ResponsablePlanningController extends UtilisateurController {
     @Override
     public void consulter(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         
-        MoisDAO MoisDAO = new MoisDAO(super.ds);
+            MoisDAO MoisDAO = new MoisDAO(super.ds);
+            ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.ds);
+            Map <Integer,Consommateur> map = new HashMap<Integer,Consommateur>();
+            List <Consommateur> list = consommateurDAO.getConsommateurs();
+            for (Consommateur c : list){
+                map.put((int)c.getId(), c);
+            }
+            request.setAttribute("consommateur_map", map);
             request.setAttribute("Mois", MoisDAO.getMois());
             getServletContext().getRequestDispatcher("/WEB-INF/respo_planning/consulter.jsp").forward(request, response);
     }
@@ -67,7 +76,6 @@ public class ResponsablePlanningController extends UtilisateurController {
     public void affecterPermanences(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
             ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.ds);
             SemaineDAO semaineDAO = new SemaineDAO(super.ds);
-            
             request.setAttribute("consommateur", consommateurDAO.getConsommateurs());
             request.setAttribute("num_perm", request.getParameter("num_perm"));
             request.setAttribute("semaine", semaineDAO.getSemaine(Integer.parseInt(request.getParameter("semaine_id"))));
@@ -77,11 +85,17 @@ public class ResponsablePlanningController extends UtilisateurController {
     public void statistiquePermanences(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
         SemaineDAO semaineDAO = new SemaineDAO(super.ds);
         ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.ds);
-        Map<Consommateur,Integer> map = new HashMap<Consommateur,Integer>();
+        Map<Consommateur,ArrayList<Integer>> map = new HashMap<Consommateur,ArrayList<Integer>>();
         List<Consommateur> list = consommateurDAO.getConsommateurs();
+        ContratDAO  contratDAO = new  ContratDAO(super.ds);
+        
         for(Consommateur c : list){
             Integer nmbr = semaineDAO.getNombreSemaineByConsommateur(c.getId());
-            map.put(c, nmbr);
+            Integer nmbr_contrat = contratDAO.getCountContrat(c.getId());
+            ArrayList<Integer> list_stat = new ArrayList<Integer>();
+            list_stat.add(nmbr);
+            list_stat.add(nmbr_contrat);
+            map.put(c, list_stat);
         }
         request.setAttribute("stat_count", map);
         request.setAttribute("Consommateur", list);
@@ -89,7 +103,6 @@ public class ResponsablePlanningController extends UtilisateurController {
     }
 
     private void updatePermanence(HttpServletRequest request, HttpServletResponse response) throws DAOException, ServletException, IOException {
-        if (request.getParameter("permanent_choisi") != null){
            SemaineDAO semaineDAO = new SemaineDAO(super.ds);
            ConsommateurDAO consommateurDAO = new ConsommateurDAO(super.ds);
            if (Integer.parseInt(request.getParameter("num_perm")) == 1 ){
@@ -97,7 +110,6 @@ public class ResponsablePlanningController extends UtilisateurController {
            }else if (Integer.parseInt(request.getParameter("num_perm")) == 2){
              semaineDAO.modifySemainePermanent2(semaineDAO.getSemaine(Integer.parseInt(request.getParameter("semaine_id"))), consommateurDAO.getConsommateur(Integer.parseInt(request.getParameter("permanent_choisi"))));  
            }
-        }
         this.consulter(request, response);
     }
 }
