@@ -85,9 +85,35 @@
                     </div>
                 </c:forEach>
         </section>
-        <!-- Contact -->
         <footer>
-            
+            <c:if test="${mois.getSemaines().size() > 0}">
+            <div class="permanences">
+                <c:forEach items="${mois.getSemaines()}" var="semaine">
+                    <c:choose>
+                        <c:when test="${semaine.getPermanent1() != null}">
+                            <div class="semaine_cooec">
+                                <h3>Permanence la semaine ${semaine.getNumero()} ${semaine.getMois().getNom()} ${semaine.getMois().getAnnee()}</h3>
+                                <p>Coéquipier : ${semaine.getPermanent1().getNom()} ${semaine.getPermanent1().getPrenom()}<p>
+                                <p>Coordonnées : 
+                                    <span>${semaine.getPermanent1().getAdresse()}</span>
+                                    <A href="mailto:${semaine.getPermanent1().getEmail()}">${semaine.getPermanent1().getEmail()}</a>
+                                <p>
+                            </div>
+                        </c:when>
+                        <c:when test="${semaine.getPermanent2() != null}">
+                            <div class="semaine_cooec">
+                                <h3>Permanence la semaine ${semaine.getNumero()} ${semaine.getMois().getNom()} ${semaine.getMois().getAnnee()}</h3>
+                                <p>Coéquipier : ${semaine.getPermanent1().getNom()} ${semaine.getPermanent1().getPrenom()}<p>
+                                <p>Coordonnées : 
+                                    <span>${semaine.getPermanent1().getAdresse()}</span>
+                                    <A href="mailto:${semaine.getPermanent1().getEmail()}">${semaine.getPermanent1().getEmail()}</a>
+                                <p>
+                            </div>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
+            </div>
+            </c:if>
         </footer>
     </body>
 </html>

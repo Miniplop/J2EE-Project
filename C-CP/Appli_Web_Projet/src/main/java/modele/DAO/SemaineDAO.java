@@ -53,7 +53,7 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
         DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     
             @Override
             public Semaine build(ResultSet rs) throws DAOException, SQLException {
-                Semaine semaine = new Semaine((short) rs.getInt("id"), rs.getInt("numero"));
+                Semaine semaine = new Semaine((short) rs.getInt("id"), rs.getInt("numero"), rs.getInt("consommateur_1_id"), rs.getInt("consommateur_2_id"));
                 semaine.setMois(mois);
                 return semaine;
             }
@@ -94,7 +94,7 @@ public class SemaineDAO extends AbstractDAO<Semaine> {
         DAOModeleBuilder<Semaine> builder = new DAOModeleBuilder<Semaine>() {     
             @Override
             public Semaine build(ResultSet rs) throws DAOException, SQLException {
-                return new Semaine((short) rs.getInt("id"), rs.getInt("numero"));
+                return new Semaine((short) rs.getInt("id"), rs.getInt("numero"), rs.getInt("consommateur_1_id"), rs.getInt("consommateur_2_id"));
             }
         };
         DAOQueryParameter setter = new DAOQueryParameter() {

@@ -70,7 +70,7 @@
                         <div>
                             <h4> Contrat passé par : ${contrat.getConsommateur().getNom()} ${contrat.getConsommateur().getPrenom()} </h4>
                             <span>${contrat.getConsommateur().getAdresse()}</span>
-                            <span>${contrat.getConsommateur().getEmail()}</span>
+                            <a href="mailto:${contrat.getConsommateur().getEmail()}">${contrat.getConsommateur().getEmail()}</a>
                             <p>
                                 Quantité commandée : <span>${contrat.getQuantite()} ${contrat.getProduit().getUnite()}</span>
                             </p>

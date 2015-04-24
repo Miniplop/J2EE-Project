@@ -15,10 +15,13 @@ import modele.DAO.ConsommateurDAO;
 import modele.DAO.ContratDAO;
 import modele.DAO.DAOException;
 import modele.DAO.DisponibiliteDAO;
+import modele.DAO.MoisDAO;
 import modele.DAO.ProducteurDAO;
 import modele.DAO.ProduitDAO;
 import modele.DAO.SemaineDAO;
+import modele.Mois;
 import modele.Produit;
+import modele.Semaine;
 
 @WebServlet(name = "Consommateur", urlPatterns = {"/consommateur"})
 public class ConsommateurController extends UtilisateurController {
@@ -64,6 +67,42 @@ public class ConsommateurController extends UtilisateurController {
         ContratDAO contratDAO = new ContratDAO(ds);
         ProduitDAO produitDAO = new ProduitDAO(super.ds);
         SemaineDAO semaineDAO = new SemaineDAO(ds);
+        ConsommateurDAO consommateurDAO = new ConsommateurDAO(ds);
+        MoisDAO moisDAO = new MoisDAO(ds);
+        Mois mois = moisDAO.getLastMois();
+        Semaine semaine1 = semaineDAO.getSemaine(mois.getSemaine_1_id());
+        Semaine semaine2 = semaineDAO.getSemaine(mois.getSemaine_2_id());
+        Semaine semaine3 = semaineDAO.getSemaine(mois.getSemaine_3_id());
+        Semaine semaine4 = semaineDAO.getSemaine(mois.getSemaine_4_id());
+        if(semaine1.getPermanent1Id() == self.getId()) {
+            semaine1.setPermanent2(consommateurDAO.getConsommateur(semaine1.getPermanent2Id()));
+            semaine1.setMois(mois);
+        } else if(semaine1.getPermanent2Id() == self.getId()) {
+            semaine1.setPermanent1(consommateurDAO.getConsommateur(semaine1.getPermanent1Id()));
+            semaine1.setMois(mois);
+        }
+        if(semaine2.getPermanent1Id() == self.getId()) {
+            semaine2.setPermanent2(consommateurDAO.getConsommateur(semaine2.getPermanent2Id()));
+            semaine2.setMois(mois);
+        } else if(semaine2.getPermanent2Id() == self.getId()) {
+            semaine2.setPermanent1(consommateurDAO.getConsommateur(semaine2.getPermanent1Id()));
+            semaine2.setMois(mois);
+        }
+        if(semaine3.getPermanent1Id() == self.getId()) {
+            semaine3.setPermanent2(consommateurDAO.getConsommateur(semaine3.getPermanent2Id()));
+            semaine3.setMois(mois);
+        } else if(semaine3.getPermanent2Id() == self.getId()) {
+            semaine3.setPermanent1(consommateurDAO.getConsommateur(semaine3.getPermanent1Id()));
+            semaine3.setMois(mois);
+        }
+        if(semaine4.getPermanent1Id() == self.getId()) {
+            semaine4.setPermanent2(consommateurDAO.getConsommateur(semaine4.getPermanent2Id()));
+            semaine4.setMois(mois);
+        } else if(semaine4.getPermanent2Id() == self.getId()) {
+            semaine4.setPermanent1(consommateurDAO.getConsommateur(semaine4.getPermanent1Id()));
+            semaine4.setMois(mois);
+        }
+        
         List<Contrat> contrats = contratDAO.getContratsByConsommateur(self);
         for(Contrat contrat : contrats) {
             contrat.setProduit(produitDAO.getProduit(contrat.getProduit_id()));
@@ -81,6 +120,7 @@ public class ConsommateurController extends UtilisateurController {
         request.setAttribute("produits", produits);
         request.setAttribute("self", self);
         request.setAttribute("disponibilites", disponibiliteDAO.getDisponibilitesByConsommateur(self));
+        request.setAttribute("mois", mois);
         getServletContext().getRequestDispatcher("/WEB-INF/consommateur/consulter.jsp").forward(request, response);
     }
 
