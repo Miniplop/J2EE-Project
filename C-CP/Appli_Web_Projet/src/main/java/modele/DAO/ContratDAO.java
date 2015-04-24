@@ -1,10 +1,8 @@
 package modele.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Contrat;
@@ -22,36 +20,17 @@ public class ContratDAO extends AbstractDAO<Contrat> {
         super(ds, INSERT_CONTRAT, SELECT_CONTRATS, UPDATE_CONTRAT);
     }
 
-    public Contrat addContrat(final int quantite, final Produit produit, final Consommateur consommateur) throws DAOException {
+    public Contrat addContrat(final int quantite, final int produit_id, final Consommateur consommateur) throws DAOException {
         DAOQueryParameter setter = new DAOQueryParameter() {
-
             @Override
             public void set(PreparedStatement statement) throws SQLException {
                 statement.setInt(1, quantite);
-                statement.setInt(2, produit.getId());
+                statement.setInt(2, produit_id);
                 statement.setInt(3, consommateur.getId());
             }
         };
         this.add(setter);
-        
-        Statement statement = null;
-        ResultSet generatedKeys = null;
-        int id = 0;
-        try {
-            Connection conn = getConnection();
-            statement = conn.createStatement();
-            generatedKeys = statement.executeQuery("SELECT seq_contrat.currval from dual");
-            if (generatedKeys.next()) {
-                id = generatedKeys.getInt(1);
-            } else {
-                throw new SQLException("Creating object failed, no generated key obtained.");
-            }
-        } catch (SQLException ex) {
-            throw new DAOException(ex.getMessage(), ex);
-        }
-        if(id == 0)
-            return null;
-        return new Contrat(id, quantite, produit, consommateur);
+        return new Contrat(this.getLastId("Contrat"), quantite, consommateur, produit_id, null);
     }
     
     public int getCountContrat( final int user_id) throws DAOException{
@@ -77,18 +56,13 @@ public class ContratDAO extends AbstractDAO<Contrat> {
     }
 
     public List<Contrat> getContrats() throws DAOException {
-        final ProduitDAO produitDAO = new ProduitDAO(dataSource);
-        final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
-        final SemaineDAO semaineDAO = new SemaineDAO(dataSource);
         DAOModeleBuilder<Contrat> builder = new DAOModeleBuilder<Contrat>() {
             @Override
             public Contrat build(ResultSet rs) throws DAOException {
                 Contrat contrat;
                 try {
-                    Produit produit = produitDAO.getProduit(rs.getShort("produit_id"));
-                    Consommateur consommateur = consommateurDAO.getConsommateur(rs.getShort("consommateur_id"));
-                    Semaine semaine_debut = semaineDAO.getSemaine(rs.getShort("debut_semaine_id"));
-                    contrat = new Contrat(rs.getShort("id"), rs.getInt("quantite"), rs.getShort("valide"), consommateur, produit, semaine_debut);
+                    contrat = new Contrat(rs.getShort("id"), rs.getInt("quantite"), 
+                            rs.getShort("valide"), rs.getInt("consommateur_id"), rs.getInt("produit_id"), rs.getInt("debut_semaine_id"));
                 } catch (SQLException ex) {
                     throw new DAOException(ex.getMessage(), ex);
                 }
@@ -100,10 +74,7 @@ public class ContratDAO extends AbstractDAO<Contrat> {
 
     public List<Contrat> getContratsByConsommateur(final Consommateur conso) throws DAOException {
         
-        final ProduitDAO produitDAO = new ProduitDAO(super.dataSource);
-        final SemaineDAO semaineDAO = new SemaineDAO(super.dataSource);
         DAOQueryParameter setter = new DAOQueryParameter() {
-
             @Override
             public void set(PreparedStatement statement) throws SQLException {
                 statement.setInt(1, conso.getId());
@@ -113,11 +84,8 @@ public class ContratDAO extends AbstractDAO<Contrat> {
 
             @Override
             public Contrat build(ResultSet rs) throws SQLException, DAOException {
-                return new Contrat(rs.getInt("id"), rs.getInt("quantite"),
-                        rs.getShort("valide"),
-                        conso, 
-                        produitDAO.getProduit(rs.getInt("produit_id")),
-                        semaineDAO.getSemaine(rs.getInt("debut_semaine_id")));
+                return new Contrat(rs.getInt("id"), rs.getInt("quantite"), rs.getInt("valide"), conso, 
+                        rs.getInt("produit_id"), rs.getInt("debut_semaine_id"));
             }
         };
         return this.getMultiple(builder, setter, "SELECT * FROM Contrat WHERE consommateur_id = ?");
@@ -130,12 +98,11 @@ public class ContratDAO extends AbstractDAO<Contrat> {
                 statement.setInt(1, id);
             }
         };
-        final ProduitDAO produitDAO = new ProduitDAO(dataSource);
-        final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
          DAOModeleBuilder<Contrat> builder = new DAOModeleBuilder<Contrat>() {
                 @Override
                 public Contrat build(ResultSet rs) throws SQLException, DAOException {
-                    return new Contrat(rs.getInt("id"), rs.getInt("quantite"), produitDAO.getProduit(rs.getInt("produit_id")), consommateurDAO.getConsommateur(rs.getInt("consommateur_id")));
+                    return new Contrat(rs.getInt("id"), rs.getInt("quantite"), rs.getInt("valide"), rs.getInt("consommateur_id"),
+                            rs.getInt("produit_id"), rs.getInt("debut_semaine_id"));
                 }
             };
         
@@ -143,23 +110,20 @@ public class ContratDAO extends AbstractDAO<Contrat> {
     }
 
     public List<Contrat> getContratByProduit(final Produit prod) throws DAOException {
-        final ConsommateurDAO consommateurDAO = new ConsommateurDAO(dataSource);
-        final SemaineDAO semaineDAO = new SemaineDAO(dataSource);
         DAOQueryParameter setter = new DAOQueryParameter() {
             @Override
             public void set(PreparedStatement statement) throws SQLException {
                 statement.setInt(1, prod.getId());
             }
         };
-        DAOModeleBuilder<Contrat> builder = new DAOModeleBuilder<Contrat>() {
-            @Override
-            public Contrat build(ResultSet rs) throws SQLException, DAOException {
-                return new Contrat(rs.getInt("id"), rs.getInt("quantite"), rs.getInt("valide"), 
-                        consommateurDAO.getConsommateur(rs.getInt("consommateur_id")),prod, 
-                        semaineDAO.getSemaine(rs.getInt("debut_semaine_id"))
-                );
-            }
-        };
+        DAOModeleBuilder<Contrat> builder;
+            builder = new DAOModeleBuilder<Contrat>() {
+                @Override
+                public Contrat build(ResultSet rs) throws SQLException, DAOException {
+                    return new Contrat(rs.getInt("id"), rs.getInt("quantite"), rs.getInt("valide"), 
+                            prod, rs.getInt("consommateur_id"), rs.getInt("debut_semaine_id"));
+                }
+            };
             
         return this.getMultiple(builder, setter, "SELECT * FROM Contrat WHERE produit_id=?");
     }

@@ -47,7 +47,7 @@
             <h1>Cooperative L.J.P.D.</h1>
             <div id ="nom_user">${self.nom} </div>
             <div id ="prenom_user">${self.prenom} </div>
-            <jsp:include page="../deconnection.jspf">
+            <jsp:include page="../deconnection.jsp">
                 <jsp:param name="action" value="producteur"/>
             </jsp:include>
         </header>
@@ -59,6 +59,7 @@
                     <div>
                         <h2>${produit.nom}</h2>
                         <p>durée du contrat : <span>${produit.duree} semaines</span></p>
+                        <p>Quantite : <span>${produit.quantite} ${produit.unite}</span></p>
                     </div>
                     <c:if test="${contrats.get(produit.getId()) != null}">
                     <div>
@@ -68,7 +69,7 @@
                             <span>${contrat.getConsommateur().getAdresse()}</span>
                             <span>${contrat.getConsommateur().getEmail()}</span>
                             <p>
-                                Quantité commandée : <span>${contrat.getQuantite()}</span>
+                                Quantité commandée : <span>${contrat.getQuantite()} ${contrat.getProduit().getUnite()}</span>
                             </p>
                             <c:choose>
                                 <c:when test="${contrat.getValide() == 0}"> <!-- contrat refusé -->
