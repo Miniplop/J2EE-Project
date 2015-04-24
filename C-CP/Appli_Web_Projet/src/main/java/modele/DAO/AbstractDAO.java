@@ -107,7 +107,6 @@ public abstract class AbstractDAO<T> {
     }
 
     protected int getCount(DAOQueryParameter setter,String sql_query) throws DAOException {
-        Statement statement = null;
         ResultSet generatedKeys = null;
         int id;
         try {
